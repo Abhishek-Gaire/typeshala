@@ -30,8 +30,8 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 Decide Tauri plus React shape and scaffold a runnable app so later slices build on real structure. Includes your light standards leanings folded in.
 **Done when:** the stack lives in a spec and the empty scaffold boots locally and passes build.
 - [x] Decide the stack (spec): `/architect stack and architecture`
-- [ ] Scaffold from the decision: `/develop stack and architecture`
-Spec [0001](../specs/0001-stack-and-architecture.md)
+- [x] Scaffold from the decision: `/develop stack and architecture`
+Spec [0001](../specs/0001-stack-and-architecture.md) · code in `src/`, `src-tauri/`, `vite.config.ts`
 
 ### 2. Coding standards and tooling
 Capture conventions from the real scaffold then install lint, format, and hooks so later code stays tidy.
