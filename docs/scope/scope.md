@@ -11,7 +11,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 
 | # | Feature | Phase | Status |
 |---|---------|-------|--------|
-| 1 | Stack and architecture | Foundation | in-progress |
+| 1 | Stack and architecture | Foundation | done |
 | 2 | Coding standards and tooling | Foundation | planned |
 | 3 | Data model local store | Foundation | planned |
 | 4 | Design system and bilingual UI foundation | Foundation | planned |
@@ -26,7 +26,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 
 ## Foundations
 
-### 1. Stack and architecture · in-progress · Beta
+### 1. Stack and architecture · done · Beta
 Decide Tauri plus React shape and scaffold a runnable app so later slices build on real structure. Includes your light standards leanings folded in.
 **Done when:** the stack lives in a spec and the empty scaffold boots locally and passes build.
 - [x] Decide the stack (spec): `/architect stack and architecture`
