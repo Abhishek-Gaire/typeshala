@@ -12,8 +12,8 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | # | Feature | Phase | Status |
 |---|---------|-------|--------|
 | 1 | Stack and architecture | Foundation | done |
-| 2 | Coding standards and tooling | Foundation | planned |
-| 3 | Data model local store | Foundation | planned |
+| 2 | Coding standards and tooling | Foundation | done |
+| 3 | Data model local store | Foundation | done |
 | 4 | Design system and bilingual UI foundation | Foundation | planned |
 | 5 | Smallest usable English tutor | Release 1 | planned |
 | 6 | Structured lessons and progression | Release 2 | planned |
@@ -33,15 +33,24 @@ Decide Tauri plus React shape and scaffold a runnable app so later slices build 
 - [x] Scaffold from the decision: `/develop stack and architecture`
 Spec [0001](../specs/0001-stack-and-architecture/index.md) · code in `src/`, `src-tauri/`, `vite.config.ts`
 
-### 2. Coding standards and tooling
+### 2. Coding standards and tooling · done
 Capture conventions from the real scaffold then install lint, format, and hooks so later code stays tidy.
 **Done when:** root `AGENTS.md` reflects the real stack, and lint plus format run clean.
-- [ ] Capture conventions plus tooling choices: `/audit`
+- [x] Capture conventions plus tooling choices: `/audit`
+Code in `AGENTS.md`, `eslint.config.js`, `.prettierrc.json`, `vitest.config.ts`
 
-### 3. Data model local store · needs a decision · Beta
+### 3. Data model local store · done · Beta
 Define lessons, session results, settings, and progress saved on device through JSON store so later slices share one shape.
 **Done when:** entities and save shape support lessons, results, settings, and trends with no breaking redo later.
-- [ ] Design it (spec): `/architect data model local store`
+- [x] Design it (spec): `/architect data model local store`
+- [x] Build it: `/develop data model local store`
+  - [x] Store plugin plus typed bridge and commands (AC-1, AC-2, AC-3)
+  - [x] Bundled lessons plus settings with defaults and version (AC-2, AC-3)
+  - [x] Attempt save plus progress reads with derived bests (AC-1, AC-5)
+  - [x] Corrupt store recovery with backup (AC-4)
+- [x] Verify it: `/check verify data model local store`
+- [x] Test it: `/test data model local store`
+Spec [0002](../specs/0002-data-model-local-store/index.md) · code in `src-tauri/src/`, `src/domain/`, `src/infrastructure/`, `src/data/lessons/`
 
 ### 4. Design system and bilingual UI foundation · needs a decision
 Set type, color, spacing, base components, light dark themes, large prompt text, full keyboard use, and English plus Nepali UI strings so flows feel cohesive.
