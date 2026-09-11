@@ -1,0 +1,8 @@
+{
+  "tool": "vitest",
+  "additionalTools": ["@testing-library/react", "@testing-library/jest-dom"],
+  "e2eTool": "none",
+  "testDir": "colocated",
+  "filePattern": "*.test.ts",
+  "packageManager": "npm"
+}

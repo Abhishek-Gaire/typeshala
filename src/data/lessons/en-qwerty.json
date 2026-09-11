@@ -1,0 +1,26 @@
+[
+  {
+    "id": "en-home",
+    "layout": "qwerty",
+    "title": "Home row",
+    "prompt": "asdf jkl; asdf jkl; ask; lass; fall; salad; salsa",
+    "order": 1,
+    "level": "home-row"
+  },
+  {
+    "id": "en-top",
+    "layout": "qwerty",
+    "title": "Top row",
+    "prompt": "qwerty uiop qwerty uiop quite; wrote; power; tower",
+    "order": 2,
+    "level": "top-row"
+  },
+  {
+    "id": "en-words",
+    "layout": "qwerty",
+    "title": "Common words",
+    "prompt": "the quick brown fox jumps over the lazy dog and runs back home again",
+    "order": 3,
+    "level": "words"
+  }
+]
