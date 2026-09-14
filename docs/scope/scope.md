@@ -15,7 +15,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 2 | Coding standards and tooling | Foundation | done |
 | 3 | Data model local store | Foundation | done |
 | 4 | Design system and bilingual UI foundation | Foundation | done |
-| 5 | Smallest usable English tutor | Release 1 | planned |
+| 5 | Smallest usable English tutor | Release 1 | in-progress |
 | 6 | Structured lessons and progression | Release 2 | planned |
 | 7 | Nepali Romanized layout | Release 3 | planned |
 | 8 | Nepali Traditional Preeti layout | Release 3 | planned |
@@ -65,10 +65,18 @@ Spec [0003](../specs/0003-design-system-bilingual-ui.md) · code in `src/styles/
 
 ## Release 1: smallest usable whole
 
-### 5. Smallest usable English tutor · needs a decision · Beta
+### 5. Smallest usable English tutor · in-progress · Beta
 Type one English lesson against a prompt with live WPM and accuracy, virtual keyboard plus finger guidance, and result saved locally. This is the thin usable whole you could use tomorrow.
 **Done when:** you can pick a lesson, type it, see live score, see next key lit, and find your result after restart.
-- [ ] Design it (spec): `/architect smallest usable English tutor`
+- [x] Design it (spec): `/architect smallest usable English tutor`
+- [x] Build it: `/develop smallest usable English tutor`
+  - [x] Domain scoring plus session state with locked formulas (AC-2, AC-3)
+  - [x] Picker plus typing view with live scores plus lit key (AC-1, AC-2, AC-3)
+  - [x] Save plus result view plus reload after restart (AC-4)
+  - [x] Error states plus keyboard focus plus bilingual strings (AC-5, AC-6)
+- [x] Verify it: `/check verify smallest usable English tutor` (live run: picker plus typing plus save plus restart proven; AC-5 error forcing skipped)
+- [x] Test it: `/test smallest usable English tutor` (36 tests green, scoring plus key map locked)
+Spec [0004](../specs/0004-smallest-usable-english-tutor.md) · code in `src/domain/scoring.ts`, `src/domain/keymap.ts`, `src/features/lessons/`, `src/features/typing/`, `src/features/results/`, `src/App.tsx`
 
 ## Release 2: grow with structure
 
