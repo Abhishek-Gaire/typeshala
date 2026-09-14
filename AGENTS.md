@@ -4,7 +4,7 @@
 
 - **Language / Runtime**: TypeScript, Node 20 min, Rust stable
 - **Framework**: Tauri v2 latest, 2.11 line plus React plus Vite
-- **Key dependencies**: `@tauri-apps/api`, `@tauri-apps/plugin-opener`, Zustand soon, store plugin soon, Tailwind CSS
+- **Key dependencies**: `@tauri-apps/api`, `@tauri-apps/plugin-opener`, `@tauri-apps/plugin-store`, Zustand soon, Tailwind CSS
 - **Package manager**: npm
 
 ## Build approach
@@ -46,6 +46,12 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
 - Conventional commits. Messages like `feat: add lesson view`.
 - Tooling chosen: `eslint` plus `prettier`, `vitest` for unit plus integration. Install lands in `/develop tooling`.
 - Before commit run lint plus format plus typecheck. Push runs CI with the same three.
+
+## UI base (spec 0003)
+
+- Tokens live in `src/styles/tokens.ts`, themes in `src/styles/themes.css`. Use short var classes like `text-(--color-ink)`.
+- Strings live in `src/i18n/en.json` plus `ne.json`, typed keys in `src/i18n/keys.ts`, English fallback always.
+- Shared parts live in `src/components/`, settings hook in `src/hooks/useUiSettings.ts`. Art direction lives in `design.md`.
 
 ## Git
 
