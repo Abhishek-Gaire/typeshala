@@ -1,0 +1,17 @@
+{
+  "app.tagline": "अंग्रेजी र नेपालीका लागि स्थानीय टाइपिङ शिक्षक",
+  "nav.lessons": "पाठहरू",
+  "nav.progress": "प्रगति",
+  "nav.settings": "सेटिङहरू",
+  "action.start": "सुरु गर्नुहोस्",
+  "action.retry": "पुनः प्रयास",
+  "action.save": "बचत गर्नुहोस्",
+  "state.loading": "लोड हुँदैछ…",
+  "state.empty": "यहाँ केही छैन",
+  "state.error": "केही गलत भयो",
+  "settings.theme": "थिम",
+  "settings.language": "भाषा",
+  "settings.promptSize": "प्रम्प्ट आकार",
+  "theme.light": "उज्यालो",
+  "theme.dark": "अँध्यारो"
+}

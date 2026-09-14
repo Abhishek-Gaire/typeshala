@@ -14,7 +14,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 1 | Stack and architecture | Foundation | done |
 | 2 | Coding standards and tooling | Foundation | done |
 | 3 | Data model local store | Foundation | done |
-| 4 | Design system and bilingual UI foundation | Foundation | planned |
+| 4 | Design system and bilingual UI foundation | Foundation | done |
 | 5 | Smallest usable English tutor | Release 1 | planned |
 | 6 | Structured lessons and progression | Release 2 | planned |
 | 7 | Nepali Romanized layout | Release 3 | planned |
@@ -52,10 +52,16 @@ Define lessons, session results, settings, and progress saved on device through 
 - [x] Test it: `/test data model local store`
 Spec [0002](../specs/0002-data-model-local-store/index.md) · code in `src-tauri/src/`, `src/domain/`, `src/infrastructure/`, `src/data/lessons/`
 
-### 4. Design system and bilingual UI foundation · needs a decision
+### 4. Design system and bilingual UI foundation · done
 Set type, color, spacing, base components, light dark themes, large prompt text, full keyboard use, and English plus Nepali UI strings so flows feel cohesive.
 **Done when:** `design.md` covers tokens and components, and base screens handle focus and keyboard in both languages.
-- [ ] Design it (spec): `/architect design system and bilingual UI foundation`
+- [x] Design it (spec): `/architect design system and bilingual UI foundation`
+- [x] Build it: `/develop design system and bilingual UI foundation`
+  - [x] Tokens plus themes plus bilingual bundles (AC-1, AC-3, AC-5)
+  - [x] Base components on tokens with keyboard focus (AC-1, AC-4)
+  - [x] Saved theme plus locale plus prompt size with states (AC-2, AC-3, AC-4, AC-5)
+- [x] Verify it: `/check verify design system and bilingual UI foundation`
+Spec [0003](../specs/0003-design-system-bilingual-ui.md) · code in `src/styles/`, `src/i18n/`, `src/components/`, `src/hooks/`
 
 ## Release 1: smallest usable whole
 

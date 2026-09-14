@@ -1,0 +1,20 @@
+:root {
+  --color-brand: #b45309;
+  --color-surface: #fafaf9;
+  --color-ink: #1c1917;
+  --color-muted: #78716c;
+  --focus-ring: #b45309;
+}
+
+.dark {
+  --color-brand: #fbbf24;
+  --color-surface: #1c1917;
+  --color-ink: #fafaf9;
+  --color-muted: #a8a29e;
+  --focus-ring: #fbbf24;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}

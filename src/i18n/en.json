@@ -1,0 +1,17 @@
+{
+  "app.tagline": "Local typing tutor for English and Nepali",
+  "nav.lessons": "Lessons",
+  "nav.progress": "Progress",
+  "nav.settings": "Settings",
+  "action.start": "Start",
+  "action.retry": "Retry",
+  "action.save": "Save",
+  "state.loading": "Loading…",
+  "state.empty": "Nothing here yet",
+  "state.error": "Something went wrong",
+  "settings.theme": "Theme",
+  "settings.language": "Language",
+  "settings.promptSize": "Prompt size",
+  "theme.light": "Light",
+  "theme.dark": "Dark"
+}
