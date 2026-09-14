@@ -13,5 +13,20 @@
   "settings.language": "भाषा",
   "settings.promptSize": "प्रम्प्ट आकार",
   "theme.light": "उज्यालो",
-  "theme.dark": "अँध्यारो"
+  "theme.dark": "अँध्यारो",
+  "lesson.pick": "पाठ छान्नुहोस्",
+  "lesson.lastRun": "अन्तिम अभ्यास",
+  "typing.restart": "पुनः सुरु",
+  "typing.back": "फर्कनुहोस्",
+  "typing.retry": "फेरि प्रयास",
+  "typing.wpm": "प्रति मिनेट शब्द",
+  "typing.accuracy": "शुद्धता",
+  "typing.finger": "प्रयोग गर्नुहोस्",
+  "result.title": "राम्रो भयो",
+  "result.saved": "नतिजा यही उपकरणमा बचत भयो",
+  "result.again": "फेरि टाइप गर्नुहोस्",
+  "result.lessons": "सबै पाठ",
+  "error.lessonsMissing": "कुनै पाठ भेटिएन। पुनः प्रयास गर्नुहोस्।",
+  "error.saveFailed": "नतिजा बचत हुन सकेन। पुनः प्रयास गर्न सक्नुहुन्छ।",
+  "error.loadFailed": "प्रगति लोड हुन सकेन। यो नतिजा मात्र देखाइएको छ।"
 }

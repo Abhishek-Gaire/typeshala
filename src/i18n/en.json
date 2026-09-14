@@ -13,5 +13,20 @@
   "settings.language": "Language",
   "settings.promptSize": "Prompt size",
   "theme.light": "Light",
-  "theme.dark": "Dark"
+  "theme.dark": "Dark",
+  "lesson.pick": "Pick a lesson",
+  "lesson.lastRun": "Last run",
+  "typing.restart": "Restart",
+  "typing.back": "Back",
+  "typing.retry": "Try again",
+  "typing.wpm": "WPM",
+  "typing.accuracy": "Accuracy",
+  "typing.finger": "Use your",
+  "result.title": "Well done",
+  "result.saved": "Result saved on this device",
+  "result.again": "Type again",
+  "result.lessons": "All lessons",
+  "error.lessonsMissing": "No lessons found. Check the bundled lessons and retry.",
+  "error.saveFailed": "Could not save your result. You can retry.",
+  "error.loadFailed": "Could not load progress. Showing this run only."
 }
