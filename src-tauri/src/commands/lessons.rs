@@ -11,14 +11,26 @@ use crate::models::{BridgeError, LayoutId, Lesson};
 /// Bundled English QWERTY lessons, embedded at compile time.
 const EN_QWERTY: &str = include_str!("../../../src/data/lessons/en-qwerty.json");
 
-/// Parse the bundled lessons once per call. The file is tiny.
+/// Bundled Nepali Romanized lessons, embedded at compile time (spec 0006).
+const NE_ROMANIZED: &str = include_str!("../../../src/data/lessons/ne-romanized.json");
+
+/// Parse the bundled lessons once per call. The files are tiny.
 pub(crate) fn bundled() -> Result<Vec<Lesson>, BridgeError> {
-    serde_json::from_str(EN_QWERTY).map_err(|err| {
+    let mut lessons: Vec<Lesson> = serde_json::from_str(EN_QWERTY).map_err(|err| {
         BridgeError::new(
             "lessons-invalid",
             format!("bundled lessons cannot be parsed: {err}"),
         )
-    })
+    })?;
+    let mut romanized: Vec<Lesson> =
+        serde_json::from_str(NE_ROMANIZED).map_err(|err| {
+            BridgeError::new(
+                "lessons-invalid",
+                format!("bundled romanized lessons cannot be parsed: {err}"),
+            )
+        })?;
+    lessons.append(&mut romanized);
+    Ok(lessons)
 }
 
 /// Load all lessons, or only one layout when given.
@@ -56,9 +68,21 @@ mod tests {
         ids.sort_unstable();
         ids.dedup();
         assert_eq!(ids.len(), lessons.len());
-        let mut orders: Vec<u32> = lessons.iter().map(|l| l.order).collect();
-        orders.sort_unstable();
-        orders.dedup();
-        assert_eq!(orders.len(), lessons.len());
+        // Order is unique per layout (spec 0005 invariant), not globally.
+        let mut per_layout: std::collections::HashMap<String, Vec<u32>> =
+            std::collections::HashMap::new();
+        for lesson in &lessons {
+            per_layout
+                .entry(format!("{:?}", lesson.layout))
+                .or_default()
+                .push(lesson.order);
+        }
+        assert!(per_layout.len() >= 2);
+        for orders in per_layout.values() {
+            let mut sorted = orders.clone();
+            sorted.sort_unstable();
+            sorted.dedup();
+            assert_eq!(sorted.len(), orders.len());
+        }
     }
 }

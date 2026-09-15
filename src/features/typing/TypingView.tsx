@@ -6,6 +6,7 @@ import { promptFontSize } from "../../styles/tokens";
 import type { StringKey } from "../../i18n/keys";
 import { Button } from "../../components/Button";
 import { useTypingSession } from "./useTypingSession";
+import { useRomanizedSession, useSequenceHint } from "./useRomanizedSession";
 import { VirtualKeyboard } from "./VirtualKeyboard";
 import type { NewAttempt } from "../../domain/datastore";
 
@@ -24,7 +25,16 @@ export function TypingView({
   onDone: (attempt: NewAttempt, durationMs: number, startedIso: string) => void;
   onBack: () => void;
 }) {
-  const session = useTypingSession(lesson.prompt, fingerGuidance);
+  const english = useTypingSession(
+    lesson.layout === "romanized" ? "" : lesson.prompt,
+    fingerGuidance,
+  );
+  const roman = useRomanizedSession(
+    lesson.layout === "romanized" ? lesson.prompt : "",
+    fingerGuidance,
+  );
+  const session = lesson.layout === "romanized" ? roman : english;
+  const sequence = useSequenceHint(lesson.prompt, session.typed);
   const startedIso = useRef(new Date().toISOString());
   const startMs = useRef(Date.now());
   const saved = useRef(false);
@@ -91,6 +101,11 @@ export function TypingView({
         <span>
           {text("typing.accuracy")}: {session.accuracy}%
         </span>
+        {lesson.layout === "romanized" && sequence !== "" && (
+          <span>
+            {text("typing.sequence")}: {sequence}
+          </span>
+        )}
       </div>
       <VirtualKeyboard
         lit={session.hint}

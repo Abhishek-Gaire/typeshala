@@ -1,6 +1,12 @@
 /** UI settings state wired to the saved settings port (spec 0003). */
 import { useCallback, useEffect, useState } from "react";
-import { defaultSettings, type Settings, type Theme, type UiLanguage } from "../domain/datastore";
+import {
+  defaultSettings,
+  type LayoutId,
+  type Settings,
+  type Theme,
+  type UiLanguage,
+} from "../domain/datastore";
 import { getSettings, saveSettings } from "../infrastructure/tauriApi";
 import type { StringKey } from "../i18n/keys";
 import { t } from "../i18n/keys";
@@ -17,6 +23,7 @@ function toPx(size: PromptSize): number {
 export interface UiSettingsApi {
   theme: Theme;
   locale: UiLanguage;
+  layout: LayoutId;
   promptSize: PromptSize;
   promptPx: number;
   loaded: boolean;
@@ -24,6 +31,7 @@ export interface UiSettingsApi {
   text: (key: StringKey) => string;
   setTheme: (theme: Theme) => void;
   setLocale: (locale: UiLanguage) => void;
+  setLayout: (layout: LayoutId) => void;
   setPromptSize: (size: PromptSize) => void;
 }
 
@@ -66,6 +74,7 @@ export function useUiSettings(): UiSettingsApi {
   return {
     theme: settings.theme,
     locale,
+    layout: settings.layout,
     promptSize,
     promptPx: settings.promptSize,
     loaded,
@@ -76,6 +85,9 @@ export function useUiSettings(): UiSettingsApi {
     },
     setLocale: (uiLanguage) => {
       patch({ uiLanguage });
+    },
+    setLayout: (layout) => {
+      patch({ layout });
     },
     setPromptSize: (size) => {
       patch({ promptSize: toPx(size) });

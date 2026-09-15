@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ne-vowels",
+    "layout": "romanized",
+    "title": "स्वरहरू",
+    "prompt": "अ आ इ ई उ ऊ ए ऐ ओ औ अ आ इ",
+    "order": 1,
+    "level": "vowels"
+  },
+  {
+    "id": "ne-cons-a",
+    "layout": "romanized",
+    "title": "व्यञ्जन १",
+    "prompt": "क ख ग घ च छ ज झ ट ठ ड ढ",
+    "order": 2,
+    "level": "consonants"
+  },
+  {
+    "id": "ne-cons-b",
+    "layout": "romanized",
+    "title": "व्यञ्जन २",
+    "prompt": "त थ द ध न प फ ब भ म य र ल व श स ह",
+    "order": 3,
+    "level": "consonants"
+  },
+  {
+    "id": "ne-words",
+    "layout": "romanized",
+    "title": "शब्दहरू",
+    "prompt": "कमल गगन नयन पवन सरल",
+    "order": 4,
+    "level": "words"
+  },
+  {
+    "id": "ne-phrases",
+    "layout": "romanized",
+    "title": "वाक्यांश",
+    "prompt": "नयन कमल पवन गगन मगन नमन",
+    "order": 5,
+    "level": "phrases"
+  }
+]

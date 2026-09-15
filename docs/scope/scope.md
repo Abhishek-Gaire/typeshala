@@ -15,9 +15,9 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 2 | Coding standards and tooling | Foundation | done |
 | 3 | Data model local store | Foundation | done |
 | 4 | Design system and bilingual UI foundation | Foundation | done |
-| 5 | Smallest usable English tutor | Release 1 | in-progress |
-| 6 | Structured lessons and progression | Release 2 | in-progress |
-| 7 | Nepali Romanized layout | Release 3 | planned |
+| 5 | Smallest usable English tutor | Release 1 | done |
+| 6 | Structured lessons and progression | Release 2 | done |
+| 7 | Nepali Romanized layout | Release 3 | in-progress |
 | 8 | Nepali Traditional Preeti layout | Release 3 | planned |
 | 9 | Progress trends and stats screen | Release 4 | planned |
 | 10 | Settings language and themes | Release 4 | planned |
@@ -65,7 +65,7 @@ Spec [0003](../specs/0003-design-system-bilingual-ui.md) · code in `src/styles/
 
 ## Release 1: smallest usable whole
 
-### 5. Smallest usable English tutor · in-progress · Beta
+### 5. Smallest usable English tutor · done · Beta
 Type one English lesson against a prompt with live WPM and accuracy, virtual keyboard plus finger guidance, and result saved locally. This is the thin usable whole you could use tomorrow.
 **Done when:** you can pick a lesson, type it, see live score, see next key lit, and find your result after restart.
 - [x] Design it (spec): `/architect smallest usable English tutor`
@@ -80,7 +80,7 @@ Spec [0004](../specs/0004-smallest-usable-english-tutor.md) · code in `src/doma
 
 ## Release 2: grow with structure
 
-### 6. Structured lessons and progression · in-progress
+### 6. Structured lessons and progression · done
 Grow the tutor with ordered lessons per row, words, sentences, best scores, and unlock rules so learning builds step by step.
 **Done when:** learners move through lessons in order, see best scores, and unlock next steps by clear rules.
 - [x] Design it (spec): `/architect structured lessons and progression`
@@ -93,10 +93,18 @@ Spec [0005](../specs/0005-structured-lessons-and-progression.md) · code in `src
 
 ## Release 3: Nepali layouts
 
-### 7. Nepali Romanized layout
+### 7. Nepali Romanized layout · in-progress
 Add Romanized Unicode typing on the same engine and keyboard so Nepali learners can start with familiar keys.
 **Done when:** you can switch to Romanized, type Nepali prompts, and save results like English.
-- [ ] Build it: `/develop Nepali Romanized layout`
+- [x] Design it (spec): `/architect Nepali Romanized layout`
+- [x] Build it: `/develop Nepali Romanized layout`
+  - [x] Bundled map plus Devanagari lessons with no conjuncts (AC-1, AC-5)
+  - [x] Domain romanize step with pending state plus scoring reuse (AC-2, AC-5)
+  - [x] Picker plus settings layout switch with bests plus unlocks (AC-1, AC-4)
+  - [x] Typing view with lit key plus sequence hint plus save plus result (AC-2, AC-3, AC-4)
+  - [x] Empty plus error states with retry in active language (AC-6)
+- [x] Verify it: `/check verify Nepali Romanized layout`
+Spec [0006](../specs/0006-nepali-romanized-layout.md) · code in `src/domain/romanize.ts`, `src/features/typing/useRomanizedSession.ts`, `src/data/lessons/ne-romanized.json`, `src-tauri/src/commands/lessons.rs`, `src/App.tsx`
 
 ### 8. Nepali Traditional Preeti layout · needs a decision · Beta
 Add Preeti key mapping over open Unicode Devanagari with conjunct and matra handling so traditional typists learn true sequences.
