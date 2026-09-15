@@ -29,14 +29,16 @@ export default function App() {
   const [saveError, setSaveError] = useState<string | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
 
+  const layout = ui.layout === "romanized" ? "romanized" : "qwerty";
+
   const load = useCallback(async () => {
     setState("loading");
     try {
-      const items = (await loadLessons("qwerty")).filter((l) => l.layout === "qwerty");
+      const items = (await loadLessons(layout)).filter((l) => l.layout === layout);
       setLessons(items);
       let attempts: Attempt[] = [];
       try {
-        const progress = await getProgress({ layout: "qwerty" });
+        const progress = await getProgress({ layout });
         attempts = progress.attempts;
       } catch {
         /* corrupt or missing progress falls back to first open only (spec 0005 AC-6) */
@@ -46,7 +48,7 @@ export default function App() {
     } catch {
       setState("error");
     }
-  }, []);
+  }, [layout]);
 
   useEffect(() => {
     void load();
@@ -83,8 +85,7 @@ export default function App() {
     );
   }
 
-  const next =
-    view.name === "result" ? selectNextLesson(lessons, view.lesson.id) : null;
+  const next = view.name === "result" ? selectNextLesson(lessons, view.lesson.id) : null;
 
   return (
     <LayoutShell text={ui.text}>
@@ -126,7 +127,33 @@ export default function App() {
       {(state === "ready" || view.name !== "picker") && (
         <>
           {view.name === "picker" && state === "ready" && (
-            <LessonPicker rows={rows} text={ui.text} onPick={pickLesson} />
+            <>
+              <div
+                className="mb-4 flex items-center gap-2"
+                role="group"
+                aria-label={ui.text("lesson.layout")}
+              >
+                <Button
+                  variant={layout === "qwerty" ? "primary" : "quiet"}
+                  onClick={() => {
+                    ui.setLayout("qwerty");
+                    setReloadKey((k) => k + 1);
+                  }}
+                >
+                  {ui.text("layout.english")}
+                </Button>
+                <Button
+                  variant={layout === "romanized" ? "primary" : "quiet"}
+                  onClick={() => {
+                    ui.setLayout("romanized");
+                    setReloadKey((k) => k + 1);
+                  }}
+                >
+                  {ui.text("layout.romanized")}
+                </Button>
+              </div>
+              <LessonPicker rows={rows} text={ui.text} onPick={pickLesson} />
+            </>
           )}
           {view.name === "typing" && (
             <TypingView

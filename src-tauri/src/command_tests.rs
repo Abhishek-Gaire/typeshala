@@ -53,8 +53,12 @@ mod e2e {
 
         // Lessons: bundled content loads ordered, bad id errors (AC-2).
         let all = lessons::load_lessons(app.clone(), None).expect("lessons load");
-        assert_eq!(all.len(), 3);
+        assert!(all.len() >= 8);
         assert!(all.windows(2).all(|w| w[0].order <= w[1].order));
+        let romanized =
+            lessons::load_lessons(app.clone(), Some(LayoutId::Romanized)).expect("romanized load");
+        assert_eq!(romanized.len(), 5);
+        assert!(romanized.iter().all(|l| l.layout == LayoutId::Romanized));
         let one = lessons::get_lesson(app.clone(), "en-home".to_string()).expect("one lesson");
         assert!(!one.prompt.is_empty());
         assert!(lessons::get_lesson(app.clone(), "nope".to_string()).is_err());
