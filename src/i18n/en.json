@@ -51,5 +51,16 @@
   "progress.all": "All",
   "progress.done": "Lessons done",
   "progress.bests": "Per lesson bests",
-  "progress.emptyHint": "Type a lesson to see your trends here."
+  "progress.emptyHint": "Type a lesson to see your trends here.",
+  "nav.game": "Game",
+  "game.start": "Start game",
+  "game.pause": "Pause",
+  "game.resume": "Resume",
+  "game.restart": "Restart",
+  "game.quit": "Quit",
+  "game.score": "Score",
+  "game.lives": "Lives",
+  "game.level": "Level",
+  "game.over": "Game over",
+  "game.best": "Best run"
 }

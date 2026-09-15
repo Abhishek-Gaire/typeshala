@@ -20,8 +20,8 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 7   | Nepali Romanized layout                   | Release 3  | done    |
 | 8   | Nepali Traditional Preeti layout          | Release 3  | done    |
 | 9   | Progress trends and stats screen          | Release 4  | done    |
-| 10  | Settings language and themes              | Release 4  | planned |
-| 11  | Bonus Ramayana game                       | Release 5  | planned |
+| 10  | Settings language and themes              | Release 4  | done    |
+| 11  | Bonus Ramayana game                       | Release 5  | done    |
 | 12  | Polish and packaging three systems        | Release 6  | planned |
 
 ## Foundations
@@ -150,21 +150,29 @@ Show WPM trend, accuracy trend, and lessons done from saved results so learning 
   - [x] Nav plus loading plus empty plus error states
 - [x] Verify it: `/check verify progress trends and stats screen` (build green, 150 tests green, bundle proof)
 
-### 10. Settings language and themes
+### 10. Settings language and themes · done
 
 Let you pick layout, UI language, theme, sound, and prompt size with all choices saved on device.
 **Done when:** you can change each setting, restart, and find it kept, in English or Nepali UI.
 
-- [ ] Build it: `/develop settings language and themes`
+- [x] Build it: `/develop settings language and themes`
+      Spec [0009](../specs/0009-settings-language-and-themes.md) · code in `src/features/settings/SettingsView.tsx`, `src/hooks/useUiSettings.ts`
 
 ## Release 5: fun plus parity
 
-### 11. Bonus Ramayana game · needs a decision
+### 11. Bonus Ramayana game · done
 
 Add a separate Ramayana themed typing game with falling words to type in time, built from own code and openly licensed art.
 **Done when:** you can start the game, type falling words to clear them, and see score, with no effect on lessons.
 
-- [ ] Design it (spec): `/architect bonus Ramayana game`
+- [x] Design it (spec): `/architect bonus Ramayana game`
+      Spec [0010](../specs/0010-bonus-ramayana-game/index.md)
+- [x] Build it: `/develop bonus Ramayana game`
+  - [x] Domain game state plus spawn plus tick plus typing match from bundled vocab
+  - [x] Game view with falling words plus live score plus lives plus level on tokens
+  - [x] Start plus pause plus restart plus quit plus end screen, lesson store untouched
+  - [x] Nav entry plus empty plus error states in active language with keyboard focus
+      Code in `src/domain/game.ts`, `src/features/game/GameView.tsx`, `src/App.tsx`
 
 ## Release 6: ship it
 
