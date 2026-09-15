@@ -88,7 +88,7 @@ export function defaultSettings(): Settings {
     layout: "qwerty",
     theme: "system",
     sound: true,
-    promptSize: 22,
+    promptSize: 28,
     uiLanguage: "en",
     fingerGuidance: true,
   };
