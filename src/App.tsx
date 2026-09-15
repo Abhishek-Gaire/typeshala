@@ -9,6 +9,7 @@ import { TypingView } from "./features/typing/TypingView";
 import { ResultView } from "./features/results/ResultView";
 import { ProgressView } from "./features/progress/ProgressView";
 import { SettingsView } from "./features/settings/SettingsView";
+import { GameView } from "./features/game/GameView";
 import { isStringKey } from "./i18n/keys";
 import type { LayoutId } from "./domain/datastore";
 import { getProgress, loadLessons, saveResult } from "./infrastructure/tauriApi";
@@ -23,6 +24,7 @@ type View =
   | { name: "picker" }
   | { name: "progress" }
   | { name: "settings" }
+  | { name: "game" }
   | { name: "typing"; lesson: Lesson }
   | { name: "result"; lesson: Lesson; attempt: Attempt };
 
@@ -36,6 +38,8 @@ export default function App() {
   const [reloadKey, setReloadKey] = useState(0);
   const [allAttempts, setAllAttempts] = useState<Attempt[]>([]);
   const [progressFilter, setProgressFilter] = useState<LayoutId | null>(null);
+  const [gamePrompts, setGamePrompts] = useState<string[]>([]);
+  const [gameLoading, setGameLoading] = useState(false);
 
   const layout = ui.layout;
 
@@ -62,6 +66,25 @@ export default function App() {
   useEffect(() => {
     void load();
   }, [load, reloadKey]);
+
+  useEffect(() => {
+    if (view.name !== "game") return;
+    setGameLoading(true);
+    void loadLessons()
+      .then((items) => {
+        setGamePrompts(
+          items
+            .filter((l) => l.layout === "qwerty" || l.layout === "romanized")
+            .map((l) => l.prompt),
+        );
+      })
+      .catch(() => {
+        setGamePrompts([]);
+      })
+      .finally(() => {
+        setGameLoading(false);
+      });
+  }, [view.name]);
 
   async function handleDone(attempt: NewAttempt) {
     setSaveError(null);
@@ -128,7 +151,27 @@ export default function App() {
         >
           {ui.text("nav.settings")}
         </Button>
+        <Button
+          variant={view.name === "game" ? "primary" : "quiet"}
+          onClick={() => {
+            setView({ name: "game" });
+          }}
+        >
+          {ui.text("nav.game")}
+        </Button>
       </div>
+      {view.name === "game" &&
+        (gameLoading ? (
+          <StateView kind="loading" text={ui.text} />
+        ) : (
+          <GameView
+            prompts={gamePrompts}
+            text={ui.text}
+            onQuit={() => {
+              setView({ name: "picker" });
+            }}
+          />
+        ))}
       {view.name === "settings" && (
         <SettingsView
           theme={ui.theme}

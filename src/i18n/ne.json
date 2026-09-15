@@ -51,5 +51,16 @@
   "progress.all": "सबै",
   "progress.done": "पूरा पाठ",
   "progress.bests": "पाठ अनुसार उत्कृष्ट",
-  "progress.emptyHint": "प्रवृत्ति हेर्न एउटा पाठ टाइप गर्नुहोस्।"
+  "progress.emptyHint": "प्रवृत्ति हेर्न एउटा पाठ टाइप गर्नुहोस्।",
+  "nav.game": "खेल",
+  "game.start": "खेल सुरु गर्नुहोस्",
+  "game.pause": "रोक्नुहोस्",
+  "game.resume": "जारी राख्नुहोस्",
+  "game.restart": "पुनः सुरु",
+  "game.quit": "छोड्नुहोस्",
+  "game.score": "अंक",
+  "game.lives": "जीवन",
+  "game.level": "स्तर",
+  "game.over": "खेल सकियो",
+  "game.best": "उत्कृष्ट प्रयास"
 }
