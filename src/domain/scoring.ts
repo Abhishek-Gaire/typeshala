@@ -23,6 +23,12 @@ export function newSession(): TypingSession {
 /**
  * Words per minute: correct chars divided by 5 divided by minutes elapsed.
  * Returns 0 when time has not passed yet.
+ *
+ * Unit note for the Traditional layout (spec 0007): callers pass
+ * completed Devanagari units (single chars, matra marks, conjunct
+ * clusters) as `correctChars`, so WPM there counts units per minute
+ * by design and runs lower than char based layouts. The math below
+ * stays shared on purpose; only the counted unit differs.
  */
 export function calcWpm(correctChars: number, durationMs: number): number {
   if (durationMs <= 0 || correctChars <= 0) return 0;

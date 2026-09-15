@@ -1,5 +1,9 @@
-/** TypingView romanized branch tests (spec 0006, AC-2, AC-3). */
-import { describe, expect, it, vi } from "vitest";
+/** TypingView romanized branch tests (spec 0006, AC-2, AC-3) plus traditional branch (spec 0007). */ import {
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TypingView } from "./TypingView";
@@ -14,6 +18,10 @@ function romanLesson(prompt = "ए"): Lesson {
 
 function englishLesson(): Lesson {
   return { id: "en-test", layout: "qwerty", title: "English test", prompt: "a", order: 1 };
+}
+
+function traditionalLesson(prompt = "क्ष"): Lesson {
+  return { id: "nt-test", layout: "traditional", title: "Traditional test", prompt, order: 1 };
 }
 
 describe("TypingView romanized", () => {
@@ -99,5 +107,52 @@ describe("TypingView romanized", () => {
       />,
     );
     expect(screen.getByRole("status").textContent).not.toContain("typing.sequence");
+  });
+});
+
+describe("TypingView traditional", () => {
+  it("shows the conjunct as one unit plus full sequence hint plus lit key (covers AC-2, AC-3)", () => {
+    render(
+      <TypingView
+        lesson={traditionalLesson()}
+        size="standard"
+        fingerGuidance
+        text={text}
+        onDone={() => {}}
+        onBack={() => {}}
+      />,
+    );
+    expect(screen.getByText("क्ष")).toBeInTheDocument();
+    const status = screen.getByRole("status");
+    expect(status.textContent).toContain("typing.sequence");
+    expect(status.textContent).toContain("]kS");
+    const lit = screen.getByText("]");
+    expect(lit).toHaveAttribute("aria-current", "true");
+  });
+
+  it("types a full prompt by keyboard and saves once with unit errors (covers AC-2, AC-4)", async () => {
+    const user = userEvent.setup();
+    const onDone = vi.fn<(attempt: NewAttempt) => void>();
+    render(
+      <TypingView
+        lesson={traditionalLesson("क")}
+        size="standard"
+        fingerGuidance
+        text={text}
+        onDone={onDone}
+        onBack={() => {}}
+      />,
+    );
+    const box = screen.getByRole("textbox", { name: "Traditional test" });
+    await user.click(box);
+    await user.keyboard("k");
+    await waitFor(() => {
+      expect(onDone).toHaveBeenCalledTimes(1);
+    });
+    const attempt = onDone.mock.calls[0][0];
+    expect(attempt.lessonId).toBe("nt-test");
+    expect(attempt.layout).toBe("traditional");
+    expect(attempt.completed).toBe(true);
+    expect(attempt.errors).toEqual([]);
   });
 });

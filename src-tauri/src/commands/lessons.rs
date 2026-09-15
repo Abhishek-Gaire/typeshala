@@ -14,6 +14,9 @@ const EN_QWERTY: &str = include_str!("../../../src/data/lessons/en-qwerty.json")
 /// Bundled Nepali Romanized lessons, embedded at compile time (spec 0006).
 const NE_ROMANIZED: &str = include_str!("../../../src/data/lessons/ne-romanized.json");
 
+/// Bundled Nepali Traditional lessons, embedded at compile time (spec 0007).
+const NE_TRADITIONAL: &str = include_str!("../../../src/data/lessons/ne-traditional.json");
+
 /// Parse the bundled lessons once per call. The files are tiny.
 pub(crate) fn bundled() -> Result<Vec<Lesson>, BridgeError> {
     let mut lessons: Vec<Lesson> = serde_json::from_str(EN_QWERTY).map_err(|err| {
@@ -30,6 +33,14 @@ pub(crate) fn bundled() -> Result<Vec<Lesson>, BridgeError> {
             )
         })?;
     lessons.append(&mut romanized);
+    let mut traditional: Vec<Lesson> =
+        serde_json::from_str(NE_TRADITIONAL).map_err(|err| {
+            BridgeError::new(
+                "lessons-invalid",
+                format!("bundled traditional lessons cannot be parsed: {err}"),
+            )
+        })?;
+    lessons.append(&mut traditional);
     Ok(lessons)
 }
 

@@ -29,7 +29,7 @@ export default function App() {
   const [saveError, setSaveError] = useState<string | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
 
-  const layout = ui.layout === "romanized" ? "romanized" : "qwerty";
+  const layout = ui.layout;
 
   const load = useCallback(async () => {
     setState("loading");
@@ -150,6 +150,15 @@ export default function App() {
                   }}
                 >
                   {ui.text("layout.romanized")}
+                </Button>
+                <Button
+                  variant={layout === "traditional" ? "primary" : "quiet"}
+                  onClick={() => {
+                    ui.setLayout("traditional");
+                    setReloadKey((k) => k + 1);
+                  }}
+                >
+                  {ui.text("layout.traditional")}
                 </Button>
               </div>
               <LessonPicker rows={rows} text={ui.text} onPick={pickLesson} />
