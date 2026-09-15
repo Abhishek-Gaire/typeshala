@@ -36,5 +36,9 @@
   "result.lessons": "All lessons",
   "error.lessonsMissing": "No lessons found. Check the bundled lessons and retry.",
   "error.saveFailed": "Could not save your result. You can retry.",
-  "error.loadFailed": "Could not load progress. Showing this run only."
+  "error.loadFailed": "Could not load progress. Showing this run only.",
+  "progress.all": "All",
+  "progress.done": "Lessons done",
+  "progress.bests": "Per lesson bests",
+  "progress.emptyHint": "Type a lesson to see your trends here."
 }
