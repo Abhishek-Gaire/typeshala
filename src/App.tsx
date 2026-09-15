@@ -7,6 +7,8 @@ import { useUiSettings } from "./hooks/useUiSettings";
 import { LessonPicker } from "./features/lessons/LessonPicker";
 import { TypingView } from "./features/typing/TypingView";
 import { ResultView } from "./features/results/ResultView";
+import { ProgressView } from "./features/progress/ProgressView";
+import type { LayoutId } from "./domain/datastore";
 import { getProgress, loadLessons, saveResult } from "./infrastructure/tauriApi";
 import type { Attempt, Lesson, NewAttempt } from "./domain/datastore";
 import {
@@ -17,6 +19,7 @@ import {
 
 type View =
   | { name: "picker" }
+  | { name: "progress" }
   | { name: "typing"; lesson: Lesson }
   | { name: "result"; lesson: Lesson; attempt: Attempt };
 
@@ -28,6 +31,8 @@ export default function App() {
   const [state, setState] = useState<"loading" | "ready" | "error" | "empty">("loading");
   const [saveError, setSaveError] = useState<string | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
+  const [allAttempts, setAllAttempts] = useState<Attempt[]>([]);
+  const [progressFilter, setProgressFilter] = useState<LayoutId | null>(null);
 
   const layout = ui.layout;
 
@@ -44,6 +49,7 @@ export default function App() {
         /* corrupt or missing progress falls back to first open only (spec 0005 AC-6) */
       }
       setRows(selectLessonsWithProgress(items, attempts));
+      setAllAttempts(attempts);
       setState(items.length === 0 ? "empty" : "ready");
     } catch {
       setState("error");
@@ -93,6 +99,33 @@ export default function App() {
         <p role="status" className="mb-4 text-sm">
           {ui.notice}
         </p>
+      )}
+      <div className="mb-6 flex gap-2" role="navigation" aria-label="Main">
+        <Button
+          variant={view.name === "picker" ? "primary" : "quiet"}
+          onClick={() => {
+            setView({ name: "picker" });
+          }}
+        >
+          {ui.text("nav.lessons")}
+        </Button>
+        <Button
+          variant={view.name === "progress" ? "primary" : "quiet"}
+          onClick={() => {
+            setView({ name: "progress" });
+          }}
+        >
+          {ui.text("nav.progress")}
+        </Button>
+      </div>
+      {view.name === "progress" && (
+        <ProgressView
+          attempts={allAttempts}
+          lessons={lessons}
+          filter={progressFilter}
+          onFilter={setProgressFilter}
+          text={ui.text}
+        />
       )}
       {saveError !== null && view.name === "result" && (
         <p role="alert" className="mb-4 text-sm">

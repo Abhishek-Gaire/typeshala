@@ -19,7 +19,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 6   | Structured lessons and progression        | Release 2  | done    |
 | 7   | Nepali Romanized layout                   | Release 3  | done    |
 | 8   | Nepali Traditional Preeti layout          | Release 3  | done    |
-| 9   | Progress trends and stats screen          | Release 4  | planned |
+| 9   | Progress trends and stats screen          | Release 4  | done    |
 | 10  | Settings language and themes              | Release 4  | planned |
 | 11  | Bonus Ramayana game                       | Release 5  | planned |
 | 12  | Polish and packaging three systems        | Release 6  | planned |
@@ -136,12 +136,19 @@ Add Preeti key mapping over open Unicode Devanagari with conjunct and matra hand
 
 ## Release 4: progress and settings
 
-### 9. Progress trends and stats screen
+### 9. Progress trends and stats screen · done
 
 Show WPM trend, accuracy trend, and lessons done from saved results so learning gain stays visible.
 **Done when:** you can open progress and read trends over time plus per lesson bests.
 
-- [ ] Build it: `/develop progress trends and stats screen`
+- [x] Design it (spec): `/architect progress trends and stats screen`
+      Spec [0008](../specs/0008-progress-trends-and-stats-screen.md)
+- [x] Build it: `/develop progress trends and stats screen`
+      Spec [0008](../specs/0008-progress-trends-and-stats-screen.md) · code in `src/domain/progress.ts`, `src/features/progress/ProgressView.tsx`, `src/App.tsx`
+  - [x] Progress selectors plus trend points plus lessons done
+  - [x] Progress view plus layout filter
+  - [x] Nav plus loading plus empty plus error states
+- [x] Verify it: `/check verify progress trends and stats screen` (build green, 150 tests green, bundle proof)
 
 ### 10. Settings language and themes
 
