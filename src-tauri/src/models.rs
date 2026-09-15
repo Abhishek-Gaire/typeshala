@@ -180,7 +180,7 @@ pub fn default_settings() -> Settings {
         layout: LayoutId::Qwerty,
         theme: Theme::System,
         sound: true,
-        prompt_size: 22,
+        prompt_size: 28,
         ui_language: UiLanguage::En,
         finger_guidance: true,
     }

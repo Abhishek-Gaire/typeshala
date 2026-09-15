@@ -8,6 +8,8 @@ import { LessonPicker } from "./features/lessons/LessonPicker";
 import { TypingView } from "./features/typing/TypingView";
 import { ResultView } from "./features/results/ResultView";
 import { ProgressView } from "./features/progress/ProgressView";
+import { SettingsView } from "./features/settings/SettingsView";
+import { isStringKey } from "./i18n/keys";
 import type { LayoutId } from "./domain/datastore";
 import { getProgress, loadLessons, saveResult } from "./infrastructure/tauriApi";
 import type { Attempt, Lesson, NewAttempt } from "./domain/datastore";
@@ -20,6 +22,7 @@ import {
 type View =
   | { name: "picker" }
   | { name: "progress" }
+  | { name: "settings" }
   | { name: "typing"; lesson: Lesson }
   | { name: "result"; lesson: Lesson; attempt: Attempt };
 
@@ -97,7 +100,7 @@ export default function App() {
     <LayoutShell text={ui.text}>
       {ui.notice && (
         <p role="status" className="mb-4 text-sm">
-          {ui.notice}
+          {isStringKey(ui.notice) ? ui.text(ui.notice) : ui.notice}
         </p>
       )}
       <div className="mb-6 flex gap-2" role="navigation" aria-label="Main">
@@ -117,7 +120,41 @@ export default function App() {
         >
           {ui.text("nav.progress")}
         </Button>
+        <Button
+          variant={view.name === "settings" ? "primary" : "quiet"}
+          onClick={() => {
+            setView({ name: "settings" });
+          }}
+        >
+          {ui.text("nav.settings")}
+        </Button>
       </div>
+      {view.name === "settings" && (
+        <SettingsView
+          theme={ui.theme}
+          locale={ui.locale}
+          layout={ui.layout}
+          sound={ui.sound}
+          promptSize={ui.promptSize}
+          text={ui.text}
+          onTheme={(t) => {
+            ui.setTheme(t);
+          }}
+          onLocale={(l) => {
+            ui.setLocale(l);
+          }}
+          onLayout={(l) => {
+            ui.setLayout(l);
+            setReloadKey((k) => k + 1);
+          }}
+          onSound={(s) => {
+            ui.setSound(s);
+          }}
+          onPromptSize={(s) => {
+            ui.setPromptSize(s);
+          }}
+        />
+      )}
       {view.name === "progress" && (
         <ProgressView
           attempts={allAttempts}
