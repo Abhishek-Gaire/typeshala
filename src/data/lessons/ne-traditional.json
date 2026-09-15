@@ -1,0 +1,42 @@
+[
+  {
+    "id": "nt-vowels",
+    "layout": "traditional",
+    "title": "स्वरहरू",
+    "prompt": "अ आ इ ई उ ऊ ए ऐ ओ औ",
+    "order": 1,
+    "level": "simple"
+  },
+  {
+    "id": "nt-cons-a",
+    "layout": "traditional",
+    "title": "व्यञ्जन १",
+    "prompt": "क ख ग घ ङ च छ ज झ ञ",
+    "order": 2,
+    "level": "simple"
+  },
+  {
+    "id": "nt-cons-b",
+    "layout": "traditional",
+    "title": "व्यञ्जन २",
+    "prompt": "ट ठ ड ढ ण त थ द ध न",
+    "order": 3,
+    "level": "simple"
+  },
+  {
+    "id": "nt-matra",
+    "layout": "traditional",
+    "title": "मात्रा",
+    "prompt": "मामा पानी फूल सुन बिहान मेहनत यो अंश शहर भवन भाषा",
+    "order": 4,
+    "level": "matra"
+  },
+  {
+    "id": "nt-conjunct",
+    "layout": "traditional",
+    "title": "संयुक्ताक्षर",
+    "prompt": "क्षमा ज्ञान श्रम",
+    "order": 5,
+    "level": "conjunct"
+  }
+]

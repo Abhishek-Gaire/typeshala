@@ -6,6 +6,8 @@ import type { NewAttempt } from "../../domain/datastore";
 
 export interface SessionApi {
   typed: string;
+  /** Completed prompt units for unit scored layouts, null for char layouts. */
+  units: string[] | null;
   keystrokes: number;
   errorHits: number;
   done: boolean;
@@ -40,6 +42,7 @@ export function useTypingSession(prompt: string, fingerGuidance: boolean): Sessi
 
   return {
     typed,
+    units: null,
     keystrokes,
     errorHits,
     done,

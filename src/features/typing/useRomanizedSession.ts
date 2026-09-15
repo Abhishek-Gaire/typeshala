@@ -46,6 +46,7 @@ export function useRomanizedSession(prompt: string, fingerGuidance: boolean): Se
 
   return {
     typed: completed,
+    units: null,
     keystrokes,
     errorHits,
     done,

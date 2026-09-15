@@ -27,6 +27,7 @@
   "typing.sequence": "Type",
   "layout.english": "English",
   "layout.romanized": "Nepali Romanized",
+  "layout.traditional": "Nepali Traditional",
   "lesson.layout": "Layout",
   "result.title": "Well done",
   "result.saved": "Result saved on this device",
