@@ -17,7 +17,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 4 | Design system and bilingual UI foundation | Foundation | done |
 | 5 | Smallest usable English tutor | Release 1 | done |
 | 6 | Structured lessons and progression | Release 2 | done |
-| 7 | Nepali Romanized layout | Release 3 | in-progress |
+| 7 | Nepali Romanized layout | Release 3 | done |
 | 8 | Nepali Traditional Preeti layout | Release 3 | planned |
 | 9 | Progress trends and stats screen | Release 4 | planned |
 | 10 | Settings language and themes | Release 4 | planned |
@@ -93,7 +93,7 @@ Spec [0005](../specs/0005-structured-lessons-and-progression.md) · code in `src
 
 ## Release 3: Nepali layouts
 
-### 7. Nepali Romanized layout · in-progress
+### 7. Nepali Romanized layout · done
 Add Romanized Unicode typing on the same engine and keyboard so Nepali learners can start with familiar keys.
 **Done when:** you can switch to Romanized, type Nepali prompts, and save results like English.
 - [x] Design it (spec): `/architect Nepali Romanized layout`

@@ -1,7 +1,7 @@
 # 0006. Nepali Romanized layout
 
 **Date**: 2026-09-15
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 

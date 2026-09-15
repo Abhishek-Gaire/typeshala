@@ -1,7 +1,7 @@
 # 0005. Structured lessons and progression
 
 **Date**: 2026-09-15
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 
