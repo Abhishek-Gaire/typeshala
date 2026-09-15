@@ -16,11 +16,27 @@
     "level": "top-row"
   },
   {
+    "id": "en-bottom",
+    "layout": "qwerty",
+    "title": "Bottom row",
+    "prompt": "zxcv bnm zxcv bnm buzz; maverick; cab; nab",
+    "order": 3,
+    "level": "bottom-row"
+  },
+  {
     "id": "en-words",
     "layout": "qwerty",
     "title": "Common words",
     "prompt": "the quick brown fox jumps over the lazy dog and runs back home again",
-    "order": 3,
+    "order": 4,
     "level": "words"
+  },
+  {
+    "id": "en-sentences",
+    "layout": "qwerty",
+    "title": "Sentences",
+    "prompt": "Pack my box with five dozen liquor jugs. How vexingly quick daft zebras jump.",
+    "order": 5,
+    "level": "sentences"
   }
 ]

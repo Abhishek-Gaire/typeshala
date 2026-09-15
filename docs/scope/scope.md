@@ -16,7 +16,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 3 | Data model local store | Foundation | done |
 | 4 | Design system and bilingual UI foundation | Foundation | done |
 | 5 | Smallest usable English tutor | Release 1 | in-progress |
-| 6 | Structured lessons and progression | Release 2 | planned |
+| 6 | Structured lessons and progression | Release 2 | in-progress |
 | 7 | Nepali Romanized layout | Release 3 | planned |
 | 8 | Nepali Traditional Preeti layout | Release 3 | planned |
 | 9 | Progress trends and stats screen | Release 4 | planned |
@@ -80,10 +80,16 @@ Spec [0004](../specs/0004-smallest-usable-english-tutor.md) · code in `src/doma
 
 ## Release 2: grow with structure
 
-### 6. Structured lessons and progression · needs a decision
+### 6. Structured lessons and progression · in-progress
 Grow the tutor with ordered lessons per row, words, sentences, best scores, and unlock rules so learning builds step by step.
 **Done when:** learners move through lessons in order, see best scores, and unlock next steps by clear rules.
-- [ ] Design it (spec): `/architect structured lessons and progression`
+- [x] Design it (spec): `/architect structured lessons and progression`
+- [x] Build it: `/develop structured lessons and progression`
+  - [x] Ordered lessons plus progression selectors (AC-1, AC-2, AC-3)
+  - [x] Picker groups plus result next button (AC-1, AC-3, AC-4)
+  - [x] Empty plus corrupt fallback (AC-5, AC-6)
+- [x] Verify it: `/check verify structured lessons and progression`
+Spec [0005](../specs/0005-structured-lessons-and-progression.md) · code in `src/domain/progression.ts`, `src/features/lessons/LessonPicker.tsx`, `src/features/results/ResultView.tsx`, `src/App.tsx`
 
 ## Release 3: Nepali layouts
 

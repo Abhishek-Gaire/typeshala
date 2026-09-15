@@ -8,14 +8,18 @@ export function ResultView({
   attempt,
   lastNote,
   text,
+  hasNext,
   onAgain,
   onLessons,
+  onNext,
 }: {
   attempt: Attempt;
   lastNote: string | null;
   text: (key: StringKey) => string;
+  hasNext: boolean;
   onAgain: () => void;
   onLessons: () => void;
+  onNext: () => void;
 }) {
   return (
     <section aria-label="result">
@@ -31,6 +35,7 @@ export function ResultView({
       )}
       <div className="mt-6 flex gap-3">
         <Button onClick={onAgain}>{text("result.again")}</Button>
+        {hasNext && <Button onClick={onNext}>{text("result.next")}</Button>}
         <Button variant="quiet" onClick={onLessons}>
           {text("result.lessons")}
         </Button>
