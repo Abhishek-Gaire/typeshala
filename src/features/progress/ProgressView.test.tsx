@@ -27,7 +27,15 @@ const lessons: Lesson[] = [{ id: "l1", layout: "qwerty", title: "L1", prompt: "h
 
 describe("ProgressView", () => {
   it("shows empty hint when no attempts (AC-4)", () => {
-    render(<ProgressView attempts={[]} lessons={lessons} filter={null} onFilter={() => {}} text={text} />);
+    render(
+      <ProgressView
+        attempts={[]}
+        lessons={lessons}
+        filter={null}
+        onFilter={() => {}}
+        text={text}
+      />,
+    );
     expect(screen.getByRole("status")).toBeInTheDocument();
   });
   it("shows done count plus bests (AC-1 AC-2)", () => {
@@ -45,7 +53,13 @@ describe("ProgressView", () => {
   it("filter buttons call onFilter by keyboard (AC-3 AC-5)", async () => {
     const onFilter = vi.fn();
     render(
-      <ProgressView attempts={[attempt({ lessonId: "l1" })]} lessons={lessons} filter={null} onFilter={onFilter} text={text} />,
+      <ProgressView
+        attempts={[attempt({ lessonId: "l1" })]}
+        lessons={lessons}
+        filter={null}
+        onFilter={onFilter}
+        text={text}
+      />,
     );
     await userEvent.tab();
     await userEvent.keyboard("{Enter}");

@@ -1,11 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  calcAccuracy,
-  calcWpm,
-  countCorrect,
-  deriveFinalErrors,
-  newSession,
-} from "./scoring";
+import { calcAccuracy, calcWpm, countCorrect, deriveFinalErrors, newSession } from "./scoring";
 
 describe("calcWpm", () => {
   it("scores 60 wpm for 300 correct chars in one minute", () => {

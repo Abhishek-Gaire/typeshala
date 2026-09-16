@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  orderLessons,
-  selectLessonsWithProgress,
-  selectNextLesson,
-} from "./progression";
+import { orderLessons, selectLessonsWithProgress, selectNextLesson } from "./progression";
 import type { Attempt, Lesson } from "./datastore";
 
 function lesson(id: string, order: number, level = "words"): Lesson {
@@ -46,18 +42,12 @@ describe("selectLessonsWithProgress", () => {
   });
 
   it("marks done plus unlocks next on completed attempt (covers AC-2)", () => {
-    const rows = selectLessonsWithProgress(
-      [lesson("a", 1), lesson("b", 2)],
-      [attempt("a")],
-    );
+    const rows = selectLessonsWithProgress([lesson("a", 1), lesson("b", 2)], [attempt("a")]);
     expect(rows.map((r) => r.status)).toEqual(["done", "open"]);
   });
 
   it("attaches best from deriveBests keeping highest wpm (covers AC-3)", () => {
-    const rows = selectLessonsWithProgress([lesson("a", 1)], [
-      attempt("a", 10),
-      attempt("a", 25),
-    ]);
+    const rows = selectLessonsWithProgress([lesson("a", 1)], [attempt("a", 10), attempt("a", 25)]);
     expect(rows[0].best?.wpm).toBe(25);
     expect(rows[0].status).toBe("done");
   });

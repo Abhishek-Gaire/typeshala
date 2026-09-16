@@ -43,11 +43,11 @@ export default function App() {
 
   const layout = ui.layout;
 
-const load = useCallback(async () => {
-     setState("loading");
-     try {
-       const items = (await loadLessons(layout)).filter((l) => l.layout === layout);
-       setLessons(items);
+  const load = useCallback(async () => {
+    setState("loading");
+    try {
+      const items = (await loadLessons(layout)).filter((l) => l.layout === layout);
+      setLessons(items);
       let attempts: Attempt[] = [];
       try {
         const progress = await getProgress({ layout });

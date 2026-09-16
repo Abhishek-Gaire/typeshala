@@ -14,10 +14,12 @@ The smallest usable tutor proves one lesson can be typed and saved. Learners now
 ## Requirements
 
 **User stories**:
+
 - As a learner, I want lessons in clear order so that I build skill step by step.
 - As a learner, I want to see best scores and locked state so that I know what is next.
 
 **Acceptance criteria**:
+
 - **AC-1**: Picker lists lessons grouped by stage in fixed order with locked state visible.
 - **AC-2**: First lesson is open at fresh start, later lessons stay locked until prior lesson has one saved attempt with `completed=true`.
 - **AC-3**: Picker shows best WPM and accuracy per finished lesson derived from saved attempts.
@@ -28,31 +30,40 @@ The smallest usable tutor proves one lesson can be typed and saved. Learners now
 ## Options considered
 
 ### Option 1: Finish to unlock with derived bests
+
 Keep bundled lessons plus order fields, derive unlock and bests at read time from saved attempts.
 
 **Pros**:
+
 - Fewest moving parts, no store shape change
 - Bests never go stale
 
 **Cons**:
+
 - Read path computes each time, slower at very large history
 
 ### Option 2: Pass mark to unlock
+
 Next opens only on accuracy at or above a threshold.
 
 **Pros**:
+
 - Stronger quality gate
 
 **Cons**:
+
 - Can frustrate new learners, adds tuning burden
 
 ### Option 3: Saved progress per lesson
+
 Save explicit unlocked and best per lesson in the store.
 
 **Pros**:
+
 - Fast reads
 
 **Cons**:
+
 - Stored derived values can drift from attempts, needs sync logic
 
 ## Decision
@@ -70,6 +81,7 @@ The team chose kindness and simplicity over gating. A pass mark would need tunin
 ## Feature design
 
 **Data model sketch**:
+
 - Lesson (bundled file, keep shape from spec 0002): id (req), layout: LayoutId (req), title (req), prompt (req), order (req, number), level (opt, stage group using shipped kebab casing like `home-row`, `top-row`, `words`, `sentences`)
 - Attempt (reuse shape from spec 0002 verbatim): id, lessonId (FK to Lesson.id), layout, startedAt, durationMs, wpm, accuracy, errors, completed
 - Derived view (not saved, extend existing deriveBests): lessonId, title, bestWpm, bestAccuracy, status (locked or open or done), unlocks when prior lesson in order has an attempt with completed true
@@ -78,22 +90,25 @@ The team chose kindness and simplicity over gating. A pass mark would need tunin
 lesson: locked to open (prior lesson completed) to done (own attempt saved)
 
 **API surface** (pure domain selectors over existing bridge `load_lessons, get_lesson, save_result, get_progress`, no new Tauri commands):
-| Endpoint | Method | Key inputs | Key outputs | Auth | Key errors |
-|---|---|---|---|---|---|
-| selectLessonsWithProgress | read | lessons, attempts | ordered groups, bests, status | local only | empty catalog |
-| selectNextLesson | read | currentLessonId:string (req), lessons, attempts | nextLesson or none | local only | none open |
-| save_result (existing) | write | lessonId, wpm, accuracy, errors, durationMs (req) | saved attempt | local only | invalid lessonId |
+
+| Endpoint                  | Method | Key inputs                                        | Key outputs                   | Auth       | Key errors       |
+| ------------------------- | ------ | ------------------------------------------------- | ----------------------------- | ---------- | ---------------- |
+| selectLessonsWithProgress | read   | lessons, attempts                                 | ordered groups, bests, status | local only | empty catalog    |
+| selectNextLesson          | read   | currentLessonId:string (req), lessons, attempts   | nextLesson or none            | local only | none open        |
+| save_result (existing)    | write  | lessonId, wpm, accuracy, errors, durationMs (req) | saved attempt                 | local only | invalid lessonId |
 
 **Value sourcing**:
-| Action | Value produced / displayed | Source |
-|---|---|---|
-| picker row | title plus stage group and order | Lesson.title plus Lesson.level plus Lesson.order |
-| picker row | best WPM and accuracy | derived via existing deriveBests from Attempt rows for that lessonId (max WPM, accuracy tiebreak) |
-| picker row | locked or open | derived from prior lesson Attempt with completed true |
-| result view | next lesson button target | selectNextLesson from order |
-| empty state | guidance text | bilingual strings bundle |
+
+| Action      | Value produced / displayed       | Source                                                                                            |
+| ----------- | -------------------------------- | ------------------------------------------------------------------------------------------------- |
+| picker row  | title plus stage group and order | Lesson.title plus Lesson.level plus Lesson.order                                                  |
+| picker row  | best WPM and accuracy            | derived via existing deriveBests from Attempt rows for that lessonId (max WPM, accuracy tiebreak) |
+| picker row  | locked or open                   | derived from prior lesson Attempt with completed true                                             |
+| result view | next lesson button target        | selectNextLesson from order                                                                       |
+| empty state | guidance text                    | bilingual strings bundle                                                                          |
 
 **Key invariants**:
+
 - order is unique per layout
 - first order is always open
 - bests derive via deriveBests from attempts, never saved separately
@@ -107,6 +122,7 @@ Local only single learner. All reads and writes on device. No roles, no network,
 Omitted, no new env vars or credentials needed.
 
 **Critical test scenarios**:
+
 - Happy path: finish lesson one, next unlocks with best shown, verifies **AC-2**, **AC-3**
 - Failure case: empty catalog shows friendly empty state, verifies **AC-5**
 - Recovery: corrupt store keeps backup per spec 0002 AC-4 and opens first lesson only, verifies **AC-6**
@@ -122,14 +138,17 @@ Omitted, no new env vars or credentials needed.
 ## Consequences
 
 **Positive**:
+
 - Clear path from rows to sentences
 - Visible gain per lesson
 
 **Negative / tradeoffs**:
+
 - Read time derive cost grows with history, acceptable at this scale
 - No skill gate, fast typists and slow starters share one path
 
 **Neutral**:
+
 - Lesson file shape keeps order plus layout plus title, level gains constrained stage values once
 
 ## Follow-up

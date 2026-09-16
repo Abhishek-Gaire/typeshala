@@ -11,34 +11,40 @@ Lessons build skill step by step while progress shows gain. Learners want a ligh
 React state plus `requestAnimationFrame` (browser tick helper for smooth motion) for fall timing, words drawn as styled divs on tokens, lists derived from bundled lessons, transient game state only.
 
 **Pros**:
-* Smallest bundle with proven UI parts and no new license to vet
-* Lesson truth stays clean by design, no save path to guard
+
+- Smallest bundle with proven UI parts and no new license to vet
+- Lesson truth stays clean by design, no save path to guard
 
 **Cons**:
-* Effects stay simple, no particle rich scenes in this slice
-* Timing needs care to stay fair on slow machines
+
+- Effects stay simple, no particle rich scenes in this slice
+- Timing needs care to stay fair on slow machines
 
 ### Option 2: Canvas engine library
 
 Add a game package for sprites plus particles plus physics.
 
 **Pros**:
-* Rich visuals fast with helper code
+
+- Rich visuals fast with helper code
 
 **Cons**:
-* New dep plus art pipeline for a bonus slice
-* Theming plus bilingual text need extra glue
+
+- New dep plus art pipeline for a bonus slice
+- Theming plus bilingual text need extra glue
 
 ### Option 3: Rust game loop in Tauri core
 
 Run timing plus spawning in Rust with events to React.
 
 **Pros**:
-* Tight timing control in native code
+
+- Tight timing control in native code
 
 **Cons**:
-* Bridge chatter each tick adds failure modes for no learner gain
-* Logic splits across layers against layer rules
+
+- Bridge chatter each tick adds failure modes for no learner gain
+- Logic splits across layers against layer rules
 
 ## Rationale
 

@@ -27,7 +27,13 @@ function props(over: Partial<SettingsViewProps> = {}): SettingsViewProps {
 describe("SettingsView", () => {
   it("renders all five setting groups (AC-1)", () => {
     render(<SettingsView {...props()} />);
-    for (const label of ["settings.layout", "settings.language", "settings.theme", "settings.sound", "settings.promptSize"]) {
+    for (const label of [
+      "settings.layout",
+      "settings.language",
+      "settings.theme",
+      "settings.sound",
+      "settings.promptSize",
+    ]) {
       expect(screen.getByRole("group", { name: label })).toBeInTheDocument();
     }
   });

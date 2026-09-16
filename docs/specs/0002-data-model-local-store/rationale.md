@@ -15,31 +15,37 @@ Typeshala is a fully offline desktop tutor for one learner. Lessons, attempts, s
 One store file for user data plus read only JSON lesson files shipped with the app. Smallest machinery, fully offline.
 
 **Pros**:
-* Least code and no query language to learn
-* Trivial backup as files
+
+- Least code and no query language to learn
+- Trivial backup as files
 
 **Cons**:
-* Trends are computed in TypeScript by scanning arrays, which slows only at very large history
+
+- Trends are computed in TypeScript by scanning arrays, which slows only at very large history
 
 ### Option 2: SQLite from day one
 
 Structured tables for attempts plus settings plus lessons with indexed queries.
 
 **Pros**:
-* Strong queries for trends and per lesson bests at any volume
+
+- Strong queries for trends and per lesson bests at any volume
 
 **Cons**:
-* More Rust plus SQL plus plugin wiring before the first usable tutor
+
+- More Rust plus SQL plus plugin wiring before the first usable tutor
 
 ### Option 3: Frontend browser storage only
 
 Settings and attempts in web storage with no Rust persistence.
 
 **Pros**:
-* No backend code at all
+
+- No backend code at all
 
 **Cons**:
-* Splits the source of truth away from the Rust layer the architecture chose, and complicates packaging plus backup
+
+- Splits the source of truth away from the Rust layer the architecture chose, and complicates packaging plus backup
 
 ## Rationale
 
