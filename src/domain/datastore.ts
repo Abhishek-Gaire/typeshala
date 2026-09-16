@@ -24,6 +24,8 @@ export interface Lesson {
   prompt: string;
   order: number;
   level?: string;
+  category?: string;
+  difficulty?: number;
 }
 
 /** One finished typing attempt. Append only. */

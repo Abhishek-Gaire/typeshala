@@ -37,12 +37,17 @@ describe("useTraditionalSession", () => {
     expect(result.current.typed).toBe("");
   });
 
-  it("counts a committed wrong unit as one hit (covers AC-5)", () => {
+  it("holds the cursor on a wrong key and advances on the right one", () => {
     const { result } = setup("क");
     typeKeys(result.current, ["g", "a"]);
-    expect(result.current.typed).toBe("न");
+    expect(result.current.typed).toBe("");
     expect(result.current.keystrokes).toBe(2);
-    expect(result.current.errorHits).toBe(1);
+    expect(result.current.errorHits).toBe(2);
+    expect(result.current.wrongKey).toBe("a");
+    typeKeys(result.current, ["s"]);
+    expect(result.current.typed).toBe("क");
+    expect(result.current.errorHits).toBe(2);
+    expect(result.current.wrongKey).toBe(null);
   });
 
   it("clears the pending buffer first on backspace (covers AC-5)", () => {

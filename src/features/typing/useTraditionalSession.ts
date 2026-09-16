@@ -18,9 +18,16 @@ interface TraditionalState {
   buffer: string;
   keystrokes: number;
   errorHits: number;
+  wrongKey: string | null;
 }
 
-const FRESH: TraditionalState = { units: [], buffer: "", keystrokes: 0, errorHits: 0 };
+const FRESH: TraditionalState = {
+  units: [],
+  buffer: "",
+  keystrokes: 0,
+  errorHits: 0,
+  wrongKey: null,
+};
 
 /**
  * Track typing against a Devanagari prompt through Preeti sequences.
@@ -35,7 +42,7 @@ export function useTraditionalSession(prompt: string, fingerGuidance: boolean): 
   const startRef = useRef<number | null>(null);
 
   const promptUnits = useMemo(() => splitUnits(prompt), [prompt]);
-  const { units, keystrokes, errorHits } = state;
+  const { units, keystrokes, errorHits, wrongKey } = state;
   const typed = useMemo(() => units.join(""), [units]);
   const done = units.length >= promptUnits.length && promptUnits.length > 0;
   const elapsed = startRef.current === null ? 0 : Date.now() - startRef.current;
@@ -62,6 +69,7 @@ export function useTraditionalSession(prompt: string, fingerGuidance: boolean): 
     units,
     keystrokes,
     errorHits,
+    wrongKey,
     done,
     wpm,
     accuracy,
@@ -72,46 +80,51 @@ export function useTraditionalSession(prompt: string, fingerGuidance: boolean): 
       if (done) return;
       startClock();
       if (char === " ") {
+        // Wrong keys never advance: a space first completes a pending
+        // unit when it matches, then commits itself only when a space
+        // is expected. Otherwise the miss is counted, pending keys are
+        // dropped, cursor holds.
         setState((prev) => {
-          if (promptUnits.length === 0) {
+          const miss = {
+            ...prev,
+            buffer: "",
+            keystrokes: prev.keystrokes + 1,
+            errorHits: prev.errorHits + 1,
+            wrongKey: char,
+          };
+          if (promptUnits.length === 0) return miss;
+          let nextUnits = prev.units;
+          if (prev.buffer !== "") {
+            const flushed = exactCommitPreeti(prev.buffer);
+            if (flushed === null || flushed !== promptUnits[nextUnits.length]) return miss;
+            nextUnits = [...nextUnits, flushed];
+          }
+          if (promptUnits[nextUnits.length] !== " ") {
+            // Space was only the terminator for the pending unit.
             return {
-              ...prev,
+              units: nextUnits.slice(0, promptUnits.length),
               buffer: "",
               keystrokes: prev.keystrokes + 1,
-              errorHits: prev.errorHits + 1,
+              errorHits: prev.errorHits,
+              wrongKey: null,
             };
           }
-          let nextUnits = prev.units;
-          let misses = 0;
-          const flushed = exactCommitPreeti(prev.buffer);
-          if (flushed !== null) {
-            if (flushed !== promptUnits[nextUnits.length]) misses += 1;
-            nextUnits = [...nextUnits, flushed].slice(0, promptUnits.length);
-            if (nextUnits.length >= promptUnits.length) {
-              return {
-                units: nextUnits,
-                buffer: "",
-                keystrokes: prev.keystrokes + 1,
-                errorHits: prev.errorHits + misses,
-              };
-            }
-          }
-          const expected = promptUnits[nextUnits.length];
-          if (expected === " ") {
+          const doneUnits = [...nextUnits, " "].slice(0, promptUnits.length);
+          if (doneUnits.length >= promptUnits.length) {
             return {
-              ...prev,
-              units: [...nextUnits, " "].slice(0, promptUnits.length),
+              units: doneUnits,
               buffer: "",
               keystrokes: prev.keystrokes + 1,
-              errorHits: prev.errorHits + misses,
+              errorHits: prev.errorHits,
+              wrongKey: null,
             };
           }
           return {
             ...prev,
-            units: nextUnits,
+            units: doneUnits,
             buffer: "",
             keystrokes: prev.keystrokes + 1,
-            errorHits: prev.errorHits + misses + 1,
+            wrongKey: null,
           };
         });
         return;
@@ -133,6 +146,17 @@ export function useTraditionalSession(prompt: string, fingerGuidance: boolean): 
         }
         const step = advancePreeti(startBuffer, char);
         const base = baseUnits.length;
+        if (step.commits.length === 0) {
+          // Still pending (for example `k` before it becomes `प`):
+          // hold the keys, no verdict yet.
+          return {
+            units: baseUnits,
+            buffer: step.buffer,
+            keystrokes: prev.keystrokes + 1,
+            errorHits: prev.errorHits,
+            wrongKey: prev.wrongKey,
+          };
+        }
         let misses = 0;
         const kept: string[] = [];
         for (let i = 0; i < step.commits.length; i++) {
@@ -140,6 +164,16 @@ export function useTraditionalSession(prompt: string, fingerGuidance: boolean): 
             if (step.commits[i] !== promptUnits[base + i]) misses++;
             kept.push(step.commits[i]);
           }
+        }
+        if (misses > 0 || step.error) {
+          // Wrong key: count the miss, drop the pending keys, hold.
+          return {
+            units: baseUnits,
+            buffer: "",
+            keystrokes: prev.keystrokes + 1,
+            errorHits: prev.errorHits + misses + (step.error ? 1 : 0),
+            wrongKey: char,
+          };
         }
         let nextUnits = [...baseUnits, ...kept];
         let buffer = step.buffer;
@@ -158,13 +192,16 @@ export function useTraditionalSession(prompt: string, fingerGuidance: boolean): 
           units: nextUnits,
           buffer,
           keystrokes: prev.keystrokes + 1,
-          errorHits: prev.errorHits + misses + (step.error ? 1 : 0),
+          errorHits: prev.errorHits,
+          wrongKey: null,
         };
       });
     },
     backspace() {
       setState((prev) =>
-        prev.buffer !== "" ? { ...prev, buffer: "" } : { ...prev, units: prev.units.slice(0, -1) },
+        prev.buffer !== ""
+          ? { ...prev, buffer: "", wrongKey: null }
+          : { ...prev, units: prev.units.slice(0, -1), wrongKey: null },
       );
     },
     reset() {

@@ -5,6 +5,15 @@ export const colors = {
   surface: "var(--color-surface)",
   ink: "var(--color-ink)",
   muted: "var(--color-muted)",
+  chrome: "var(--color-chrome)",
+  target: "var(--color-target)",
+  typed: "var(--color-typed)",
+  keyFace: "var(--color-keyface)",
+  keyModifier: "var(--color-keymodifier)",
+  keyNext: "var(--color-keynext)",
+  level1: "var(--color-level1)",
+  level2: "var(--color-level2)",
+  level3: "var(--color-level3)",
 } as const;
 
 export const typeScale = {

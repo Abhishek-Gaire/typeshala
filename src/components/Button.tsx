@@ -8,6 +8,6 @@ export function Button({ variant = "primary", ...rest }: Props) {
   const style =
     variant === "primary"
       ? "bg-(--color-brand) text-white hover:opacity-90"
-      : "bg-transparent text-(--color-ink) border border-(--color-muted) hover:opacity-80";
+      : "bg-white text-stone-900 border border-stone-300 hover:bg-stone-100";
   return <button {...rest} className={`${base} ${style} ${rest.className ?? ""}`} />;
 }

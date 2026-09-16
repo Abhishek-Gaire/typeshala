@@ -62,5 +62,20 @@
   "game.lives": "Lives",
   "game.level": "Level",
   "game.over": "Game over",
-  "game.best": "Best run"
+  "game.best": "Best run",
+  "classic.home": "Home",
+  "classic.top": "Top",
+  "classic.bottom": "Bottom",
+  "classic.all": "All",
+  "classic.game": "Game",
+  "classic.free": "Free",
+  "classic.level": "Level",
+  "classic.name": "Name",
+  "classic.avgSpeed": "Avg. speed",
+  "menu.perform": "Perform",
+  "menu.lessons": "Lessons",
+  "menu.options": "Options",
+  "menu.help": "Help",
+  "free.hint": "Type freely. Nothing is saved.",
+  "nav.classic": "Classic"
 }

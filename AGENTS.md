@@ -33,9 +33,9 @@ npm run lint
 npm run format:check
 ```
 
-## Specs
+## Docs
 
-Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md` for short specs, or `docs/specs/NNNN-title/index.md` with `rationale.md` beside it for decided slices.
+Build specs live in `docs/specs/`. Format: `docs/specs/NNNN-title.md` for short specs, or `docs/specs/NNNN-title/index.md` with `rationale.md` beside it for decided slices. Visual guides live in `docs/design/` with plain slugs (for example `docs/design/classic-practice-screens.md`). New screens need both or an explicit note why one is skipped.
 
 ## Rules
 
@@ -56,7 +56,7 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md` for short specs, or 
 
 - Tokens live in `src/styles/tokens.ts`, themes in `src/styles/themes.css`. Use short var classes like `text-(--color-ink)`.
 - Strings live in `src/i18n/en.json` plus `ne.json`, typed keys in `src/i18n/keys.ts`, English fallback always.
-- Shared parts live in `src/components/`, settings hook in `src/hooks/useUiSettings.ts`. Art direction lives in `design.md`.
+- Shared parts live in `src/components/`, settings hook in `src/hooks/useUiSettings.ts`. Art direction lives in `design.md` plus `docs/design/`.
 
 ## Git
 

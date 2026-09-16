@@ -10,6 +10,8 @@ export interface SessionApi {
   units: string[] | null;
   keystrokes: number;
   errorHits: number;
+  /** Last wrongly pressed physical key, cleared on the next press. Null when none. */
+  wrongKey: string | null;
   done: boolean;
   wpm: number;
   accuracy: number;
@@ -27,6 +29,7 @@ export function useTypingSession(prompt: string, fingerGuidance: boolean): Sessi
   const [typed, setTyped] = useState("");
   const [keystrokes, setKeystrokes] = useState(0);
   const [errorHits, setErrorHits] = useState(0);
+  const [wrongKey, setWrongKey] = useState<string | null>(null);
   const startRef = useRef<number | null>(null);
 
   const done = typed.length >= prompt.length && prompt.length > 0;
@@ -45,6 +48,7 @@ export function useTypingSession(prompt: string, fingerGuidance: boolean): Sessi
     units: null,
     keystrokes,
     errorHits,
+    wrongKey,
     done,
     wpm,
     accuracy,
@@ -55,14 +59,23 @@ export function useTypingSession(prompt: string, fingerGuidance: boolean): Sessi
       if (done) return;
       if (startRef.current === null) startRef.current = Date.now();
       const expected = prompt[typed.length];
-      setTyped((prev) => (prev.length >= prompt.length ? prev : prev + char));
       setKeystrokes((k) => k + 1);
-      if (char !== expected) setErrorHits((e) => e + 1);
+      if (char !== expected) {
+        // Wrong key: count the miss but hold the cursor. Only the
+        // expected key advances to the next unit.
+        setErrorHits((e) => e + 1);
+        setWrongKey(char);
+        return;
+      }
+      setWrongKey(null);
+      setTyped((prev) => (prev.length >= prompt.length ? prev : prev + char));
     },
     backspace() {
+      setWrongKey(null);
       setTyped((prev) => prev.slice(0, -1));
     },
     reset() {
+      setWrongKey(null);
       setTyped("");
       setKeystrokes(0);
       setErrorHits(0);

@@ -62,5 +62,20 @@
   "game.lives": "जीवन",
   "game.level": "स्तर",
   "game.over": "खेल सकियो",
-  "game.best": "उत्कृष्ट प्रयास"
+  "game.best": "उत्कृष्ट प्रयास",
+  "classic.home": "घर",
+  "classic.top": "माथि",
+  "classic.bottom": "तल",
+  "classic.all": "सबै",
+  "classic.game": "खेल",
+  "classic.free": "खुला",
+  "classic.level": "स्तर",
+  "classic.name": "नाम",
+  "classic.avgSpeed": "औसत गति",
+  "menu.perform": "प्रदर्शन",
+  "menu.lessons": "पाठहरू",
+  "menu.options": "विकल्पहरू",
+  "menu.help": "सहयोग",
+  "free.hint": "खुला टाइप गर्नुहोस्। केही बचत हुँदैन।",
+  "nav.classic": "क्लासिक"
 }

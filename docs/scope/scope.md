@@ -23,6 +23,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 10  | Settings language and themes              | Release 4  | done   |
 | 11  | Bonus Ramayana game                       | Release 5  | done   |
 | 12  | Polish and packaging three systems        | Release 6  | done   |
+| 13  | Classic practice screens                  | Release 7  | in-progress |
 
 ## Foundations
 
@@ -185,6 +186,22 @@ Tidy theming, copy in both languages, icons, and native installers for Windows, 
 - [x] Build it: `/develop polish and packaging three systems`
       Spec [0011](../specs/0011-polish-and-packaging-three-systems/index.md) · code in `src-tauri/tauri.conf.json`, `package.json`, `docs/release-notes/v1.0.md`
 
+## Release 7: classic parity
+
+### 13. Classic practice screens · in-progress
+
+Bring back the classic six screen shell (Home, Top, Bottom, All, Game, Free) with one shared toolbar, level switch, language switch, two line prompt, and full virtual keyboard, each drill screen covering its own key set.
+**Done when:** each of Home, Top, Bottom, All drills its own set through the shared shell, Game runs the Ramayana game inside the shell, Free types with no save, and level plus language rules hold.
+
+- [x] Design it (spec): `/architect classic practice screens`
+- [x] Build it: `/develop classic practice screens`
+  - [x] Domain layout plus difficulty validator plus bundled drills (AC-4, AC-5, AC-6)
+  - [x] Prompt plus keyboard plus shell chrome on tokens (AC-1, AC-6, AC-7)
+  - [x] Six screens composed with level plus language preserved (AC-1, AC-2, AC-3, AC-5)
+  - [x] Save plus error plus empty states in active language (AC-8)
+- [x] Verify it: `/check verify classic practice screens`
+      Spec [0012](../specs/0012-classic-practice-screens/index.md) · code in `src/domain/classicLayout.ts`, `src/domain/classicDrills.ts`, `src/components/ClassicShell.tsx`, `src/components/ClassicKeyboard.tsx`, `src/components/ClassicPrompt.tsx`, `src/features/classic/ClassicScreen.tsx`, `src/App.tsx`
+
 ## Deferred
 
 Out of scope for the current build pass, kept so the plan stays honest.
@@ -192,6 +209,7 @@ Out of scope for the current build pass, kept so the plan stays honest.
 - **Cloud sync and accounts**: stays local only, no network calls, no sign in
 - **Mobile port**: desktop installers only in this pass
 - **Online leaderboards**: progress stays on device only
+- **Free run history**: decide whether Free runs should ever save or stay fully ephemeral (spec 0012 follow-up)
 
 ## Legend
 
