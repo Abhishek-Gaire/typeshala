@@ -22,7 +22,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 9   | Progress trends and stats screen          | Release 4  | done    |
 | 10  | Settings language and themes              | Release 4  | done    |
 | 11  | Bonus Ramayana game                       | Release 5  | done    |
-| 12  | Polish and packaging three systems        | Release 6  | planned |
+| 12  | Polish and packaging three systems        | Release 6  | in-progress |
 
 ## Foundations
 
@@ -175,13 +175,14 @@ Add a separate Ramayana themed typing game with falling words to type in time, b
       Code in `src/domain/game.ts`, `src/features/game/GameView.tsx`, `src/App.tsx`
 
 ## Release 6: ship it
-
-### 12. Polish and packaging three systems
+### 12. Polish and packaging three systems · in-progress
 
 Tidy theming, copy in both languages, icons, and native installers for Windows, macOS, and Linux so others can install and learn.
+
 **Done when:** clean installers run offline from first launch with lessons, progress, and settings intact.
 
-- [ ] Build it: `/develop polish and packaging three systems`
+- [x] Build it: `/develop polish and packaging three systems`
+      Spec [0011](../specs/0011-polish-and-packaging-three-systems/index.md) · code in `src-tauri/tauri.conf.json`, `package.json`, `docs/release-notes/v1.0.md`
 
 ## Deferred
 

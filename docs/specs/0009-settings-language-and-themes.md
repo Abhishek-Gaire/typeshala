@@ -1,7 +1,7 @@
 # 0009. Settings language and themes
 
 **Date**: 2026-09-15
-**Status**: Approved (cross-checked 2026-09-15, 5 fixes applied)
+**Status**: Accepted
 
 ## Summary
 

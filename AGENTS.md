@@ -25,12 +25,17 @@ npm run build
 npm run tauri build
 
 # Test
-npx tsc --noEmit
+npm test
+npm run typecheck
+
+# Lint plus format
+npm run lint
+npm run format:check
 ```
 
 ## Specs
 
-Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
+Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md` for short specs, or `docs/specs/NNNN-title/index.md` with `rationale.md` beside it for decided slices.
 
 ## Rules
 

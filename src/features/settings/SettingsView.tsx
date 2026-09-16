@@ -34,48 +34,108 @@ export function SettingsView(props: SettingsViewProps) {
   return (
     <div>
       <Group label={text("settings.layout")}>
-        <Button variant={props.layout === "qwerty" ? "primary" : "quiet"} onClick={() => props.onLayout("qwerty")}>
+        <Button
+          variant={props.layout === "qwerty" ? "primary" : "quiet"}
+          onClick={() => {
+            props.onLayout("qwerty");
+          }}
+        >
           {text("layout.english")}
         </Button>
-        <Button variant={props.layout === "romanized" ? "primary" : "quiet"} onClick={() => props.onLayout("romanized")}>
+        <Button
+          variant={props.layout === "romanized" ? "primary" : "quiet"}
+          onClick={() => {
+            props.onLayout("romanized");
+          }}
+        >
           {text("layout.romanized")}
         </Button>
-        <Button variant={props.layout === "traditional" ? "primary" : "quiet"} onClick={() => props.onLayout("traditional")}>
+        <Button
+          variant={props.layout === "traditional" ? "primary" : "quiet"}
+          onClick={() => {
+            props.onLayout("traditional");
+          }}
+        >
           {text("layout.traditional")}
         </Button>
       </Group>
       <Group label={text("settings.language")}>
-        <Button variant={props.locale === "en" ? "primary" : "quiet"} onClick={() => props.onLocale("en")}>
+        <Button
+          variant={props.locale === "en" ? "primary" : "quiet"}
+          onClick={() => {
+            props.onLocale("en");
+          }}
+        >
           {text("lang.english")}
         </Button>
-        <Button variant={props.locale === "ne" ? "primary" : "quiet"} onClick={() => props.onLocale("ne")}>
+        <Button
+          variant={props.locale === "ne" ? "primary" : "quiet"}
+          onClick={() => {
+            props.onLocale("ne");
+          }}
+        >
           {text("lang.nepali")}
         </Button>
       </Group>
       <Group label={text("settings.theme")}>
-        <Button variant={props.theme === "light" ? "primary" : "quiet"} onClick={() => props.onTheme("light")}>
+        <Button
+          variant={props.theme === "light" ? "primary" : "quiet"}
+          onClick={() => {
+            props.onTheme("light");
+          }}
+        >
           {text("theme.light")}
         </Button>
-        <Button variant={props.theme === "dark" ? "primary" : "quiet"} onClick={() => props.onTheme("dark")}>
+        <Button
+          variant={props.theme === "dark" ? "primary" : "quiet"}
+          onClick={() => {
+            props.onTheme("dark");
+          }}
+        >
           {text("theme.dark")}
         </Button>
-        <Button variant={props.theme === "system" ? "primary" : "quiet"} onClick={() => props.onTheme("system")}>
+        <Button
+          variant={props.theme === "system" ? "primary" : "quiet"}
+          onClick={() => {
+            props.onTheme("system");
+          }}
+        >
           {text("theme.system")}
         </Button>
       </Group>
       <Group label={text("settings.sound")}>
-        <Button variant={props.sound ? "primary" : "quiet"} onClick={() => props.onSound(true)}>
+        <Button
+          variant={props.sound ? "primary" : "quiet"}
+          onClick={() => {
+            props.onSound(true);
+          }}
+        >
           {text("sound.on")}
         </Button>
-        <Button variant={!props.sound ? "primary" : "quiet"} onClick={() => props.onSound(false)}>
+        <Button
+          variant={!props.sound ? "primary" : "quiet"}
+          onClick={() => {
+            props.onSound(false);
+          }}
+        >
           {text("sound.off")}
         </Button>
       </Group>
       <Group label={text("settings.promptSize")}>
-        <Button variant={props.promptSize === "standard" ? "primary" : "quiet"} onClick={() => props.onPromptSize("standard")}>
+        <Button
+          variant={props.promptSize === "standard" ? "primary" : "quiet"}
+          onClick={() => {
+            props.onPromptSize("standard");
+          }}
+        >
           {text("size.standard")}
         </Button>
-        <Button variant={props.promptSize === "large" ? "primary" : "quiet"} onClick={() => props.onPromptSize("large")}>
+        <Button
+          variant={props.promptSize === "large" ? "primary" : "quiet"}
+          onClick={() => {
+            props.onPromptSize("large");
+          }}
+        >
           {text("size.large")}
         </Button>
       </Group>
