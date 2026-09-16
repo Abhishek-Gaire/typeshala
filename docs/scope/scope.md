@@ -9,20 +9,20 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 
 ## At a glance
 
-| #   | Feature                                   | Phase      | Status      |
-| --- | ----------------------------------------- | ---------- | ----------- |
-| 1   | Stack and architecture                    | Foundation | done        |
-| 2   | Coding standards and tooling              | Foundation | done        |
-| 3   | Data model local store                    | Foundation | done        |
-| 4   | Design system and bilingual UI foundation | Foundation | done        |
-| 5   | Smallest usable English tutor             | Release 1  | done        |
-| 6   | Structured lessons and progression        | Release 2  | done        |
-| 7   | Nepali Romanized layout                   | Release 3  | done        |
-| 8   | Nepali Traditional Preeti layout          | Release 3  | done        |
-| 9   | Progress trends and stats screen          | Release 4  | done        |
-| 10  | Settings language and themes              | Release 4  | done        |
-| 11  | Bonus Ramayana game                       | Release 5  | done        |
-| 12  | Polish and packaging three systems        | Release 6  | in-progress |
+| #   | Feature                                   | Phase      | Status |
+| --- | ----------------------------------------- | ---------- | ------ |
+| 1   | Stack and architecture                    | Foundation | done   |
+| 2   | Coding standards and tooling              | Foundation | done   |
+| 3   | Data model local store                    | Foundation | done   |
+| 4   | Design system and bilingual UI foundation | Foundation | done   |
+| 5   | Smallest usable English tutor             | Release 1  | done   |
+| 6   | Structured lessons and progression        | Release 2  | done   |
+| 7   | Nepali Romanized layout                   | Release 3  | done   |
+| 8   | Nepali Traditional Preeti layout          | Release 3  | done   |
+| 9   | Progress trends and stats screen          | Release 4  | done   |
+| 10  | Settings language and themes              | Release 4  | done   |
+| 11  | Bonus Ramayana game                       | Release 5  | done   |
+| 12  | Polish and packaging three systems        | Release 6  | done   |
 
 ## Foundations
 
@@ -176,7 +176,7 @@ Add a separate Ramayana themed typing game with falling words to type in time, b
 
 ## Release 6: ship it
 
-### 12. Polish and packaging three systems · in-progress
+### 12. Polish and packaging three systems · done
 
 Tidy theming, copy in both languages, icons, and native installers for Windows, macOS, and Linux so others can install and learn.
 
