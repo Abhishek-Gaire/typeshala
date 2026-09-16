@@ -76,6 +76,11 @@
   "menu.lessons": "Lessons",
   "menu.options": "Options",
   "menu.help": "Help",
+  "menu.restart": "Restart drill",
+  "menu.about": "About Typeshala",
+  "menu.close": "Close",
+  "about.title": "About Typeshala",
+  "about.body": "Typeshala 1.0.0. Level 1 allows repeated units; Levels 2 and 3 forbid immediate repeats. Free runs are never saved.",
   "free.hint": "Type freely. Nothing is saved.",
   "nav.classic": "Classic"
 }

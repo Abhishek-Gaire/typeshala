@@ -1,5 +1,5 @@
 /** Shared classic shell (spec 0012 Option 2). Win95 style gray chrome, raised buttons, icon toolbar. */
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { ClassicScreenId } from "../domain/classicLayout";
 import type { LayoutId } from "../domain/datastore";
 import type { StringKey } from "../i18n/keys";
@@ -38,6 +38,7 @@ export function ClassicShell({
   onLayout,
   onName,
   onSettings,
+  onRestart,
   children,
 }: {
   screen: ClassicScreenId;
@@ -51,28 +52,169 @@ export function ClassicShell({
   onLayout: (l: LayoutId) => void;
   onName: (n: string) => void;
   onSettings: () => void;
+  onRestart: () => void;
   children: ReactNode;
 }) {
-  const menu: Array<{ key: StringKey; action?: () => void }> = [
-    { key: "menu.perform" },
-    { key: "menu.lessons" },
-    { key: "menu.options", action: onSettings },
-  ];
+  type MenuId = "perform" | "lessons" | "help";
+  const [openMenu, setOpenMenu] = useState<MenuId | null>(null);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  function toggle(menu: MenuId) {
+    setOpenMenu((cur) => (cur === menu ? null : menu));
+  }
+  function closeMenus() {
+    setOpenMenu(null);
+  }
+  const LESSON_SCREENS: ClassicScreenId[] = ["home", "top", "bottom", "all"];
+  const LESSON_KEYS: StringKey[] = ["classic.home", "classic.top", "classic.bottom", "classic.all"];
+  const MENU_POP = `absolute top-full left-0 z-10 min-w-44 ${RAISED} bg-[#d4d0c8] py-1`;
+  const MENU_ITEM =
+    "block w-full px-3 py-1 text-left text-sm text-black hover:bg-[#16205b] hover:text-white";
   return (
     <section aria-label="classic practice" className="flex flex-1 flex-col bg-[#d4d0c8]">
-      <nav className="flex gap-5 px-2 py-1 text-sm text-black" aria-label="menu">
-        {menu.map((m) =>
-          m.action !== undefined ? (
-            <button key={m.key} type="button" onClick={m.action} className="hover:underline">
-              {text(m.key)}
-            </button>
-          ) : (
-            <span key={m.key}>{text(m.key)}</span>
-          ),
-        )}
-        <span className="ml-auto">Help</span>
+      <nav
+        className="flex items-center gap-5 px-2 py-1 text-sm text-black"
+        aria-label="menu"
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            closeMenus();
+            setAboutOpen(false);
+          }
+        }}
+      >
+        <img
+          src="/typeshala_app_icon.svg"
+          alt="Typeshala"
+          width={20}
+          height={20}
+          className="h-5 w-5"
+        />
+        <div className="relative">
+          <button
+            type="button"
+            aria-haspopup="true"
+            aria-expanded={openMenu === "perform"}
+            onClick={() => {
+              toggle("perform");
+            }}
+            className="hover:underline"
+          >
+            {text("menu.perform")}
+          </button>
+          {openMenu === "perform" && (
+            <div role="menu" className={MENU_POP}>
+              <button
+                type="button"
+                role="menuitem"
+                className={MENU_ITEM}
+                onClick={() => {
+                  onRestart();
+                  closeMenus();
+                }}
+              >
+                {text("menu.restart")}
+              </button>
+            </div>
+          )}
+        </div>
+        <div className="relative">
+          <button
+            type="button"
+            aria-haspopup="true"
+            aria-expanded={openMenu === "lessons"}
+            onClick={() => {
+              toggle("lessons");
+            }}
+            className="hover:underline"
+          >
+            {text("menu.lessons")}
+          </button>
+          {openMenu === "lessons" && (
+            <div role="menu" className={MENU_POP}>
+              {LESSON_SCREENS.map((s, idx) => (
+                <button
+                  key={s}
+                  type="button"
+                  role="menuitem"
+                  className={MENU_ITEM}
+                  onClick={() => {
+                    onScreen(s);
+                    closeMenus();
+                  }}
+                >
+                  {text(LESSON_KEYS[idx])}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        <button type="button" onClick={onSettings} className="hover:underline">
+          {text("menu.options")}
+        </button>
+        <div className="relative ml-auto">
+          <button
+            type="button"
+            aria-haspopup="true"
+            aria-expanded={openMenu === "help"}
+            onClick={() => {
+              toggle("help");
+            }}
+            className="hover:underline"
+          >
+            {text("menu.help")}
+          </button>
+          {openMenu === "help" && (
+            <div role="menu" className={`${MENU_POP} right-0 left-auto`}>
+              <button
+                type="button"
+                role="menuitem"
+                className={MENU_ITEM}
+                onClick={() => {
+                  setAboutOpen(true);
+                  closeMenus();
+                }}
+              >
+                {text("menu.about")}
+              </button>
+            </div>
+          )}
+        </div>
       </nav>
-      <div className="flex w-[65%] flex-wrap items-stretch gap-1.5 p-1" role="toolbar" aria-label="screens">
+      {aboutOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          onClick={() => {
+            setAboutOpen(false);
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={text("about.title")}
+            className={`${RAISED} w-full max-w-md bg-[#d4d0c8] p-3`}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <p className="text-sm font-bold text-black">{text("about.title")}</p>
+            <p className="mt-1 text-sm text-black">{text("about.body")}</p>
+            <button
+              type="button"
+              autoFocus
+              onClick={() => {
+                setAboutOpen(false);
+              }}
+              className={`${RAISED} mt-3 bg-[#d4d0c8] px-3 py-1 text-sm text-black`}
+            >
+              {text("menu.close")}
+            </button>
+          </div>
+        </div>
+      )}
+      <div
+        className="flex w-[65%] flex-wrap items-stretch gap-1.5 p-1"
+        role="toolbar"
+        aria-label="screens"
+      >
         {SCREENS.map((s, idx) => (
           <button
             key={s}

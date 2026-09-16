@@ -25,6 +25,7 @@ export default function App() {
   const [classicLevel, setClassicLevel] = useState(1);
   const [classicName, setClassicName] = useState("");
   const [classicWpm, setClassicWpm] = useState(0);
+  const [restartKey, setRestartKey] = useState(0);
 
   const layout = ui.layout;
 
@@ -123,12 +124,16 @@ export default function App() {
           onSettings={() => {
             setView({ name: "settings" });
           }}
+          onRestart={() => {
+            setRestartKey((k) => k + 1);
+          }}
         >
           {classicScreen === "game" ? (
             gameLoading ? (
               <StateView kind="loading" text={ui.text} />
             ) : (
               <GameView
+                key={`game-${String(restartKey)}`}
                 prompts={gamePrompts}
                 text={ui.text}
                 onQuit={() => {
@@ -138,7 +143,7 @@ export default function App() {
             )
           ) : (
             <ClassicScreen
-              key={`${classicScreen}-${String(classicLevel)}-${layout}`}
+              key={`${classicScreen}-${String(classicLevel)}-${layout}-${String(restartKey)}`}
               screen={classicScreen}
               level={classicLevel}
               layout={layout}

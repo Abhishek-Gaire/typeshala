@@ -76,6 +76,11 @@
   "menu.lessons": "पाठहरू",
   "menu.options": "विकल्पहरू",
   "menu.help": "सहयोग",
+  "menu.restart": "ड्रिल पुनः सुरु",
+  "menu.about": "Typeshala बारे",
+  "menu.close": "बन्द गर्नुहोस्",
+  "about.title": "Typeshala बारे",
+  "about.body": "Typeshala 1.0.0। स्तर 1 मा दोहोरिएका एकाइ हुन्छन्; स्तर 2 र 3 मा लगातार दोहोरिन पाइँदैन। खुला प्रयास कहिल्यै बचत हुँदैन।",
   "free.hint": "खुला टाइप गर्नुहोस्। केही बचत हुँदैन।",
   "nav.classic": "क्लासिक"
 }
