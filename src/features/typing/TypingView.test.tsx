@@ -125,8 +125,8 @@ describe("TypingView traditional", () => {
     expect(screen.getByText("क्ष")).toBeInTheDocument();
     const status = screen.getByRole("status");
     expect(status.textContent).toContain("typing.sequence");
-    expect(status.textContent).toContain("]kS");
-    const lit = screen.getByText("]");
+    expect(status.textContent).toContain("I");
+    const lit = screen.getByText("I");
     expect(lit).toHaveAttribute("aria-current", "true");
   });
 
@@ -145,7 +145,7 @@ describe("TypingView traditional", () => {
     );
     const box = screen.getByRole("textbox", { name: "Traditional test" });
     await user.click(box);
-    await user.keyboard("k");
+    await user.keyboard("s");
     await waitFor(() => {
       expect(onDone).toHaveBeenCalledTimes(1);
     });

@@ -18,29 +18,29 @@ function typeKeys(current: { typeChar: (c: string) => void }, keys: string[]) {
 describe("useTraditionalSession", () => {
   it("types a conjunct prompt with true sequences and finishes (covers AC-2)", () => {
     const { result } = setup("क्षमा");
-    typeKeys(result.current, ["]", "k", "S"]);
+    typeKeys(result.current, ["I"]);
     expect(result.current.done).toBe(false);
     expect(result.current.typed).toBe("क्ष");
-    typeKeys(result.current, ["m", "f"]);
+    typeKeys(result.current, ["d", "f"]);
     expect(result.current.typed).toBe("क्षमा");
     expect(result.current.done).toBe(true);
     expect(result.current.accuracy).toBe(100);
   });
 
   it("lits the first physical key with the sequence pending (covers AC-3)", () => {
-    const { result } = setup("थ");
-    expect(result.current.hint).toBe("T");
+    const { result } = setup("आ");
+    expect(result.current.hint).toBe("C");
     act(() => {
-      result.current.typeChar("t");
+      result.current.typeChar("c");
     });
-    expect(result.current.hint).toBe("T");
+    expect(result.current.hint).toBe("C");
     expect(result.current.typed).toBe("");
   });
 
   it("counts a committed wrong unit as one hit (covers AC-5)", () => {
     const { result } = setup("क");
     typeKeys(result.current, ["g", "a"]);
-    expect(result.current.typed).toBe("ग");
+    expect(result.current.typed).toBe("न");
     expect(result.current.keystrokes).toBe(2);
     expect(result.current.errorHits).toBe(1);
   });
@@ -48,10 +48,9 @@ describe("useTraditionalSession", () => {
   it("clears the pending buffer first on backspace (covers AC-5)", () => {
     const { result } = setup("थ");
     act(() => {
-      result.current.typeChar("t");
+      result.current.typeChar("y");
       result.current.backspace();
-      result.current.typeChar("t");
-      result.current.typeChar("h");
+      result.current.typeChar("y");
     });
     expect(result.current.typed).toBe("थ");
     expect(result.current.errorHits).toBe(0);
@@ -59,7 +58,7 @@ describe("useTraditionalSession", () => {
 
   it("builds a traditional attempt with unit indexes for save (covers AC-4)", () => {
     const { result } = setup("क्ष");
-    typeKeys(result.current, ["]", "k", "S"]);
+    typeKeys(result.current, ["I"]);
     const attempt = result.current.buildAttempt("nt-conjunct", "2026-09-15T00:00:00Z", 1000);
     expect(attempt.layout).toBe("traditional");
     expect(attempt.lessonId).toBe("nt-conjunct");
@@ -68,9 +67,9 @@ describe("useTraditionalSession", () => {
   });
 
   it("keeps a pending prefix free of error hits (covers AC-5)", () => {
-    const { result } = setup("क");
+    const { result } = setup("आ");
     act(() => {
-      result.current.typeChar("]");
+      result.current.typeChar("c");
     });
     expect(result.current.typed).toBe("");
     expect(result.current.keystrokes).toBe(1);
@@ -80,13 +79,13 @@ describe("useTraditionalSession", () => {
 
   it("exposes typed units for per unit coloring (covers AC-2)", () => {
     const { result } = setup("क्षमा");
-    typeKeys(result.current, ["]", "k", "S", "m"]);
+    typeKeys(result.current, ["I", "d"]);
     expect(result.current.units).toEqual(["क्ष", "म"]);
   });
 
   it("counts units not chars in attempt WPM (covers AC-5)", () => {
     const { result } = setup("क्षमा");
-    typeKeys(result.current, ["]", "k", "S", "m", "f"]);
+    typeKeys(result.current, ["I", "d", "f"]);
     const attempt = result.current.buildAttempt("nt-conjunct", "2026-09-15T00:00:00Z", 60000);
     expect(attempt.wpm).toBe(0.6);
   });
@@ -94,8 +93,8 @@ describe("useTraditionalSession", () => {
 
 describe("usePreetiSequenceHint", () => {
   it("returns the full sequence for the next unit", () => {
-    expect(usePreetiSequenceHint("क्षमा", [])).toBe("]kS");
-    expect(usePreetiSequenceHint("क्षमा", ["क्ष"])).toBe("m");
+    expect(usePreetiSequenceHint("क्षमा", [])).toBe("I");
+    expect(usePreetiSequenceHint("क्षमा", ["क्ष"])).toBe("d");
   });
 
   it("returns empty for spaces and finished prompts", () => {

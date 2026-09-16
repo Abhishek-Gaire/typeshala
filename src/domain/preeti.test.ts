@@ -12,27 +12,26 @@ import {
 
 describe("advancePreeti", () => {
   it("completes a single key unit", () => {
-    expect(advancePreeti("", "k")).toEqual({ commits: ["क"], buffer: "", error: false });
+    expect(advancePreeti("", "s")).toEqual({ commits: ["क"], buffer: "", error: false });
   });
 
   it("holds a prefix as pending without false error", () => {
-    expect(advancePreeti("", "a")).toEqual({ commits: [], buffer: "a", error: false });
-    expect(advancePreeti("a", "i")).toEqual({ commits: ["ऐ"], buffer: "", error: false });
+    expect(advancePreeti("", "c")).toEqual({ commits: [], buffer: "c", error: false });
+    expect(advancePreeti("P", "]")).toEqual({ commits: ["ऐ"], buffer: "", error: false });
   });
 
-  it("holds aspirate prefixes through pending steps (covers AC-2)", () => {
-    expect(advancePreeti("", "t")).toEqual({ commits: [], buffer: "t", error: false });
-    expect(advancePreeti("t", "h")).toEqual({ commits: ["थ"], buffer: "", error: false });
+  it("holds a longer-sequence prefix as pending (covers AC-2)", () => {
+    expect(advancePreeti("", "c")).toEqual({ commits: [], buffer: "c", error: false });
+    expect(advancePreeti("c", "f")).toEqual({ commits: [], buffer: "cf", error: false });
   });
 
   it("holds the conjunct leader as pending (covers AC-2)", () => {
-    expect(advancePreeti("", "]")).toEqual({ commits: [], buffer: "]", error: false });
-    expect(advancePreeti("]", "k")).toEqual({ commits: [], buffer: "]k", error: false });
-    expect(advancePreeti("]k", "S")).toEqual({ commits: ["क्ष"], buffer: "", error: false });
+    expect(advancePreeti("", "q")).toEqual({ commits: [], buffer: "q", error: false });
+    expect(advancePreeti("q", "m")).toEqual({ commits: ["क्र"], buffer: "", error: false });
   });
 
   it("commits the prefix plus a complete tail at once", () => {
-    expect(advancePreeti("a", "k")).toEqual({
+    expect(advancePreeti("c", "s")).toEqual({
       commits: ["अ", "क"],
       buffer: "",
       error: false,
@@ -40,23 +39,23 @@ describe("advancePreeti", () => {
   });
 
   it("flags one error when nothing matches", () => {
-    expect(advancePreeti("", "1")).toEqual({ commits: [], buffer: "", error: true });
+    expect(advancePreeti("", "m")).toEqual({ commits: [], buffer: "", error: true });
   });
 
-  it("keeps capital K distinct from lower k (covers AC-5)", () => {
-    expect(advancePreeti("", "K")).toEqual({ commits: ["ख"], buffer: "", error: false });
+  it("keeps capital V distinct from lower v (covers AC-5)", () => {
+    expect(advancePreeti("", "v")).toEqual({ commits: ["ख"], buffer: "", error: false });
   });
 
-  it("completes the au diphthong where a alone stays pending (covers AC-5)", () => {
-    expect(advancePreeti("a", "u")).toEqual({ commits: ["औ"], buffer: "", error: false });
+  it("completes the ai diphthong where P alone stays pending (covers AC-5)", () => {
+    expect(advancePreeti("P", "]")).toEqual({ commits: ["ऐ"], buffer: "", error: false });
   });
 
   it("flags an error and clears a pending prefix with no match (covers AC-5)", () => {
-    expect(advancePreeti("t", "1")).toEqual({ commits: ["त"], buffer: "", error: true });
+    expect(advancePreeti("t", "m")).toEqual({ commits: ["त"], buffer: "", error: true });
   });
 
   it("commits the pending unit then flags the bad tail in one step (covers AC-5)", () => {
-    expect(advancePreeti("a", "1")).toEqual({ commits: ["अ"], buffer: "", error: true });
+    expect(advancePreeti("c", "m")).toEqual({ commits: ["अ"], buffer: "", error: true });
   });
 
   it("holds every map value reachable and unique with no variants (covers AC-5)", () => {
@@ -70,8 +69,8 @@ describe("advancePreeti", () => {
 
 describe("sequenceForPreeti", () => {
   it("returns the physical sequence for a known unit", () => {
-    expect(sequenceForPreeti("क")).toBe("k");
-    expect(sequenceForPreeti("क्ष")).toBe("]kS");
+    expect(sequenceForPreeti("क")).toBe("s");
+    expect(sequenceForPreeti("क्ष")).toBe("I");
   });
 
   it("returns empty for unknown units", () => {
@@ -79,25 +78,25 @@ describe("sequenceForPreeti", () => {
   });
 
   it("returns empty for latin input (covers AC-5)", () => {
-    expect(sequenceForPreeti("k")).toBe("");
+    expect(sequenceForPreeti("s")).toBe("");
   });
 });
 
 describe("exactCommitPreeti", () => {
   it("returns the unit for an exact pending buffer (covers AC-2)", () => {
-    expect(exactCommitPreeti("a")).toBe("अ");
-    expect(exactCommitPreeti("th")).toBe("थ");
+    expect(exactCommitPreeti("c")).toBe("अ");
+    expect(exactCommitPreeti("y")).toBe("थ");
   });
 
   it("flushes exact buffers even when a longer sequence extends them (covers AC-2)", () => {
     expect(exactCommitPreeti("t")).toBe("त");
-    expect(exactCommitPreeti("a")).toBe("अ");
+    expect(exactCommitPreeti("c")).toBe("अ");
   });
 
-  it("returns null for prefix only buffers and empty (covers AC-5)", () => {
-    expect(exactCommitPreeti("]")).toBeNull();
+  it("returns null for non-key buffers and empty (covers AC-5)", () => {
+    expect(exactCommitPreeti("m")).toBeNull();
     expect(exactCommitPreeti("")).toBeNull();
-    expect(exactCommitPreeti("1")).toBeNull();
+    expect(exactCommitPreeti("cx")).toBeNull();
   });
 });
 

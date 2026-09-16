@@ -2,12 +2,35 @@
  * Traditional Preeti to Devanagari step logic (spec 0007).
  * Pure domain code with no framework imports.
  *
- * Fixed Traditional key assignment for the tutor, in Preeti style
- * (one press per base glyph, aspirates plus diphthongs plus conjuncts
- * as short sequences). One sequence per Devanagari unit used in
- * lessons, no variants. Prompts may hold conjunct clusters (joined
- * letter groups) plus matra marks (vowel signs); each cluster or
- * signed char counts as one scoring unit (see `splitUnits`).
+ * Real Traditional (Preeti) key assignment, physical-key based: each
+ * string key below is the literal character a standard key (or Shift+key)
+ * produces on a normal QWERTY board — this is the actual layout, not a
+ * phonetic scheme. Cross-checked against the long-standing open-source
+ * Preeti-to-Unicode mapping (Shuvayatra/preeti) and reduced to what a
+ * modern browser keyboard event can express directly.
+ *
+ * Two behaviors beyond a flat lookup are required for correctness, and
+ * both are handled as DATA (extra multi-key sequences below) rather than
+ * new state-machine logic — the existing buffer/prefix matching in
+ * `advancePreeti` already supports them once the table is right:
+ *
+ *   1. Pre-posed i-matra: "ि" (key `l`) is typed BEFORE its consonant
+ *      (matching how it visually reads) but stored AFTER it in Unicode.
+ *      Handled via explicit `l`+consonant sequences (e.g. "ls" -> "कि").
+ *   2. Long-vowel composition: अ+ा=आ, अ+ा+े=ओ, अ+ा+ै=औ, ए+े=ऐ are each
+ *      typed as 2-3 keystrokes but committed as one unit.
+ *   3. Consonant "upgrades": फ, झ, and ऊ have no key of their own — they
+ *      come from a base key followed immediately by `m`. The physical
+ *      `m` key has no letter on its own in Traditional; it only acts as
+ *      this modifier right after क(प)/भ/उ's keys.
+ *
+ * Deliberately left out (documented gap, not a silent one): a handful of
+ * rarer conjuncts (ङ्ग, ङ्ख, ङ्क, ङ्घ, ङ्ढ, ट्ट, ड्ड, ठ्ठ, ट्ठ, द्घ, द्व,
+ * हृ, रू, and the reph/floating र् auto-placement for arbitrary text) were
+ * only reachable in the original software via obscure legacy-keyboard-
+ * driver combinations (dead keys / extended Latin-1 characters) that
+ * don't map cleanly onto a standard browser KeyboardEvent. Add them here
+ * if a lesson ever needs one — the architecture below extends cleanly.
  *
  * Units in this file mean prompt units (single chars, matras, or
  * conjunct clusters), not raw chars. Callers pass completed unit
@@ -15,63 +38,161 @@
  * this layout is units per minute by design.
  */
 
-/** One physical key sequence per Devanagari unit used in lessons. */
+/** One physical key (or Shift+key literal) to its Traditional output. */
 export const PREETI_MAP: Record<string, string> = {
-  a: "अ",
-  A: "आ",
-  i: "इ",
-  I: "ई",
-  u: "उ",
-  U: "ऊ",
-  e: "ए",
-  ai: "ऐ",
-  o: "ओ",
-  au: "औ",
-  k: "क",
-  K: "ख",
-  g: "ग",
-  G: "घ",
-  W: "ङ",
-  c: "च",
-  C: "छ",
-  j: "ज",
-  J: "झ",
-  Y: "ञ",
-  T: "ट",
-  Th: "ठ",
-  D: "ड",
-  Dh: "ढ",
-  N: "ण",
-  t: "त",
-  th: "थ",
-  d: "द",
-  dh: "ध",
-  n: "न",
-  p: "प",
-  ph: "फ",
-  b: "ब",
-  bh: "भ",
-  m: "म",
-  y: "य",
-  r: "र",
-  l: "ल",
-  v: "व",
-  s: "स",
-  x: "श",
-  S: "ष",
-  h: "ह",
+  // independent vowels
+  c: "अ",
+  i: "ई",
+  O: "इ",
+  p: "उ",
+  C: "ऋ",
+  P: "ए",
+
+  // long vowels, composed from short-vowel + matra keys typed in sequence
+  cf: "आ",
+  "cf]": "ओ",
+  "cf}": "औ",
+  "P]": "ऐ",
+
+  // matras (vowel signs). "l" (ि) is pre-posed — see the l+consonant
+  // combos below rather than relying on this single-key entry alone.
   f: "ा",
-  F: "ि",
-  q: "ी",
-  Q: "ु",
-  V: "ू",
-  H: "े",
+  l: "ि",
+  L: "ी",
+  "'": "ु",
+  '"': "ू",
+  "[": "ृ",
+  "]": "े",
+  "}": "ै",
+  F: "ँ",
+  M: "ः",
+  "+": "ं",
+
+  // full consonants/conjuncts (base, digit-row, and single-key conjuncts)
+  s: "क",
+  v: "ख",
+  u: "ग",
+  "`": "ञ",
+  r: "च",
+  h: "ज",
+  t: "त",
+  y: "थ",
+  b: "द",
+  w: "ध",
+  g: "न",
+  k: "प",
+  e: "भ",
+  a: "ब",
+  d: "म",
+  o: "य",
+  "/": "र",
+  n: "ल",
+  j: "व",
+  z: "श",
+  ";": "स",
+  x: "ह",
+  "3": "घ",
+  "5": "छ",
+  "6": "ट",
+  "7": "ठ",
+  "8": "ड",
+  "9": "ढ",
+  "1": "ज्ञ",
+  q: "त्र",
+  Q: "त्त",
+  B: "द्य",
+
+  // consonants with an inherent halant (Shift + base key)
+  S: "ष",
+  V: "ख्",
+  U: "ग्",
+  R: "च्",
+  H: "ज्",
+  T: "त्",
+  Y: "थ्",
+  D: "म्",
+  W: "ङ",
+  G: "न्",
+  K: "प्",
   E: "ो",
-  M: "ं",
-  "]kS": "क्ष",
-  "]jY": "ज्ञ",
-  "]tr": "त्र",
-  "]xr": "श्र",
+  A: "ब्",
+  J: "व्",
+  Z: "श्",
+  X: "ह्",
+  N: "ण",
+  ":": "स्",
+
+  // half-forms and short conjuncts living on the digit row
+  "0": "ण्",
+  "2": "द्द",
+  "4": "द्ध",
+
+  // conjunct only reachable via Shift, not otherwise covered
+  I: "क्ष",
+
+  // Devanagari digits (Shift + digit row — a clean 1:1, no legacy quirks)
+  "!": "१",
+  "@": "२",
+  "#": "३",
+  $: "४",
+  "%": "५",
+  "^": "६",
+  "&": "७",
+  "*": "८",
+  "(": "९",
+  ")": "०",
+
+  // consonant "upgrades" — `m` has no letter of its own in Traditional;
+  // it only acts as a modifier immediately after these specific keys
+  km: "फ",
+  em: "झ",
+  pm: "ऊ",
+  qm: "क्र",
+  Qm: "क्त",
+
+  // punctuation & marks
+  ".": "।",
+  "\\": "्",
+  "|": "्र",
+  "~": "ञ्",
+  ">": "श्र",
+  "?": "रु",
+
+  // pre-posed i-matra combinations (l + consonant, typed in visual order)
+  ls: "कि",
+  lv: "खि",
+  lu: "गि",
+  "l`": "ञि",
+  lr: "चि",
+  lh: "जि",
+  lt: "ति",
+  ly: "थि",
+  lb: "दि",
+  lw: "धि",
+  lg: "नि",
+  lk: "पि",
+  le: "भि",
+  la: "बि",
+  ld: "मि",
+  lo: "यि",
+  "l/": "रि",
+  ln: "लि",
+  lj: "वि",
+  lz: "शि",
+  "l;": "सि",
+  lx: "हि",
+  l3: "घि",
+  l5: "छि",
+  l6: "टि",
+  l7: "ठि",
+  l8: "डि",
+  l9: "ढि",
+  l1: "ज्ञि",
+  lq: "त्रि",
+  lQ: "त्ति",
+  lB: "द्यि",
+  lkm: "फि",
+  lem: "झि",
 };
 
 const SEQUENCES = Object.keys(PREETI_MAP);
