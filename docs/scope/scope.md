@@ -9,21 +9,22 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 
 ## At a glance
 
-| #   | Feature                                   | Phase      | Status |
-| --- | ----------------------------------------- | ---------- | ------ |
-| 1   | Stack and architecture                    | Foundation | done   |
-| 2   | Coding standards and tooling              | Foundation | done   |
-| 3   | Data model local store                    | Foundation | done   |
-| 4   | Design system and bilingual UI foundation | Foundation | done   |
-| 5   | Smallest usable English tutor             | Release 1  | done   |
-| 6   | Structured lessons and progression        | Release 2  | done   |
-| 7   | Nepali Romanized layout                   | Release 3  | done   |
-| 8   | Nepali Traditional Preeti layout          | Release 3  | done   |
-| 9   | Progress trends and stats screen          | Release 4  | done   |
-| 10  | Settings language and themes              | Release 4  | done   |
-| 11  | Bonus Ramayana game                       | Release 5  | done   |
-| 12  | Polish and packaging three systems        | Release 6  | done   |
-| 13  | Classic practice screens                  | Release 7  | done |
+| #   | Feature                                   | Phase      | Status      |
+| --- | ----------------------------------------- | ---------- | ----------- |
+| 1   | Stack and architecture                    | Foundation | done        |
+| 2   | Coding standards and tooling              | Foundation | done        |
+| 3   | Data model local store                    | Foundation | done        |
+| 4   | Design system and bilingual UI foundation | Foundation | done        |
+| 5   | Smallest usable English tutor             | Release 1  | done        |
+| 6   | Structured lessons and progression        | Release 2  | done        |
+| 7   | Nepali Romanized layout                   | Release 3  | done        |
+| 8   | Nepali Traditional Preeti layout          | Release 3  | done        |
+| 9   | Progress trends and stats screen          | Release 4  | done        |
+| 10  | Settings language and themes              | Release 4  | done        |
+| 11  | Bonus Ramayana game                       | Release 5  | done        |
+| 12  | Polish and packaging three systems        | Release 6  | done        |
+| 13  | Classic practice screens                  | Release 7  | done        |
+| 14  | Single line prompt paging                 | Release 7  | done        |
 
 ## Foundations
 
@@ -202,6 +203,20 @@ Bring back the classic six screen shell (Home, Top, Bottom, All, Game, Free) wit
   - [x] English drill pattern per spec 0013 (AC-1 to AC-5 of spec 0013)
 - [x] Verify it: `/check verify classic practice screens`
       Spec [0012](../specs/0012-classic-practice-screens/index.md) · code in `src/domain/classicLayout.ts`, `src/domain/classicDrills.ts`, `src/components/ClassicShell.tsx`, `src/components/ClassicKeyboard.tsx`, `src/components/ClassicPrompt.tsx`, `src/features/classic/ClassicScreen.tsx`, `src/App.tsx`
+
+### 14. Single line prompt paging · done
+
+Show the classic drill target as one page of whole groups at a time with a slide plus a line counter, keeping scoring plus keyboard plus save unchanged.
+**Done when:** the active page shows only its target slice plus typed slice plus `Line X of Y`, groups never split, page edge plus backspace plus restart behave, and slide respects reduced motion.
+
+- [x] Design it (spec): `/architect single line prompt paging`
+- [x] Build it: `/develop single line prompt paging`
+  - [x] Chunk helper plus tests for whole groups, 8 per page (AC-2)
+  - [x] Paged prompt view with remainder hidden and no counter (AC-1)
+  - [x] Page wiring forward plus back plus restart in container (AC-4)
+  - [x] Slide plus reduced motion plus announcement plus full suite (AC-3, AC-5)
+- [x] Verify it: `/check verify single line prompt paging`
+      Spec [0014](../specs/0014-single-line-prompt-paging/index.md) · code in `src/components/ClassicPrompt.tsx`, `src/features/classic/ClassicScreen.tsx`
 
 ## Deferred
 

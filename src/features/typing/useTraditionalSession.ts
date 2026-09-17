@@ -1,5 +1,5 @@
 /** Traditional session hook: Preeti keys in, Devanagari units out (spec 0007). */
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { calcAccuracy, calcWpm } from "../../domain/scoring";
 import {
   advancePreeti,
@@ -39,16 +39,33 @@ const FRESH: TraditionalState = {
  */
 export function useTraditionalSession(prompt: string, fingerGuidance: boolean): SessionApi {
   const [state, setState] = useState<TraditionalState>(FRESH);
+  const [elapsedMs, setElapsedMs] = useState(0);
   const startRef = useRef<number | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const promptUnits = useMemo(() => splitUnits(prompt), [prompt]);
   const { units, keystrokes, errorHits, wrongKey } = state;
   const typed = useMemo(() => units.join(""), [units]);
   const done = units.length >= promptUnits.length && promptUnits.length > 0;
-  const elapsed = startRef.current === null ? 0 : Date.now() - startRef.current;
+
+  useEffect(() => {
+    if (startRef.current !== null && !done) {
+      timerRef.current = setInterval(() => {
+        setElapsedMs(Date.now() - (startRef.current ?? Date.now()));
+      }, 100);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = null;
+    };
+  }, [done, promptUnits.length]);
+
   const wpm = useMemo(
-    () => calcWpm(countCorrectUnits(promptUnits, units), elapsed),
-    [promptUnits, units, elapsed],
+    () => calcWpm(countCorrectUnits(promptUnits, units), elapsedMs),
+    [promptUnits, units, elapsedMs],
   );
   const accuracy = calcAccuracy(keystrokes, errorHits);
   const upcoming = done ? "" : (promptUnits[units.length] ?? "");
@@ -206,7 +223,10 @@ export function useTraditionalSession(prompt: string, fingerGuidance: boolean): 
     },
     reset() {
       setState(FRESH);
+      setElapsedMs(0);
       startRef.current = null;
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = null;
     },
     buildAttempt(lessonId: string, startedIso: string, durationMs: number) {
       const safeDuration = Math.max(durationMs, 1);
