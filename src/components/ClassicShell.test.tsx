@@ -59,3 +59,25 @@ describe("classic shell menus", () => {
     expect(props.onSettings).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("classic shell toolbar layout", () => {
+  it("sizes to content on one row with wrap fallback", () => {
+    renderShell();
+    const toolbar = screen.getByRole("toolbar", { name: "screens" });
+    expect(toolbar.className).toContain("w-fit");
+    expect(toolbar.className).toContain("max-w-full");
+    expect(toolbar.className).toContain("flex-wrap");
+    for (const key of [
+      "classic.home",
+      "classic.top",
+      "classic.bottom",
+      "classic.all",
+      "classic.game",
+      "classic.free",
+    ] as const) {
+      expect(screen.getByRole("button", { name: key })).toBeDefined();
+    }
+    expect(screen.getByRole("group", { name: "classic.level" })).toBeDefined();
+    expect(screen.getByRole("group", { name: "language" })).toBeDefined();
+  });
+});

@@ -240,13 +240,13 @@ export function ClassicScreen({
       className="flex flex-1 flex-col bg-white focus:outline-none"
       style={{ outline: "none" }}
     >
-      <div className="mx-auto flex w-full flex-1 flex-col px-4 pt-6">
+      <div className="mx-auto flex w-full min-w-0 flex-1 flex-col px-4 pt-6">
         <div className="flex justify-end">
           <Button onClick={handleRestart} aria-label={text("typing.restart")}>
             {text("typing.restart")}
           </Button>
         </div>
-        <div className="flex flex-1 items-end justify-center pb-5">
+        <div className="flex w-full min-w-0 flex-1 items-end justify-safe-center overflow-hidden pb-5">
           <ClassicPrompt
             units={pageUnits}
             typed={pageTyped}

@@ -211,7 +211,7 @@ export function ClassicShell({
         </div>
       )}
       <div
-        className="flex w-[65%] flex-wrap items-stretch gap-1.5 p-1"
+        className="flex w-fit max-w-full flex-wrap items-stretch gap-1.5 p-1"
         role="toolbar"
         aria-label="screens"
       >
