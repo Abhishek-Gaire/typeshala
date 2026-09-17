@@ -1,5 +1,5 @@
 /** Session hook holding prompt vs typed plus live scores (spec 0004). */
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { calcAccuracy, calcWpm, countCorrect, deriveFinalErrors } from "../../domain/scoring";
 import { nextKey } from "../../domain/keymap";
 import type { NewAttempt } from "../../domain/datastore";
@@ -30,13 +30,30 @@ export function useTypingSession(prompt: string, fingerGuidance: boolean): Sessi
   const [keystrokes, setKeystrokes] = useState(0);
   const [errorHits, setErrorHits] = useState(0);
   const [wrongKey, setWrongKey] = useState<string | null>(null);
+  const [elapsedMs, setElapsedMs] = useState(0);
   const startRef = useRef<number | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const done = typed.length >= prompt.length && prompt.length > 0;
-  const elapsed = startRef.current === null ? 0 : Date.now() - startRef.current;
+
+  useEffect(() => {
+    if (startRef.current !== null && !done) {
+      timerRef.current = setInterval(() => {
+        setElapsedMs(Date.now() - (startRef.current ?? Date.now()));
+      }, 100);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = null;
+    };
+  }, [done]);
+
   const wpm = useMemo(
-    () => calcWpm(countCorrect(prompt, typed), elapsed),
-    [prompt, typed, elapsed],
+    () => calcWpm(countCorrect(prompt, typed), elapsedMs),
+    [prompt, typed, elapsedMs],
   );
   const accuracy = calcAccuracy(keystrokes, errorHits);
   const upcoming = done ? "" : (prompt[typed.length] ?? "");
@@ -79,7 +96,10 @@ export function useTypingSession(prompt: string, fingerGuidance: boolean): Sessi
       setTyped("");
       setKeystrokes(0);
       setErrorHits(0);
+      setElapsedMs(0);
       startRef.current = null;
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = null;
     },
     buildAttempt(lessonId: string, startedIso: string, durationMs: number) {
       const safeDuration = Math.max(durationMs, 1);

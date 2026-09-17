@@ -1,2 +1,14 @@
 @import "tailwindcss";
 @import "./styles/themes.css";
+
+/** Single line prompt paging slide (spec 0014 AC-3). Runs only under motion-safe. */
+@keyframes prompt-page-in {
+  from {
+    opacity: 0;
+    transform: translateX(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

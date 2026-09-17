@@ -5,6 +5,13 @@ import type { LayoutId, Lesson, NewAttempt } from "../../domain/datastore";
 import type { StringKey } from "../../i18n/keys";
 import { CLASSIC_DRILLS } from "../../domain/classicDrills";
 import { codeForNextUnit, lessonsForClassic } from "../../domain/classicLayout";
+import {
+  PROMPT_PAGE_SIZE,
+  chunkGroupsForPages,
+  pageIndexForCursor,
+  pageStartCursors,
+  tokensForPrompt,
+} from "../../domain/promptPaging";
 import { splitUnits } from "../../domain/preeti";
 import { calcWpm } from "../../domain/scoring";
 import { ClassicPrompt } from "../../components/ClassicPrompt";
@@ -25,12 +32,32 @@ function FreeView({
 }) {
   const [typed, setTyped] = useState("");
   const [press, setPress] = useState<KeyPress | null>(null);
+  const [elapsedMs, setElapsedMs] = useState(0);
   const startRef = useRef<number | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const boxRef = useRef<HTMLDivElement>(null);
+  const hasStarted = startRef.current !== null;
+
   useEffect(() => {
     boxRef.current?.focus();
   }, []);
-  const wpm = calcWpm(typed.length, startRef.current === null ? 0 : Date.now() - startRef.current);
+
+  useEffect(() => {
+    if (hasStarted) {
+      timerRef.current = setInterval(() => {
+        setElapsedMs(Date.now() - (startRef.current ?? Date.now()));
+      }, 100);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = null;
+    };
+  }, [hasStarted]);
+
+  const wpm = calcWpm(typed.length, elapsedMs);
   useEffect(() => {
     onStats(wpm);
   }, [wpm, onStats]);
@@ -74,7 +101,10 @@ function FreeView({
           variant="quiet"
           onClick={() => {
             setTyped("");
+            setElapsedMs(0);
             startRef.current = null;
+            if (timerRef.current) clearInterval(timerRef.current);
+            timerRef.current = null;
             boxRef.current?.focus();
           }}
         >
@@ -121,6 +151,21 @@ export function ClassicScreen({
   const units = useMemo(() => splitUnits(lesson.prompt), [lesson.prompt]);
   const doneUnits: string[] = session.units ?? session.typed.split("");
   const next: string = doneUnits.length < units.length ? units[doneUnits.length] : "";
+
+  /** Single line paging (spec 0014). Page follows the cursor, so forward
+   * typing advances, backspace returns, and restart resets to page 1. */
+  const tokens = useMemo(() => tokensForPrompt(lesson.prompt), [lesson.prompt]);
+  const pages = useMemo(() => chunkGroupsForPages(tokens, PROMPT_PAGE_SIZE), [tokens]);
+  const starts = useMemo(
+    () => pageStartCursors(pages, (token) => splitUnits(token).length),
+    [pages],
+  );
+  const pageTotal = Math.max(pages.length, 1);
+  const activePage = pages.length === 0 ? 0 : pageIndexForCursor(starts, doneUnits.length);
+  const pageStart = starts[activePage] ?? 0;
+  const pageEnd = activePage + 1 < starts.length ? starts[activePage + 1] : units.length;
+  const pageUnits = units.slice(pageStart, pageEnd);
+  const pageTyped = doneUnits.slice(pageStart, pageEnd);
 
   const saved = useRef(false);
   const startMs = useRef(Date.now());
@@ -202,7 +247,12 @@ export function ClassicScreen({
           </Button>
         </div>
         <div className="flex flex-1 items-end justify-center pb-5">
-          <ClassicPrompt units={units} typed={doneUnits} />
+          <ClassicPrompt
+            units={pageUnits}
+            typed={pageTyped}
+            pageIndex={activePage}
+            pageTotal={pageTotal}
+          />
         </div>
         <ClassicKeyboard layout={layout} next={next} press={press} />
       </div>
