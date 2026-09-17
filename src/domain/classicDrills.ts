@@ -116,7 +116,8 @@ export const CLASSIC_DRILLS: Lesson[] = [
     id: "cl-home-1-en",
     layout: "qwerty",
     title: "Home L1",
-    prompt: "aaa sss aaa sss aaa sss aaa",
+    prompt:
+      "aaa jjj aaa jjj aaa jjj aaa jjj aaa jjj aaa jjj aaa jjj aaa jjj aaa jjj aaa jjj sss kkk sss kkk sss kkk sss kkk sss kkk sss kkk sss kkk sss kkk sss kkk sss kkk ddd lll ddd lll ddd lll ddd lll ddd lll ddd lll ddd lll ddd lll ddd lll ddd lll fff ;;; fff ;;; fff ;;; fff ;;; fff ;;; fff ;;; fff ;;; fff ;;; fff ;;; fff ;;; ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh",
     order: 201,
     category: "home",
     difficulty: 1,
@@ -125,7 +126,8 @@ export const CLASSIC_DRILLS: Lesson[] = [
     id: "cl-home-2-en",
     layout: "qwerty",
     title: "Home L2",
-    prompt: "a s d f a d s f d a f s",
+    prompt:
+      "asd asd asd asd asd asd asd asd asd asd jkl jkl jkl jkl jkl jkl jkl jkl jkl jkl sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf hk; hk; hk; hk; hk; hk; hk; hk; hk; hk; adg adg adg adg adg adg adg adg adg adg jl; jl; jl; jl; jl; jl; jl; jl; jl; jl;",
     order: 202,
     category: "home",
     difficulty: 2,
@@ -134,7 +136,8 @@ export const CLASSIC_DRILLS: Lesson[] = [
     id: "cl-home-3-en",
     layout: "qwerty",
     title: "Home L3",
-    prompt: "a s d f g h j a f d s g j h d a f s g a j d h",
+    prompt:
+      "ajk ajk ajk ajk ajk ajk ajk ajk ajk ajk sdl sdl sdl sdl sdl sdl sdl sdl sdl sdl fj; fj; fj; fj; fj; fj; fj; fj; fj; fj; ghd ghd ghd ghd ghd ghd ghd ghd ghd ghd akj akj akj akj akj akj akj akj akj akj dsl dsl dsl dsl dsl dsl dsl dsl dsl dsl ;lf ;lf ;lf ;lf ;lf ;lf ;lf ;lf ;lf ;lf hgj hgj hgj hgj hgj hgj hgj hgj hgj hgj",
     order: 203,
     category: "home",
     difficulty: 3,
@@ -143,7 +146,8 @@ export const CLASSIC_DRILLS: Lesson[] = [
     id: "cl-top-1-en",
     layout: "qwerty",
     title: "Top L1",
-    prompt: "qqq www qqq www qqq www qqq",
+    prompt:
+      "qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp www ooo www ooo www ooo www ooo www ooo www ooo www ooo www ooo www ooo eee iii eee iii eee iii eee iii eee iii eee iii eee iii eee iii eee iii rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy",
     order: 204,
     category: "top",
     difficulty: 1,
@@ -152,7 +156,8 @@ export const CLASSIC_DRILLS: Lesson[] = [
     id: "cl-top-2-en",
     layout: "qwerty",
     title: "Top L2",
-    prompt: "q w e r q e w r e q r w",
+    prompt:
+      "qwe qwe qwe qwe qwe qwe qwe qwe qwe qwe wer wer wer wer wer wer wer wer wer wer ert ert ert ert ert ert ert ert ert ert yui yui yui yui yui yui yui yui yui yui uio uio uio uio uio uio uio uio uio uio iop iop iop iop iop iop iop iop iop iop",
     order: 205,
     category: "top",
     difficulty: 2,
@@ -161,7 +166,8 @@ export const CLASSIC_DRILLS: Lesson[] = [
     id: "cl-top-3-en",
     layout: "qwerty",
     title: "Top L3",
-    prompt: "q w e r t y q e w r t y e q r w t q y e r",
+    prompt:
+      "qyu qyu qyu qyu qyu qyu qyu qyu qyu qyu woi woi woi woi woi woi woi woi woi woi epr epr epr epr epr epr epr epr epr epr yqw yqw yqw yqw yqw yqw yqw yqw yqw yqw uoe uoe uoe uoe uoe uoe uoe uoe uoe uoe rit rit rit rit rit rit rit rit rit rit pir pir pir pir pir pir pir pir pir pir tyq tyq tyq tyq tyq tyq tyq tyq tyq tyq",
     order: 206,
     category: "top",
     difficulty: 3,
@@ -170,7 +176,8 @@ export const CLASSIC_DRILLS: Lesson[] = [
     id: "cl-bottom-1-en",
     layout: "qwerty",
     title: "Bottom L1",
-    prompt: "zzz xxx zzz xxx zzz xxx zzz",
+    prompt:
+      "zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn",
     order: 207,
     category: "bottom",
     difficulty: 1,
@@ -179,7 +186,8 @@ export const CLASSIC_DRILLS: Lesson[] = [
     id: "cl-bottom-2-en",
     layout: "qwerty",
     title: "Bottom L2",
-    prompt: "z x c v z c x v c z v x",
+    prompt:
+      "zxc zxc zxc zxc zxc zxc zxc zxc zxc zxc xcv xcv xcv xcv xcv xcv xcv xcv xcv xcv cvb cvb cvb cvb cvb cvb cvb cvb cvb cvb nm, nm, nm, nm, nm, nm, nm, nm, nm, nm, m,. m,. m,. m,. m,. m,. m,. m,. m,. m,. ,./ ,./ ,./ ,./ ,./ ,./ ,./ ,./ ,./ ,./",
     order: 208,
     category: "bottom",
     difficulty: 2,
@@ -188,7 +196,8 @@ export const CLASSIC_DRILLS: Lesson[] = [
     id: "cl-bottom-3-en",
     layout: "qwerty",
     title: "Bottom L3",
-    prompt: "z x c v b n z c x v b n c z v x n b v z x c n",
+    prompt:
+      "znm znm znm znm znm znm znm znm znm znm x,. x,. x,. x,. x,. x,. x,. x,. x,. x,. cv/ cv/ cv/ cv/ cv/ cv/ cv/ cv/ cv/ cv/ vbn vbn vbn vbn vbn vbn vbn vbn vbn vbn bz/ bz/ bz/ bz/ bz/ bz/ bz/ bz/ bz/ bz/ mcz mcz mcz mcz mcz mcz mcz mcz mcz mcz nxm nxm nxm nxm nxm nxm nxm nxm nxm nxm /vx /vx /vx /vx /vx /vx /vx /vx /vx /vx",
     order: 209,
     category: "bottom",
     difficulty: 3,
@@ -197,7 +206,8 @@ export const CLASSIC_DRILLS: Lesson[] = [
     id: "cl-all-1-en",
     layout: "qwerty",
     title: "All L1",
-    prompt: "aaa qqq zzz sss www xxx aaa",
+    prompt:
+      "aaa jjj aaa jjj aaa jjj aaa jjj aaa jjj aaa jjj aaa jjj aaa jjj aaa jjj sss kkk sss kkk sss kkk sss kkk sss kkk sss kkk sss kkk sss kkk sss kkk ddd lll ddd lll ddd lll ddd lll ddd lll ddd lll ddd lll ddd lll ddd lll fff ;;; fff ;;; fff ;;; fff ;;; fff ;;; fff ;;; fff ;;; fff ;;; fff ;;; ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp www ooo www ooo www ooo www ooo www ooo www ooo www ooo www ooo www ooo eee iii eee iii eee iii eee iii eee iii eee iii eee iii eee iii eee iii rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn",
     order: 210,
     category: "all",
     difficulty: 1,
@@ -206,7 +216,8 @@ export const CLASSIC_DRILLS: Lesson[] = [
     id: "cl-all-2-en",
     layout: "qwerty",
     title: "All L2",
-    prompt: "a q z s w x d c a s q x w d z c",
+    prompt:
+      "asd asd asd asd asd asd asd asd asd asd jkl jkl jkl jkl jkl jkl jkl jkl jkl jkl qwe qwe qwe qwe qwe qwe qwe qwe qwe qwe yui yui yui yui yui yui yui yui yui yui zxc zxc zxc zxc zxc zxc zxc zxc zxc zxc nm, nm, nm, nm, nm, nm, nm, nm nm, nm, nm, nm,",
     order: 211,
     category: "all",
     difficulty: 2,
@@ -215,7 +226,8 @@ export const CLASSIC_DRILLS: Lesson[] = [
     id: "cl-all-3-en",
     layout: "qwerty",
     title: "All L3",
-    prompt: "a q z s w x d c e v f b a d s q c x w e z v f",
+    prompt:
+      "qaj qaj qaj qaj qaj qaj qaj qaj qaj qaj wsl wsl wsl wsl wsl wsl wsl wsl wsl wsl eok eok eok eok eok eok eok eok eok eok rpm rpm rpm rpm rpm rpm rpm rpm rpm rpm tyh tyh tyh tyh tyh tyh tyh tyh tyh tyh uxd uxd uxd uxd uxd uxd uxd uxd uxd uxd ivc ivc ivc ivc ivc ivc ivc ivc ivc ivc ozb ozb ozb ozb ozb ozb ozb ozb ozb ozb",
     order: 212,
     category: "all",
     difficulty: 3,

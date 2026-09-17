@@ -23,7 +23,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 10  | Settings language and themes              | Release 4  | done   |
 | 11  | Bonus Ramayana game                       | Release 5  | done   |
 | 12  | Polish and packaging three systems        | Release 6  | done   |
-| 13  | Classic practice screens                  | Release 7  | in-progress |
+| 13  | Classic practice screens                  | Release 7  | done |
 
 ## Foundations
 
@@ -188,7 +188,7 @@ Tidy theming, copy in both languages, icons, and native installers for Windows, 
 
 ## Release 7: classic parity
 
-### 13. Classic practice screens · in-progress
+### 13. Classic practice screens · done
 
 Bring back the classic six screen shell (Home, Top, Bottom, All, Game, Free) with one shared toolbar, level switch, language switch, two line prompt, and full virtual keyboard, each drill screen covering its own key set.
 **Done when:** each of Home, Top, Bottom, All drills its own set through the shared shell, Game runs the Ramayana game inside the shell, Free types with no save, and level plus language rules hold.
@@ -199,6 +199,7 @@ Bring back the classic six screen shell (Home, Top, Bottom, All, Game, Free) wit
   - [x] Prompt plus keyboard plus shell chrome on tokens (AC-1, AC-6, AC-7)
   - [x] Six screens composed with level plus language preserved (AC-1, AC-2, AC-3, AC-5)
   - [x] Save plus error plus empty states in active language (AC-8)
+  - [x] English drill pattern per spec 0013 (AC-1 to AC-5 of spec 0013)
 - [x] Verify it: `/check verify classic practice screens`
       Spec [0012](../specs/0012-classic-practice-screens/index.md) · code in `src/domain/classicLayout.ts`, `src/domain/classicDrills.ts`, `src/components/ClassicShell.tsx`, `src/components/ClassicKeyboard.tsx`, `src/components/ClassicPrompt.tsx`, `src/features/classic/ClassicScreen.tsx`, `src/App.tsx`
 
