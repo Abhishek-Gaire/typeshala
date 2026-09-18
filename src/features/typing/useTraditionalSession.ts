@@ -61,7 +61,9 @@ export function useTraditionalSession(prompt: string, fingerGuidance: boolean): 
       if (timerRef.current) clearInterval(timerRef.current);
       timerRef.current = null;
     };
-  }, [done, promptUnits.length]);
+    // Keystrokes/units re-run the effect so the interval actually starts
+    // on the first key: startRef mutation alone never re-renders.
+  }, [done, promptUnits.length, keystrokes, units.length]);
 
   const wpm = useMemo(
     () => calcWpm(countCorrectUnits(promptUnits, units), elapsedMs),

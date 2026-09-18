@@ -24,19 +24,171 @@
     "level": "simple"
   },
   {
-    "id": "nt-matra",
+    "id": "nt-cons-c",
     "layout": "traditional",
-    "title": "मात्रा",
-    "prompt": "मामा पानी फूल सुन बिहान मेहनत यो अंश शहर भवन भाषा",
+    "title": "व्यञ्जन ३",
+    "prompt": "प फ ब भ म य र ल व श ष स ह",
     "order": 4,
+    "level": "simple"
+  },
+  {
+    "id": "nt-matra-a",
+    "layout": "traditional",
+    "title": "मात्रा १ (आ इ ई)",
+    "prompt": "काका माया पानी पीपल दीदी",
+    "order": 5,
     "level": "matra"
   },
   {
-    "id": "nt-conjunct",
+    "id": "nt-matra-b",
     "layout": "traditional",
-    "title": "संयुक्ताक्षर",
-    "prompt": "क्षमा ज्ञान श्रम",
-    "order": 5,
+    "title": "मात्रा २ (उ ऊ ए ऐ)",
+    "prompt": "फूल धुन खेत बैजु कोएँ सेरो",
+    "order": 6,
+    "level": "matra"
+  },
+  {
+    "id": "nt-matra-c",
+    "layout": "traditional",
+    "title": "मात्रा ३ (ओ औ अं अः)",
+    "prompt": "मोर और काउँ गाउँ साँझ",
+    "order": 7,
+    "level": "matra"
+  },
+  {
+    "id": "nt-matra-words",
+    "layout": "traditional",
+    "title": "मात्रा शब्द अभ्यास",
+    "prompt": "मामा पानी फूल सुन बिहान मेहनत यो अंश शहर भवन भाषा घर परिवार विद्यालय शिक्षक विद्यार्थी पुस्तक कलम",
+    "order": 8,
+    "level": "matra"
+  },
+  {
+    "id": "nt-conjunct-a",
+    "layout": "traditional",
+    "title": "संयुक्ताक्षर १",
+    "prompt": "क्षमा ज्ञान श्रम त्रिशूल क्रोध दृष्टि",
+    "order": 9,
     "level": "conjunct"
+  },
+  {
+    "id": "nt-conjunct-b",
+    "layout": "traditional",
+    "title": "संयुक्ताक्षर २",
+    "prompt": "सम्पर्क सन्तोष स्वतन्त्रता परिषद्",
+    "order": 10,
+    "level": "conjunct"
+  },
+  {
+    "id": "nt-conjunct-c",
+    "layout": "traditional",
+    "title": "संयुक्ताक्षर ३",
+    "prompt": "प्रकाश प्रतिक्रिया प्रत्यक्ष प्रकार",
+    "order": 11,
+    "level": "conjunct"
+  },
+  {
+    "id": "nt-numbers",
+    "layout": "traditional",
+    "title": "अङ्कहरू",
+    "prompt": "१ २ ३ ४ ५ ६ ७ ८ ९ ०",
+    "order": 12,
+    "level": "simple"
+  },
+  {
+    "id": "nt-punctuation",
+    "layout": "traditional",
+    "title": "विराम चिन्ह",
+    "prompt": "। , ? ! : ; \" ' ( ) [ ]",
+    "order": 13,
+    "level": "simple"
+  },
+  {
+    "id": "nt-common-words-a",
+    "layout": "traditional",
+    "title": "सामान्य शब्द १",
+    "prompt": "नमस्ते धन्यवाद कृपया माफ गर्नुहोस् होइन हो राम्रो नराम्रो सजिलो गाह्रो",
+    "order": 14,
+    "level": "matra"
+  },
+  {
+    "id": "nt-common-words-b",
+    "layout": "traditional",
+    "title": "सामान्य शब्द २",
+    "prompt": "आज भोली हिजो बिहान बेलुका साँझ रात दिन सप्ताह महिना वर्ष",
+    "order": 15,
+    "level": "matra"
+  },
+  {
+    "id": "nt-common-words-c",
+    "layout": "traditional",
+    "title": "सामान्य शब्द ३",
+    "prompt": "एक दो तीन चार पाँच छ सात आठ नौ दस सय हजार लाख करोड",
+    "order": 16,
+    "level": "matra"
+  },
+  {
+    "id": "nt-sentences-a",
+    "layout": "traditional",
+    "title": "सरल वाक्य १",
+    "prompt": "म नेपाली बोल्छु। तपाईँ कस्तो छनुहुन्छ? म ठिक छु।",
+    "order": 17,
+    "level": "matra"
+  },
+  {
+    "id": "nt-sentences-b",
+    "layout": "traditional",
+    "title": "सरल वाक्य २",
+    "prompt": "यो मेरो किताब हो। तपाईँको नाम के हो? मेरो नाम राम हो।",
+    "order": 18,
+    "level": "matra"
+  },
+  {
+    "id": "nt-sentences-c",
+    "layout": "traditional",
+    "title": "सरल वाक्य ३",
+    "prompt": "म स्कुल जान्छु। मलाई पढ्न मन पर्छ। गुरुजी सिकाउनुहुन्छ।",
+    "order": 19,
+    "level": "matra"
+  },
+  {
+    "id": "nt-home-row-drill",
+    "layout": "traditional",
+    "title": "होम रो अभ्यास",
+    "prompt": "ककक खखख गगग घघघ ङङङ चचच छछछ जजज झझझ ञञञ टटट ठठठ डडड ढढढ णणण",
+    "order": 20,
+    "level": "simple"
+  },
+  {
+    "id": "nt-top-row-drill",
+    "layout": "traditional",
+    "title": "टप रो अभ्यास",
+    "prompt": "ततत थथथ ददद धधध ननन पपप फफफ बबब भभभ ममम",
+    "order": 21,
+    "level": "simple"
+  },
+  {
+    "id": "nt-bottom-row-drill",
+    "layout": "traditional",
+    "title": "बटम रो अभ्यास",
+    "prompt": "ययय ररर ललल ववव शशश षषष ससस हहह",
+    "order": 22,
+    "level": "simple"
+  },
+  {
+    "id": "nt-mixed-drill-a",
+    "layout": "traditional",
+    "title": "मिश्रित अभ्यास १",
+    "prompt": "क त प क त प ग द ब ग द ब च छ ज च छ ज ट ठ ड ट ठ ड",
+    "order": 23,
+    "level": "simple"
+  },
+  {
+    "id": "nt-mixed-drill-b",
+    "layout": "traditional",
+    "title": "मिश्रित अभ्यास २",
+    "prompt": "न म य र ल व श स ह न म य र ल व श स ह ङ ञ ण न म य र",
+    "order": 24,
+    "level": "simple"
   }
 ]

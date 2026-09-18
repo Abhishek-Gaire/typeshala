@@ -8,7 +8,7 @@ import {
   lessonsForClassic,
   mapLevelToCategory,
 } from "./classicLayout";
-import { lintClassicDrills } from "./classicDrills";
+import { ALL_CLASSIC_DRILLS, lintClassicDrills } from "./classicDrills";
 import { splitUnits } from "./preeti";
 
 describe("difficulty validator", () => {
@@ -21,6 +21,25 @@ describe("difficulty validator", () => {
   });
   it("all bundled drill rows pass lint", () => {
     expect(lintClassicDrills()).toEqual([]);
+  });
+});
+
+describe("traditional drill rows (spec 0015)", () => {
+  it("serves one new row per screen and level in the traditional layout", () => {
+    const traditional = ALL_CLASSIC_DRILLS.filter((l) => l.layout === "traditional");
+    for (const screen of ["home", "top", "bottom", "all"] as const) {
+      for (const level of [1, 2, 3]) {
+        const hits = lessonsForClassic(traditional, screen, level);
+        expect(hits.map((l) => l.id)).toEqual([`cl-${screen}-${String(level)}-tr`]);
+      }
+    }
+  });
+
+  it("keeps matra keys in real Preeti combos, never standalone", () => {
+    const home = ALL_CLASSIC_DRILLS.find((l) => l.id === "cl-home-1-tr");
+    expect(home?.prompt).toContain("कि");
+    expect(home?.prompt).toContain("वा");
+    expect(splitUnits(home?.prompt ?? "")).not.toContain("ि");
   });
 });
 

@@ -1,9 +1,9 @@
 /** Classic drill plus free screens inside the shared shell (spec 0012 AC-1, AC-3, AC-6). */
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { ClassicCategory, ClassicScreenId } from "../../domain/classicLayout";
+import type { ClassicCategory, ClassicScreenId, ClassicKey } from "../../domain/classicLayout";
 import type { LayoutId, Lesson, NewAttempt } from "../../domain/datastore";
 import type { StringKey } from "../../i18n/keys";
-import { CLASSIC_DRILLS } from "../../domain/classicDrills";
+import { ALL_CLASSIC_DRILLS } from "../../domain/classicDrills";
 import { codeForNextUnit, lessonsForClassic } from "../../domain/classicLayout";
 import {
   PROMPT_PAGE_SIZE,
@@ -19,6 +19,13 @@ import { ClassicKeyboard, type KeyPress } from "../../components/ClassicKeyboard
 import { Button } from "../../components/Button";
 import { useTypingSession } from "../typing/useTypingSession";
 import { useTraditionalSession } from "../typing/useTraditionalSession";
+
+/** Touch taps must not move focus into the practice box: on Android a touch
+ * driven focus summons the device keyboard, which the app board replaces
+ * (spec 0016). Mouse keeps click to focus for desktop. */
+function guardTouchFocus(e: React.PointerEvent) {
+  if (e.pointerType === "touch") e.preventDefault();
+}
 
 /** Unbounded free typing state. No prompt, no save, live speed only. */
 function FreeView({
@@ -80,11 +87,28 @@ function FreeView({
     }
   }
 
+  /** Touch path (spec 0016): taps on the app board type directly, so the
+   * device keyboard never needs to open. Drill prompts use base chars only,
+   * matching what an unshifted physical press produces. */
+  function onTapKey(key: ClassicKey) {
+    if (key.code === "Backspace") {
+      setPress((p) => ({ code: "Backspace", correct: false, n: (p?.n ?? 0) + 1 }));
+      setTyped((prev) => prev.slice(0, -1));
+    } else if (key.kind === "char" || key.kind === "space") {
+      if (startRef.current === null) startRef.current = Date.now();
+      setPress((p) => ({ code: key.code, correct: true, n: (p?.n ?? 0) + 1 }));
+      const char = key.kind === "space" ? " " : key.base;
+      setTyped((prev) => prev + char);
+    }
+    boxRef.current?.focus();
+  }
+
   return (
     <div
       ref={boxRef}
       tabIndex={0}
       onKeyDown={onKey}
+      onPointerDown={guardTouchFocus}
       role="textbox"
       aria-label={text("classic.free")}
       className="rounded bg-white p-6 focus:outline-none"
@@ -95,7 +119,7 @@ function FreeView({
       <p role="status" className="mt-2 text-sm">
         {text("typing.wpm")}: {wpm}
       </p>
-      <ClassicKeyboard layout={layout} next={last} press={press} />
+      <ClassicKeyboard layout={layout} next={last} press={press} onTapKey={onTapKey} />
       <div className="mt-4">
         <Button
           variant="quiet"
@@ -134,7 +158,7 @@ export function ClassicScreen({
     if (screen === "free") {
       return { id: "free", layout, title: "free", prompt: " ", order: 0 };
     }
-    const pool = CLASSIC_DRILLS.filter(
+    const pool = ALL_CLASSIC_DRILLS.filter(
       (l) => l.layout === (layout === "traditional" ? "traditional" : "qwerty"),
     );
     const hits = lessonsForClassic(pool, screen, level);
@@ -216,6 +240,25 @@ export function ClassicScreen({
     }
   }
 
+  /** Touch path (spec 0016): taps on the app board type directly, so the
+   * device keyboard never needs to open. A tap carries its physical code, so
+   * correctness marking matches the physical path exactly. */
+  function onTapKey(key: ClassicKey) {
+    if (key.code === "Backspace") {
+      setPress((p) => ({ code: "Backspace", correct: false, n: (p?.n ?? 0) + 1 }));
+      session.backspace();
+    } else if (key.kind === "char" || key.kind === "space") {
+      const expectedCode = codeForNextUnit(next, layout);
+      setPress((p) => ({
+        code: key.code,
+        correct: expectedCode !== "" && key.code === expectedCode,
+        n: (p?.n ?? 0) + 1,
+      }));
+      session.typeChar(key.kind === "space" ? " " : key.base);
+    }
+    boxRef.current?.focus();
+  }
+
   function handleRestart() {
     english.reset();
     traditional.reset();
@@ -235,6 +278,7 @@ export function ClassicScreen({
       ref={boxRef}
       tabIndex={0}
       onKeyDown={onKey}
+      onPointerDown={guardTouchFocus}
       role="textbox"
       aria-label={lesson.title}
       className="flex flex-1 flex-col bg-white focus:outline-none"
@@ -254,7 +298,7 @@ export function ClassicScreen({
             pageTotal={pageTotal}
           />
         </div>
-        <ClassicKeyboard layout={layout} next={next} press={press} />
+        <ClassicKeyboard layout={layout} next={next} press={press} onTapKey={onTapKey} />
       </div>
     </div>
   );
