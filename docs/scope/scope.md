@@ -26,7 +26,8 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 13  | Classic practice screens                  | Release 7  | done   |
 | 14  | Single line prompt paging                 | Release 7  | done   |
 | 15  | Nepali Traditional drill content pattern  | Release 7  | done   |
-| 16  | Android immersive plus touch board        | Release 8  | in-progress |
+| 16  | Android immersive plus touch board        | Release 8  | done |
+| 17  | Release pipeline with mirrored CI         | Release 9  | done |
 
 ## Foundations
 
@@ -237,7 +238,7 @@ Add mirrored finger pair drills for Traditional layout on Home, Top, Bottom, All
 
 ## Release 8: Android practice
 
-### 16. Android immersive plus touch board · in-progress
+### 16. Android immersive plus touch board · done
 
 Run the classic tutor fullscreen on Android in landscape with the status bar hidden until swipe, the device keyboard kept down, and the app board handling touch so every tap types directly.
 **Done when:** the app launches in landscape with bars hidden, board taps type with physical parity and no device keyboard, swipe reveals bars that auto hide, and rotation stays locked.
@@ -249,6 +250,17 @@ Run the classic tutor fullscreen on Android in landscape with the status bar hid
   - [x] Debug APK device test (AC-1, AC-2, AC-3, AC-4)
 - [x] Verify it: `/check verify android immersive input fixes` (live device: hidden bars, transient swipe, sensor lock, no IME; web boot plus 176 tests green)
       Spec [0016](../specs/0016-android-immersive-input-fixes.md) · code in `src/components/ClassicKeyboard.tsx`, `src/features/classic/ClassicScreen.tsx`, `src-tauri/gen/android/`
+
+## Release 9: release automation
+
+### 17. Release pipeline with mirrored CI · done
+
+Build desktop installers for all three systems on every push to the release branch through GitHub Actions, with GitLab as source of truth push mirrored to GitHub, so each release ships from a draft with all assets attached.
+**Done when:** pushing to release turns green on all four jobs and yields a draft release holding the nine installer assets.
+
+- [x] Build it: release workflow with four job matrix (macOS arm64 plus x64, Ubuntu, Windows) on `tauri-action`
+- [x] Verify it: green CI run plus draft release with 9 assets plus AppImage smoke test on device host
+      Code in `.github/workflows/release.yml`
 
 ## Deferred
 

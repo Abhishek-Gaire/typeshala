@@ -15,5 +15,6 @@ Tauri generated Android project plus tuned activity config (spec 0016). Regenera
 - `tauri android init` regenerates stock files and wipes these edits. After rerunning it, review the diff on the four paths above before committing.
 - Refresh all icons with `npm run tauri -- icon src-tauri/icons/icon.png`, then rebuild the APK. Uninstall from the device first when the launcher caches the old icon.
 - Bars stay hidden with transient swipe reveal; the device keyboard stays down (`stateHidden|adjustPan`) because touch types through the app board, see `src/components/ClassicKeyboard.tsx`.
+- Gradle runs on Java 17 only (`org.gradle.java.home` in `gradle.properties`). Newer JDKs fail the build with `Unsupported class file major version`. Rust needs the four Android targets via rustup plus `ANDROID_HOME`, `NDK_HOME`, `JAVA_HOME` exports in your shell.
 
 _Drafted by /sync from the introducing change, worth a quick human pass._

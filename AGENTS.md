@@ -65,6 +65,14 @@ Build specs live in `docs/specs/`. Format: `docs/specs/NNNN-title.md` for short 
 - commit: per-milestone
 - push: you push by hand, workflow only adds plus commits
 
+## Release
+
+- GitLab is source of truth, push mirrored to GitHub. CI runs on GitHub only.
+- Release branch is `release`. Push `main` there to ship: `git push origin main:release`.
+- Workflow `.github/workflows/release.yml` builds macOS arm64 plus x64, Ubuntu, Windows and opens a draft release. Review assets, then publish by hand.
+- Bump `package.json` plus `src-tauri/tauri.conf.json` plus `src-tauri/Cargo.toml` in lockstep per release, else the next push reuses the old draft.
+- Main window launches maximized (`tauri.conf.json`). Swap to `fullscreen` only if chrome free kiosk mode is wanted.
+
 ## Agent skills
 
 - [tauri](.agents/skills/tauri/): `full-stack-skills/tauri-skills`, native shell plus bridge habits
