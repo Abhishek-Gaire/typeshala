@@ -1,117 +1,13 @@
-/** Bundled classic drill rows (spec 0012 AC-4). L1 allows repeats, L2/L3 never repeat back to back. */
+/**
+ * Bundled classic drill rows. English rows follow spec 0013; Traditional rows
+ * follow spec 0015. L1 allows repeats, L2/L3 never repeat back to back.
+ */
 import { splitUnits } from "./preeti";
 import { drillPassesDifficulty } from "./classicLayout";
 import type { Lesson } from "./datastore";
 
+/** English (QWERTY) drill rows, spec 0013. */
 export const CLASSIC_DRILLS: Lesson[] = [
-  {
-    id: "cl-home-1",
-    layout: "traditional",
-    title: "Home L1",
-    prompt: "ममम पपप ममम पपप ममम पपप ममम",
-    order: 101,
-    category: "home",
-    difficulty: 1,
-  },
-  {
-    id: "cl-home-2",
-    layout: "traditional",
-    title: "Home L2",
-    prompt: "म प न त म प न त प म त न",
-    order: 102,
-    category: "home",
-    difficulty: 2,
-  },
-  {
-    id: "cl-home-3",
-    layout: "traditional",
-    title: "Home L3",
-    prompt: "म प न त क स म न प त क स प म त न क प स म",
-    order: 103,
-    category: "home",
-    difficulty: 3,
-  },
-  {
-    id: "cl-top-1",
-    layout: "traditional",
-    title: "Top L1",
-    prompt: "गगग चचच गगग चचच गगग चचच गगग",
-    order: 104,
-    category: "top",
-    difficulty: 1,
-  },
-  {
-    id: "cl-top-2",
-    layout: "traditional",
-    title: "Top L2",
-    prompt: "ग च त थ ग त च थ त ग थ च",
-    order: 105,
-    category: "top",
-    difficulty: 2,
-  },
-  {
-    id: "cl-top-3",
-    layout: "traditional",
-    title: "Top L3",
-    prompt: "ग च त थ ध भ य उ थ ग ध च भ य त ग उ थ ध ग भ च",
-    order: 106,
-    category: "top",
-    difficulty: 3,
-  },
-  {
-    id: "cl-bottom-1",
-    layout: "traditional",
-    title: "Bottom L1",
-    prompt: "शशश हहह शशश हहह शशश हहह शशश",
-    order: 107,
-    category: "bottom",
-    difficulty: 1,
-  },
-  {
-    id: "cl-bottom-2",
-    layout: "traditional",
-    title: "Bottom L2",
-    prompt: "श ह अ ख श अ ह ख अ श ख ह",
-    order: 108,
-    category: "bottom",
-    difficulty: 2,
-  },
-  {
-    id: "cl-bottom-3",
-    layout: "traditional",
-    title: "Bottom L3",
-    prompt: "श ह अ ख द ल अ श ख ह ल द ह श अ द ख ल श द ह ख",
-    order: 109,
-    category: "bottom",
-    difficulty: 3,
-  },
-  {
-    id: "cl-all-1",
-    layout: "traditional",
-    title: "All L1",
-    prompt: "ममम पपप ककक खखख ममम पपप ककक",
-    order: 110,
-    category: "all",
-    difficulty: 1,
-  },
-  {
-    id: "cl-all-2",
-    layout: "traditional",
-    title: "All L2",
-    prompt: "म प क ख न त ब ल म क प ख त न ल ब",
-    order: 111,
-    category: "all",
-    difficulty: 2,
-  },
-  {
-    id: "cl-all-3",
-    layout: "traditional",
-    title: "All L3",
-    prompt: "म प क ख न त ब ल च छ व श म क प ख न ल त ब च प व छ श",
-    order: 112,
-    category: "all",
-    difficulty: 3,
-  },
   {
     id: "cl-home-1-en",
     layout: "qwerty",
@@ -234,8 +130,138 @@ export const CLASSIC_DRILLS: Lesson[] = [
   },
 ];
 
+/**
+ * Traditional (Preeti) drill rows per spec 0015, mirrored finger pairs with
+ * matra combos. Groups are ordered so group boundaries never repeat a unit.
+ */
+export const CLASSIC_DRILLS_TRADITIONAL: Lesson[] = [
+  {
+    id: "cl-home-1-tr",
+    layout: "traditional",
+    title: "Home L1",
+    prompt:
+      "बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज",
+    order: 301,
+    category: "home",
+    difficulty: 1,
+  },
+  {
+    id: "cl-home-2-tr",
+    layout: "traditional",
+    title: "Home L2",
+    prompt:
+      "बसि बसि बसि बसि बसि बसि बसि बसि बसि बसि किम किम किम किम किम किम किम किम किम किम वान वान वान वान वान वान वान वान वान वान मपव मपव मपव मपव मपव मपव मपव मपव मपव मपव नजब नजब नजब नजब नजब नजब नजब नजब नजब नजब",
+    order: 302,
+    category: "home",
+    difficulty: 2,
+  },
+  {
+    id: "cl-home-3-tr",
+    layout: "traditional",
+    title: "Home L3",
+    prompt:
+      "बसकि बसकि बसकि बसकि बसकि बसकि बसकि बसकि बसकि बसकि मपवा मपवा मपवा मपवा मपवा मपवा मपवा मपवा मपवा मपवा नजमप नजमप नजमप नजमप नजमप नजमप नजमप नजमप नजमप नजमप बसनज बसनज बसनज बसनज बसनज बसनज बसनज बसनज बसनज बसनज बसनज किवा किवा किवा किवा किवा किवा किवा किवा किवा किवा",
+    order: 303,
+    category: "home",
+    difficulty: 3,
+  },
+  {
+    id: "cl-top-1-tr",
+    layout: "traditional",
+    title: "Top L1",
+    prompt:
+      "त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ",
+    order: 304,
+    category: "top",
+    difficulty: 1,
+  },
+  {
+    id: "cl-top-2-tr",
+    layout: "traditional",
+    title: "Top L2",
+    prompt:
+      "त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ धयई धयई धयई धयई धयई धयई धयई धयई धयई धयई भईच भईच भईच भईच भईच भईच भईच भईच भईच भईच तथउ तथउ तथउ तथउ तथउ तथउ तथउ तथउ तथउ तथउ तथउ चगथ चगथ चगथ चगथ चगथ चगथ चगथ चगथ चगथ चगथ",
+    order: 305,
+    category: "top",
+    difficulty: 2,
+  },
+  {
+    id: "cl-top-3-tr",
+    layout: "traditional",
+    title: "Top L3",
+    prompt:
+      "त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय भईच भईच भईच भईच भईच भईच भईच भईच भईच भईच गथउ गथउ गथउ गथउ गथउ गथउ गथउ गथउ गथउ गथउ त्रभई त्रभई त्रभई त्रभई त्रभई त्रभई त्रभई त्रभई त्रभई त्रभई धचग धचग धचग धचग धचग धचग धचग धचग धचग धचग तथउ तथउ तथउ तथउ तथउ तथउ तथउ तथउ तथउ तथउ त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय भईच भईच भईच भईच भईच भईच भईच भईच भईच भईच",
+    order: 306,
+    category: "top",
+    difficulty: 3,
+  },
+  {
+    id: "cl-bottom-1-tr",
+    layout: "traditional",
+    title: "Bottom L1",
+    prompt:
+      "शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल",
+    order: 307,
+    category: "bottom",
+    difficulty: 1,
+  },
+  {
+    id: "cl-bottom-2-tr",
+    layout: "traditional",
+    title: "Bottom L2",
+    prompt:
+      "शहख शहख शहख शहख शहख शहख शहख शहख शहख शहख शर शर शर शर शर शर शर शर शर शर खदल खदल खदल खदल खदल खदल खदल खदल खदल खदल ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। खप खप खप खप खप खप खप खप खप खप",
+    order: 308,
+    category: "bottom",
+    difficulty: 2,
+  },
+  {
+    id: "cl-bottom-3-tr",
+    layout: "traditional",
+    title: "Bottom L3",
+    prompt:
+      "शहख शहख शहख शहख शहख शहख शहख शहख शहख शहख शर शर शर शर शर शर शर शर शर शर खदल खदल खदल खदल खदल खदल खदल खदल खदल खदल ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। खप खप खप खप खप खप खप खप खप खप दल दल दल दल दल दल दल दल दल दल शर। शर। शर। शर। शर। शर। शर। शर। शर। शर। हखप हखप हखप हखप हखप हखप हखप हखप हखप हखप",
+    order: 309,
+    category: "bottom",
+    difficulty: 3,
+  },
+  {
+    id: "cl-all-1-tr",
+    layout: "traditional",
+    title: "All L1",
+    prompt:
+      "बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल",
+    order: 310,
+    category: "all",
+    difficulty: 1,
+  },
+  {
+    id: "cl-all-2-tr",
+    layout: "traditional",
+    title: "All L2",
+    prompt:
+      "बसि बसि बसि बसि बसि बसि बसि बसि बसि बसि किम किम किम किम किम किम किम किम किम किम त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ धयई धयई धयई धयई धयई धयई धयई धयई धयई धयई खदल खदल खदल खदल खदल खदल खदल खदल खदल खदल शहख शहख शहख शहख शहख शहख शहख शहख शहख शहख",
+    order: 311,
+    category: "all",
+    difficulty: 2,
+  },
+  {
+    id: "cl-all-3-tr",
+    layout: "traditional",
+    title: "All L3",
+    prompt:
+      "बसकि बसकि बसकि बसकि बसकि बसकि बसकि बसकि बसकि बसकि त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय शहख शहख शहख शहख शहख शहख शहख शहख शहख शहख मपवा मपवा मपवा मपवा मपवा मपवा मपवा मपवा मपवा मपवा भईच भईच भईच भईच भईच भईच भईच भईच भईच भईच खदल खदल खदल खदल खदल खदल खदल खदल खदल खदल नजमप नजमप नजमप नजमप नजमप नजमप नजमप नजमप नजमप नजमप गथउ गथउ गथउ गथउ गथउ गथउ गथउ गथउ गथउ गथउ दल दल दल दल दल दल दल दल दल दल",
+    order: 312,
+    category: "all",
+    difficulty: 3,
+  },
+];
+
+/** All bundled drill rows: English (spec 0013) plus Traditional (spec 0015). */
+export const ALL_CLASSIC_DRILLS: Lesson[] = [...CLASSIC_DRILLS, ...CLASSIC_DRILLS_TRADITIONAL];
+
 /** Lint every bundled drill row against the difficulty rule. */
-export function lintClassicDrills(rows: Lesson[] = CLASSIC_DRILLS): string[] {
+export function lintClassicDrills(rows: Lesson[] = ALL_CLASSIC_DRILLS): string[] {
   const bad: string[] = [];
   for (const r of rows) {
     const diff = r.difficulty ?? 1;

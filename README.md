@@ -59,6 +59,15 @@ npm run format:check
 
 See `AGENTS.md` for the full contributor conventions and `CONTRIBUTING.md` for the contribution workflow.
 
+## Acknowledgements
+
+The Preeti reference charts in `public/preeti1.png`, `public/preeti2.png`, and
+`public/preeti3.png` are screenshots taken from third-party websites. This
+project does not own them. They are included for reference only, to document
+the Preeti keymap; all rights remain with their original authors. The
+`reference/preeti-keymap.ts` transcription is provided on the same basis, for
+reference only.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

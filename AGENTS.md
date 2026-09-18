@@ -50,7 +50,7 @@ Build specs live in `docs/specs/`. Format: `docs/specs/NNNN-title.md` for short 
 - Validate settings at start with safe defaults. Keep UI usable by keyboard with large prompt text.
 - Conventional commits. Messages like `feat: add lesson view`.
 - Tooling chosen: `eslint` plus `prettier`, `vitest` for unit plus integration. Install lands in `/develop tooling`.
-- Before commit run lint plus format plus typecheck. Push runs CI with the same three.
+- Before commit run lint plus format plus typecheck.
 
 ## UI base (spec 0003)
 
@@ -79,5 +79,6 @@ Build specs live in `docs/specs/`. Format: `docs/specs/NNNN-title.md` for short 
 ## Context files
 
 <!-- Nested AGENTS.md files are listed here as they are created -->
+- [src-tauri/gen/android/AGENTS.md](src-tauri/gen/android/AGENTS.md): Android shell config, icons, immersive plus keyboard rules
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._

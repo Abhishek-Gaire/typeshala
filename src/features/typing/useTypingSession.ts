@@ -49,7 +49,9 @@ export function useTypingSession(prompt: string, fingerGuidance: boolean): Sessi
       if (timerRef.current) clearInterval(timerRef.current);
       timerRef.current = null;
     };
-  }, [done]);
+    // Keystrokes (and prompt) re-run the effect so the interval actually
+    // starts on the first key: startRef mutation alone never re-renders.
+  }, [done, keystrokes, prompt]);
 
   const wpm = useMemo(
     () => calcWpm(countCorrect(prompt, typed), elapsedMs),
