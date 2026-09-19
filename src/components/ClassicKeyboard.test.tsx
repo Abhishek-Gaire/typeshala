@@ -26,4 +26,14 @@ describe("ClassicKeyboard tap input", () => {
     render(<ClassicKeyboard layout="qwerty" next="a" />);
     expect(screen.queryByRole("button")).toBeNull();
   });
+
+  it("lights an explicit key for multi-key units", () => {
+    render(
+      <ClassicKeyboard layout="traditional" next="सि" litCode="Semicolon" onTapKey={() => {}} />,
+    );
+    expect(screen.getByRole("button", { name: "Semicolon" }).getAttribute("aria-current")).toBe(
+      "true",
+    );
+    expect(screen.getByRole("button", { name: "KeyL" }).getAttribute("aria-current")).toBeNull();
+  });
 });

@@ -6,12 +6,21 @@ import {
   countCorrectUnits,
   deriveFinalUnitErrors,
   exactCommitPreeti,
+  isCombiningMark,
   sequenceForPreeti,
   splitUnits,
 } from "../../domain/preeti";
 import { nextKey } from "../../domain/keymap";
 import type { NewAttempt } from "../../domain/datastore";
 import type { SessionApi } from "./useTypingSession";
+
+/** Traditional session adds the remaining Preeti sequence for hints. */
+export interface TraditionalSessionApi extends SessionApi {
+  /** Remaining physical keys for the next unit, empty for spaces or unknown. */
+  sequenceHint: string;
+  /** Pending combining mark typed before its base, for immediate feedback. */
+  pendingMark: string;
+}
 
 interface TraditionalState {
   units: string[];
@@ -37,14 +46,17 @@ const FRESH: TraditionalState = {
  * clusters), keystrokes plus errorHits count physical presses.
  * One state object so fast keystrokes never read stale values.
  */
-export function useTraditionalSession(prompt: string, fingerGuidance: boolean): SessionApi {
+export function useTraditionalSession(
+  prompt: string,
+  fingerGuidance: boolean,
+): TraditionalSessionApi {
   const [state, setState] = useState<TraditionalState>(FRESH);
   const [elapsedMs, setElapsedMs] = useState(0);
   const startRef = useRef<number | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const promptUnits = useMemo(() => splitUnits(prompt), [prompt]);
-  const { units, keystrokes, errorHits, wrongKey } = state;
+  const { units, buffer, keystrokes, errorHits, wrongKey } = state;
   const typed = useMemo(() => units.join(""), [units]);
   const done = units.length >= promptUnits.length && promptUnits.length > 0;
 
@@ -72,8 +84,19 @@ export function useTraditionalSession(prompt: string, fingerGuidance: boolean): 
   const accuracy = calcAccuracy(keystrokes, errorHits);
   const upcoming = done ? "" : (promptUnits[units.length] ?? "");
   const sequence = upcoming === "" || upcoming === " " ? "" : sequenceForPreeti(upcoming);
-  const firstKey = sequence === "" ? upcoming : sequence.charAt(0);
-  const mapped = firstKey === "" ? null : nextKey(firstKey === " " ? " " : firstKey);
+  // While keys stay pending, guide the next key of the sequence so multi-key
+  // units (pre-posed i-matra, vowel composition) show step by step progress.
+  const onPath = sequence !== "" && buffer !== "" && sequence.startsWith(buffer);
+  const stepAt = onPath ? Math.min(buffer.length, sequence.length - 1) : 0;
+  const hintKey = sequence === "" ? upcoming : sequence.charAt(stepAt);
+  const mapped = hintKey === "" ? null : nextKey(hintKey === " " ? " " : hintKey);
+  const sequenceHint = sequence === "" ? "" : sequence.slice(stepAt);
+  // A pending attaching mark (pre-posed ि) is shown at once so the press
+  // never looks ignored while it waits for its base consonant. Only when it
+  // is on the expected sequence, so a stray mark never lights up.
+  const settledPending = buffer === "" ? null : exactCommitPreeti(buffer);
+  const pendingMark =
+    onPath && settledPending !== null && isCombiningMark(settledPending) ? settledPending : "";
   const finalErrors = useMemo(
     () => deriveFinalUnitErrors(promptUnits, units),
     [promptUnits, units],
@@ -94,6 +117,8 @@ export function useTraditionalSession(prompt: string, fingerGuidance: boolean): 
     accuracy,
     hint: mapped?.key ?? "",
     finger: fingerGuidance ? (mapped?.finger ?? "") : "",
+    sequenceHint,
+    pendingMark,
     finalErrors,
     typeChar(char: string) {
       if (done) return;
@@ -149,25 +174,26 @@ export function useTraditionalSession(prompt: string, fingerGuidance: boolean): 
         return;
       }
       setState((prev) => {
-        // Short units (a/t/p) are extendable (ai/th/ph), so they sit
-        // pending. When the pending buffer already equals the expected
-        // unit, flush it first so "t"+"h" after त still aligns instead
-        // of merging into थ.
-        let baseUnits = prev.units;
-        let startBuffer = prev.buffer;
-        if (promptUnits.length > 0 && startBuffer !== "") {
-          const flushed = exactCommitPreeti(startBuffer);
-          const expected = promptUnits[baseUnits.length];
-          if (flushed !== null && flushed === expected) {
-            baseUnits = [...baseUnits, flushed].slice(0, promptUnits.length);
-            startBuffer = "";
-          }
-        }
-        const step = advancePreeti(startBuffer, char);
+        // Extendable short units (k before फ, t before थ, c before आ) hold
+        // in the buffer until they settle or the next key resolves them.
+        const baseUnits = prev.units;
+        const step = advancePreeti(prev.buffer, char);
         const base = baseUnits.length;
         if (step.commits.length === 0) {
-          // Still pending (for example `k` before it becomes `प`):
-          // hold the keys, no verdict yet.
+          // A short unit that also leads a longer sequence (k before फ,
+          // t before थ, c before आ) can settle now when it is exactly the
+          // unit the drill expects, instead of waiting for the next key.
+          const settled = step.buffer === "" ? null : exactCommitPreeti(step.buffer);
+          if (settled !== null && base < promptUnits.length && settled === promptUnits[base]) {
+            return {
+              units: [...baseUnits, settled].slice(0, promptUnits.length),
+              buffer: "",
+              keystrokes: prev.keystrokes + 1,
+              errorHits: prev.errorHits,
+              wrongKey: null,
+            };
+          }
+          // Otherwise hold the keys, no verdict yet.
           return {
             units: baseUnits,
             buffer: step.buffer,

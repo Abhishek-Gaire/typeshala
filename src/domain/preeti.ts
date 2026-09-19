@@ -249,6 +249,12 @@ export function advancePreeti(buffer: string, key: string): PreetiAdvance {
   }
 }
 
+/** True for a single Devanagari mark that must shape with a base before it.
+ * Separate spans break the shaper and draw a dotted circle placeholder. */
+export function isCombiningMark(unit: string): boolean {
+  return unit.length === 1 && /[\u0900-\u0903\u093A-\u094F\u0951-\u0957\u0962\u0963]/.test(unit);
+}
+
 /** Devanagari unit back to its physical sequence for hints. Empty when unknown. */
 export function sequenceForPreeti(unit: string): string {
   for (const [seq, target] of Object.entries(PREETI_MAP)) {

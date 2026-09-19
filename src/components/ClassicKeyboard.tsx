@@ -19,6 +19,7 @@ export interface KeyPress {
 export function ClassicKeyboard({
   layout,
   next,
+  litCode,
   wrongKey,
   fingerHint,
   press,
@@ -26,6 +27,8 @@ export function ClassicKeyboard({
 }: {
   layout: LayoutId;
   next: string;
+  /** Physical key to light instead of deriving it from `next`, for multi-key units. */
+  litCode?: string;
   wrongKey?: string | null;
   fingerHint?: string;
   press?: KeyPress | null;
@@ -38,7 +41,7 @@ export function ClassicKeyboard({
   onTapKey?: (key: ClassicKey) => void;
 }) {
   const rows = classicRowsFor(layout);
-  const lit = next === "" ? "" : codeForNextUnit(next, layout);
+  const lit = litCode ?? (next === "" ? "" : codeForNextUnit(next, layout));
   const wrong =
     wrongKey === null || wrongKey === undefined || wrongKey === ""
       ? ""

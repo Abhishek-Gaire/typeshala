@@ -71,4 +71,10 @@ describe("keyboard geometry", () => {
     expect(codeForNextUnit(" ", "traditional")).toBe("Space");
     expect(codeForNextUnit("a", "qwerty")).toBe("KeyA");
   });
+
+  it("lights the first key of a multi-key traditional unit", () => {
+    expect(codeForNextUnit("सि", "traditional")).toBe("KeyL");
+    expect(codeForNextUnit("आ", "traditional")).toBe("KeyC");
+    expect(codeForNextUnit("फ", "traditional")).toBe("KeyK");
+  });
 });

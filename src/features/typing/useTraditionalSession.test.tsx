@@ -27,14 +27,68 @@ describe("useTraditionalSession", () => {
     expect(result.current.accuracy).toBe(100);
   });
 
-  it("lits the first physical key with the sequence pending (covers AC-3)", () => {
+  it("steps the lit key through a pending sequence (covers AC-3)", () => {
     const { result } = setup("आ");
     expect(result.current.hint).toBe("C");
     act(() => {
       result.current.typeChar("c");
     });
-    expect(result.current.hint).toBe("C");
+    expect(result.current.hint).toBe("F");
+    expect(result.current.sequenceHint).toBe("f");
     expect(result.current.typed).toBe("");
+  });
+
+  it("surfaces a pending pre-posed mark before its base (covers AC-3)", () => {
+    const { result } = setup("कि");
+    expect(result.current.pendingMark).toBe("");
+    act(() => {
+      result.current.typeChar("l");
+    });
+    expect(result.current.pendingMark).toBe("ि");
+    expect(result.current.typed).toBe("");
+    typeKeys(result.current, ["s"]);
+    expect(result.current.pendingMark).toBe("");
+    expect(result.current.typed).toBe("कि");
+  });
+
+  it("guides the pre-posed i-matra before its consonant (covers AC-3)", () => {
+    const { result } = setup("सि");
+    expect(result.current.hint).toBe("L");
+    expect(result.current.sequenceHint).toBe("l;");
+    act(() => {
+      result.current.typeChar("l");
+    });
+    expect(result.current.hint).toBe(";");
+    expect(result.current.sequenceHint).toBe(";");
+    act(() => {
+      result.current.typeChar(";");
+    });
+    expect(result.current.typed).toBe("सि");
+  });
+
+  it("settles an extendable short unit that matches the drill right away", () => {
+    const { result } = setup("प");
+    typeKeys(result.current, ["k"]);
+    expect(result.current.typed).toBe("प");
+    expect(result.current.done).toBe(true);
+    expect(result.current.accuracy).toBe(100);
+  });
+
+  it("still holds k for फ until its modifier arrives", () => {
+    const { result } = setup("फ");
+    act(() => {
+      result.current.typeChar("k");
+    });
+    expect(result.current.typed).toBe("");
+    typeKeys(result.current, ["m"]);
+    expect(result.current.typed).toBe("फ");
+  });
+
+  it("advances through मपव without a double press (covers AC-3)", () => {
+    const { result } = setup("मपव");
+    typeKeys(result.current, ["d", "k", "j"]);
+    expect(result.current.typed).toBe("मपव");
+    expect(result.current.done).toBe(true);
   });
 
   it("holds the cursor on a wrong key and advances on the right one", () => {

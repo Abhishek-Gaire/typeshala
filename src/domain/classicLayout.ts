@@ -4,7 +4,7 @@
  * Rows describe physical keys. Glyph labels come from layout
  * tables only, never from reading a screenshot.
  */
-import { PREETI_MAP } from "./preeti";
+import { PREETI_MAP, sequenceForPreeti } from "./preeti";
 import type { LayoutId, Lesson } from "./datastore";
 
 export type ClassicKind = "char" | "modifier" | "space";
@@ -182,7 +182,10 @@ export function codeForNextUnit(next: string, layout: LayoutId): string {
         if (k.shifted !== undefined && PREETI_MAP[k.shifted] === next) return k.code;
       }
     }
-    return "";
+    // Multi-key units (pre-posed i-matra, vowel composition, upgrades) have
+    // no single key of their own: light the first key of their sequence.
+    const sequence = sequenceForPreeti(next);
+    return sequence === "" ? "" : codeForChar(sequence.charAt(0), layout);
   }
   const lower = next.toLowerCase();
   for (const row of ROWS) {

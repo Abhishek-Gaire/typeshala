@@ -4,7 +4,7 @@ import type { ClassicCategory, ClassicScreenId, ClassicKey } from "../../domain/
 import type { LayoutId, Lesson, NewAttempt } from "../../domain/datastore";
 import type { StringKey } from "../../i18n/keys";
 import { ALL_CLASSIC_DRILLS } from "../../domain/classicDrills";
-import { codeForNextUnit, lessonsForClassic } from "../../domain/classicLayout";
+import { codeForChar, codeForNextUnit, lessonsForClassic } from "../../domain/classicLayout";
 import {
   PROMPT_PAGE_SIZE,
   chunkGroupsForPages,
@@ -222,6 +222,14 @@ export function ClassicScreen({
     boxRef.current?.focus();
   }, [lesson.id]);
 
+  /** Physical key due now. Traditional multi-key units (pre-posed i-matra,
+   * vowel composition) derive from the session buffer, not the whole unit. */
+  function expectedKeyCode(): string {
+    if (lesson.layout !== "traditional") return codeForNextUnit(next, layout);
+    if (traditional.hint === "Space") return "Space";
+    return codeForChar(traditional.hint, layout);
+  }
+
   function onKey(e: React.KeyboardEvent) {
     if (e.key === "Backspace") {
       e.preventDefault();
@@ -229,7 +237,7 @@ export function ClassicScreen({
       session.backspace();
     } else if (e.key.length === 1) {
       e.preventDefault();
-      const expectedCode = codeForNextUnit(next, layout);
+      const expectedCode = expectedKeyCode();
       const hitCode = e.code !== "" ? e.code : expectedCode;
       setPress((p) => ({
         code: hitCode,
@@ -248,7 +256,7 @@ export function ClassicScreen({
       setPress((p) => ({ code: "Backspace", correct: false, n: (p?.n ?? 0) + 1 }));
       session.backspace();
     } else if (key.kind === "char" || key.kind === "space") {
-      const expectedCode = codeForNextUnit(next, layout);
+      const expectedCode = expectedKeyCode();
       setPress((p) => ({
         code: key.code,
         correct: expectedCode !== "" && key.code === expectedCode,
@@ -294,11 +302,23 @@ export function ClassicScreen({
           <ClassicPrompt
             units={pageUnits}
             typed={pageTyped}
+            pending={lesson.layout === "traditional" ? traditional.pendingMark : undefined}
             pageIndex={activePage}
             pageTotal={pageTotal}
           />
         </div>
-        <ClassicKeyboard layout={layout} next={next} press={press} onTapKey={onTapKey} />
+        <ClassicKeyboard
+          layout={layout}
+          next={next}
+          litCode={lesson.layout === "traditional" ? expectedKeyCode() : undefined}
+          fingerHint={
+            lesson.layout === "traditional" && traditional.sequenceHint.length > 1
+              ? traditional.sequenceHint.split("").join(" ")
+              : undefined
+          }
+          press={press}
+          onTapKey={onTapKey}
+        />
       </div>
     </div>
   );
