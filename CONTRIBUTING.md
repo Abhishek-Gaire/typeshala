@@ -2,6 +2,9 @@
 
 Thanks for your interest in contributing. This guide keeps contributions consistent with how the project is built.
 
+> GitLab is the source of truth: [abhishek_gaire/typeshala on GitLab](https://gitlab.com/abhishek_gaire/typeshala).
+> The GitHub repository is a read-only mirror for CI and release assets only — please open all merge requests and issues on GitLab, not GitHub.
+
 ## Getting started
 
 ```bash
@@ -41,11 +44,13 @@ CI runs the same checks on push.
 
 ## Pull requests
 
+Open merge requests on GitLab against `main`.
+
 1. Branch from `main` with the `feat/` prefix (e.g. `feat/classic-drills`).
-2. Keep the scope to one milestone per PR where possible.
+2. Keep the scope to one milestone per MR where possible.
 3. Describe what changed and how you verified it (tests run, manual checks).
 4. Make sure lint, format, typecheck, and tests all pass.
 
 ## Reporting issues
 
-Include steps to reproduce, expected vs. actual behavior, and your OS plus app version.
+Open issues on GitLab. Include steps to reproduce, expected vs. actual behavior, and your OS plus app version.
