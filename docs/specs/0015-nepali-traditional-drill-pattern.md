@@ -3,6 +3,8 @@
 **Date**: 2026-09-17
 **Status**: Accepted
 
+**Note**: Counts are corrected to 10 (Level 2 and Level 3) and 30 (Level 1 pairs), and prompt storage moved to compact token groups, per spec [0017](0017-dynamic-drill-generation.md).
+
 ## Summary
 
 This spec sets the drill content pattern for all Nepali Traditional classic screens (Home, Top, Bottom, All, from spec 0012). Level 1 drills use mirrored finger pairs with matra+consonant combos as units. Level 2 drills use same hand groups of three distinct keys. Level 3 drills use mixed hand groups of three. Every group repeats 10 times. English pattern from spec 0013 is the reference. Nepali Romanized rows are out of scope.

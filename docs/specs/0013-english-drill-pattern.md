@@ -1,7 +1,7 @@
 # 0013. English drill content pattern
 
 **Date**: 2026-09-16
-**Status**: Accepted
+**Status**: Superseded by [0017](0017-dynamic-drill-generation.md)
 
 ## Summary
 
@@ -107,11 +107,11 @@ The Home rows already prove the pattern in code and the engineer confirmed each 
 
 **Value sourcing**:
 
-| Action | Value produced / displayed | Source |
-|---|---|---|
-| Open drill screen | Prompt text for screen plus level | `Lesson.prompt` from the row table above, via `load_lessons` |
-| Lint check | Pass or fail per row | `hasConsecutiveRepeat` plus `drillPassesDifficulty` from spec 0012, run over the built prompts |
-| Typing session | Lit key plus live speed | Unchanged derivations from spec 0012 |
+| Action            | Value produced / displayed        | Source                                                                                         |
+| ----------------- | --------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Open drill screen | Prompt text for screen plus level | `Lesson.prompt` from the row table above, via `load_lessons`                                   |
+| Lint check        | Pass or fail per row              | `hasConsecutiveRepeat` plus `drillPassesDifficulty` from spec 0012, run over the built prompts |
+| Typing session    | Lit key plus live speed           | Unchanged derivations from spec 0012                                                           |
 
 **Key invariants**:
 
