@@ -9,25 +9,26 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 
 ## At a glance
 
-| #   | Feature                                   | Phase      | Status |
-| --- | ----------------------------------------- | ---------- | ------ |
-| 1   | Stack and architecture                    | Foundation | done   |
-| 2   | Coding standards and tooling              | Foundation | done   |
-| 3   | Data model local store                    | Foundation | done   |
-| 4   | Design system and bilingual UI foundation | Foundation | done   |
-| 5   | Smallest usable English tutor             | Release 1  | done   |
-| 6   | Structured lessons and progression        | Release 2  | done   |
-| 7   | Nepali Romanized layout                   | Release 3  | done   |
-| 8   | Nepali Traditional Preeti layout          | Release 3  | done   |
-| 9   | Progress trends and stats screen          | Release 4  | done   |
-| 10  | Settings language and themes              | Release 4  | done   |
-| 11  | Bonus Ramayana game                       | Release 5  | done   |
-| 12  | Polish and packaging three systems        | Release 6  | done   |
-| 13  | Classic practice screens                  | Release 7  | done   |
-| 14  | Single line prompt paging                 | Release 7  | done   |
-| 15  | Nepali Traditional drill content pattern  | Release 7  | done   |
-| 16  | Android immersive plus touch board        | Release 8  | done |
-| 17  | Release pipeline with mirrored CI         | Release 9  | done |
+| #   | Feature                                   | Phase      | Status      |
+| --- | ----------------------------------------- | ---------- | ----------- |
+| 1   | Stack and architecture                    | Foundation | done        |
+| 2   | Coding standards and tooling              | Foundation | done        |
+| 3   | Data model local store                    | Foundation | done        |
+| 4   | Design system and bilingual UI foundation | Foundation | done        |
+| 5   | Smallest usable English tutor             | Release 1  | done        |
+| 6   | Structured lessons and progression        | Release 2  | done        |
+| 7   | Nepali Romanized layout                   | Release 3  | done        |
+| 8   | Nepali Traditional Preeti layout          | Release 3  | done        |
+| 9   | Progress trends and stats screen          | Release 4  | done        |
+| 10  | Settings language and themes              | Release 4  | done        |
+| 11  | Bonus Ramayana game                       | Release 5  | done        |
+| 12  | Polish and packaging three systems        | Release 6  | done        |
+| 13  | Classic practice screens                  | Release 7  | done        |
+| 14  | Single line prompt paging                 | Release 7  | done        |
+| 15  | Nepali Traditional drill content pattern  | Release 7  | done        |
+| 16  | Android immersive plus touch board        | Release 8  | done        |
+| 17  | Release pipeline with mirrored CI         | Release 9  | done        |
+| 18  | Dynamic classic drill generation          | Release 10 | done        |
 
 ## Foundations
 
@@ -261,6 +262,24 @@ Build desktop installers for all three systems on every push to the release bran
 - [x] Build it: release workflow with four job matrix (macOS arm64 plus x64, Ubuntu, Windows) on `tauri-action`
 - [x] Verify it: green CI run plus draft release with 9 assets plus AppImage smoke test on device host
       Code in `.github/workflows/release.yml`
+
+## Release 10: drill generation
+
+### 18. Dynamic classic drill generation · done · Beta
+
+Generate classic drill prompts from screen key sets plus a level rule for English, and from compact token groups with corrected counts for Traditional, so the content stops drifting and future edits are small.
+**Done when:** English rows build from the generators, Traditional rows hold clean counts, lint and the snapshot test pass, English Home uses true finger mirrors, and spec 0013 is superseded.
+
+- [x] Design it (spec): `/architect dynamic classic drill generation`
+      Spec [0017](../specs/0017-dynamic-drill-generation.md) · code in `src/domain/drillPattern.ts`, `src/domain/classicDrills.ts`
+- [x] Build it: `/develop dynamic classic drill generation`
+  - [x] Generators plus fail fast validation with unit tests (AC-1, AC-2, AC-3, AC-7, AC-9)
+  - [x] English rows derived from the generators (AC-1, AC-2, AC-3, AC-5)
+  - [x] Traditional rows as compact token groups with clean counts (AC-4, AC-5)
+  - [x] Snapshot test plus suite update (AC-6, AC-9)
+  - [x] Spec 0013 superseded note and spec 0015 correction note (AC-8, done at spec capture)
+- [x] Verify it: `/check verify dynamic classic drill generation`
+- [x] Test it: `/test dynamic classic drill generation`
 
 ## Deferred
 

@@ -22,6 +22,13 @@ describe("difficulty validator", () => {
   it("all bundled drill rows pass lint", () => {
     expect(lintClassicDrills()).toEqual([]);
   });
+  it("holds zero back to back repeats on every Level 2 and Level 3 row", () => {
+    for (const row of ALL_CLASSIC_DRILLS) {
+      if ((row.difficulty ?? 1) <= 1) continue;
+      const units = splitUnits(row.prompt).filter((u) => u !== " ");
+      expect(hasConsecutiveRepeat(units), row.id).toBe(false);
+    }
+  });
 });
 
 describe("traditional drill rows (spec 0015)", () => {
