@@ -14,12 +14,14 @@ The Tauri Android activity (`MainActivity.kt:7-10`) calls `enableEdgeToEdge()`, 
 ## Requirements
 
 **User stories**:
+
 - As a learner, I want the device keyboard to stay hidden so it never covers the practice board.
 - As a learner, I want every tap on the app board to type its key so I can practice typing on Android with touch alone.
 - As a learner, I want the status bar hidden during practice so the full screen is available for the prompt and input area.
 - As a learner, I want to reveal the status bar by swiping down from the top edge when I need to check battery or notifications.
 
 **Acceptance criteria**:
+
 - **AC-1**: The device keyboard never appears during practice (touch on the practice box is focus guarded, activity uses `stateHidden|adjustPan`); each tap on the app board inserts the corresponding character with the same correctness marking as the physical path.
 - **AC-2**: Status bar and navigation bar are hidden at app start in landscape orientation.
 - **AC-3**: Swiping down from the top edge reveals the status bar; it auto-hides after a short delay or when the user taps the content.
@@ -33,11 +35,13 @@ The Tauri Android activity (`MainActivity.kt:7-10`) calls `enableEdgeToEdge()`, 
 Use `WindowCompat.setDecorFitsSystemWindows(window, false)` with `WindowInsetsControllerCompat` to hide system bars in transient sticky immersive mode: hide `statusBars()` plus `navigationBars()`, set `systemBarsBehavior = BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE`, and re-apply on `onWindowFocusChanged`. Add `android:windowSoftInputMode="stateHidden|adjustPan"` and `android:screenOrientation="sensorLandscape"` to the activity manifest: the device keyboard is no longer the input path, so it stays hidden on entry and never resizes the fullscreen board. On the web side, `ClassicKeyboard` gains an `onTapKey` path (char, space, and Backspace render as buttons outside the tab order) wired into the drill and free views with the same session calls as physical keydown, and the practice boxes guard touch focus via `pointerType === "touch"` preventDefault. No direct WebView hacking: Tauri owns the WebView (created in/after `TauriActivity.super.onCreate()`), so `setJavaScriptEnabled` / `setSupportMultipleWindows` / `WebChromeClient.onShowCustomView` (a fullscreen-video callback) do not fix input and must not run before `super.onCreate()`.
 
 **Pros**:
+
 - Modern API (Android 11+), backward compatible via compat library
 - Sticky immersive auto-hides bars on touch, matches user expectation
 - Single source of truth in `MainActivity.kt`
 
 **Cons**:
+
 - Requires an explicit `androidx.core:core:1.12.0+` dependency (today `app/build.gradle.kts` has no explicit `androidx.core` entry; it arrives only transitively via `appcompat`/`activity-ktx`, version unpinned)
 
 ### Option 2: Legacy `SYSTEM_UI_FLAG_IMMERSIVE_STICKY`
@@ -45,9 +49,11 @@ Use `WindowCompat.setDecorFitsSystemWindows(window, false)` with `WindowInsetsCo
 Use deprecated `View.SYSTEM_UI_FLAG_*` flags on the decor view.
 
 **Pros**:
+
 - Works on older Android versions without compat library
 
 **Cons**:
+
 - Deprecated since API 30 (still present but deprecated through API 35; do not rely on it going forward)
 - Fragile across orientation changes
 
@@ -56,9 +62,11 @@ Use deprecated `View.SYSTEM_UI_FLAG_*` flags on the decor view.
 Set `android:theme="@style/Theme.AppCompat.NoActionBar.Fullscreen"` in manifest.
 
 **Pros**:
+
 - XML only, no Kotlin code
 
 **Cons**:
+
 - Does not support swipe-to-reveal (sticky immersive)
 - Status bar stays hidden permanently, no way to check battery
 
@@ -81,6 +89,7 @@ The app targets Android 7+ (API 24) but the compat library handles API differenc
 **Value sourcing**: Not applicable
 
 **Key invariants**:
+
 - Landscape orientation locked via `android:screenOrientation="sensorLandscape"` on the `<activity>` (new; `configChanges="...screenSize..."` alone does not lock orientation)
 - Device keyboard stays down via `stateHidden|adjustPan` plus the touch focus guard on practice boxes; the shell name `<input>` is the only IME path left, by intent
 - Touch types via the app board `onTapKey` path with physical code parity (`key.code` drives correctness marking, `key.base` the typed char); drill prompts use base chars only so no shift latch is needed
@@ -91,6 +100,7 @@ The app targets Android 7+ (API 24) but the compat library handles API differenc
 **Configuration required**: None
 
 **Critical test scenarios**:
+
 - Happy path: App launches in landscape, status bar hidden, tap board keys → "hello" appears with no device keyboard, verifies **AC-1**, **AC-2**
 - Failure case: Rotate device (should not rotate, locked landscape), verifies **AC-4**
 - Edge case: Swipe down from top → status bar appears → wait 3s → status bar hides, verifies **AC-3**
@@ -108,15 +118,18 @@ The app targets Android 7+ (API 24) but the compat library handles API differenc
 ## Consequences
 
 **Positive**:
+
 - Fullscreen immersive experience matching mobile typing apps
 - Device keyboard stays hidden; the app board handles touch directly
 - Status bar accessible via swipe when needed
 
 **Negative / tradeoffs**:
+
 - Slight increase in `MainActivity` complexity
 - Must test on Android 7 through 14 for immersive behavior consistency
 
 **Neutral**:
+
 - No impact on desktop, iOS, or web targets
 
 ## Follow-up
@@ -128,11 +141,13 @@ The app targets Android 7+ (API 24) but the compat library handles API differenc
 ## References
 
 **Project sources** (verifiable, in this repo):
+
 - `src-tauri/gen/android/app/src/main/AndroidManifest.xml`
 - `src-tauri/gen/android/app/src/main/java/com/abhishek/typeshala/MainActivity.kt`
 - `src-tauri/gen/android/app/src/main/res/values/themes.xml`
 - `src-tauri/gen/android/app/build.gradle.kts` (dependency block has no explicit `androidx.core`; `minSdk = 24`, `targetSdk = 36`)
 
 **Practices & standards**:
+
 - Android immersive mode guide (developer.android.com)
 - Tauri Android WebView configuration patterns

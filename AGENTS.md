@@ -87,6 +87,7 @@ Build specs live in `docs/specs/`. Format: `docs/specs/NNNN-title.md` for short 
 ## Context files
 
 <!-- Nested AGENTS.md files are listed here as they are created -->
+
 - [src-tauri/gen/android/AGENTS.md](src-tauri/gen/android/AGENTS.md): Android shell config, icons, immersive plus keyboard rules
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._
