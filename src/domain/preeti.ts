@@ -19,7 +19,9 @@
  *      Handled via explicit `l`+consonant sequences (e.g. "ls" -> "कि").
  *   2. Long-vowel composition: अ+ा=आ, अ+ा+े=ओ, अ+ा+ै=औ, ए+े=ऐ are each
  *      typed as 2-3 keystrokes but committed as one unit.
- *   3. Consonant "upgrades": फ, झ, and ऊ have no key of their own — they
+ *   3. Composed vowel marks: ो (f+]) and ौ (f+}) are typed as two presses
+ *      but committed as one unit, matching the long-vowel pattern above.
+ *   4. Consonant "upgrades": फ, झ, and ऊ have no key of their own — they
  *      come from a base key followed immediately by `m`. The physical
  *      `m` key has no letter on its own in Traditional; it only acts as
  *      this modifier right after क(प)/भ/उ's keys.
@@ -64,6 +66,8 @@ export const PREETI_MAP: Record<string, string> = {
   "[": "ृ",
   "]": "े",
   "}": "ै",
+  "f]": "ो",
+  "f}": "ौ",
   F: "ँ",
   M: "ः",
   "+": "ं",
@@ -111,16 +115,20 @@ export const PREETI_MAP: Record<string, string> = {
   T: "त्",
   Y: "थ्",
   D: "म्",
-  W: "ङ",
+  W: "ध्",
   G: "न्",
   K: "प्",
-  E: "ो",
+  E: "भ्",
   A: "ब्",
   J: "व्",
   Z: "श्",
   X: "ह्",
   N: "ण",
   ":": "स्",
+
+  // full ङ lives on comma (spec 0018): genuine Alt+0170 is unreachable
+  // in browsers, and comma is otherwise unused by the map.
+  ",": "ङ",
 
   // half-forms and short conjuncts living on the digit row
   "0": "ण्",

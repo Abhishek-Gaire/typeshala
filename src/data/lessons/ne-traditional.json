@@ -96,14 +96,6 @@
     "level": "simple"
   },
   {
-    "id": "nt-punctuation",
-    "layout": "traditional",
-    "title": "विराम चिन्ह",
-    "prompt": "। , ? ! : ; \" ' ( ) [ ]",
-    "order": 13,
-    "level": "simple"
-  },
-  {
     "id": "nt-common-words-a",
     "layout": "traditional",
     "title": "सामान्य शब्द १",
@@ -190,5 +182,29 @@
     "prompt": "न म य र ल व श स ह न म य र ल व श स ह ङ ञ ण न म य र",
     "order": 24,
     "level": "simple"
+  },
+  {
+    "id": "nt-marks-2",
+    "layout": "traditional",
+    "title": "मात्रा ४ (ऋ अः ञ्)",
+    "prompt": "ऋऋऋ अःअःअः ञ्ञ्ञ्",
+    "order": 25,
+    "level": "matra"
+  },
+  {
+    "id": "nt-halant-row",
+    "layout": "traditional",
+    "title": "हलन्त रो अभ्यास",
+    "prompt": "ख्ख्ख् ग्ग्ग् च्च्च् ण्ण्ण् थ्थ्थ् ब्ब्ब् व्व्व्",
+    "order": 26,
+    "level": "conjunct"
+  },
+  {
+    "id": "nt-clusters-2",
+    "layout": "traditional",
+    "title": "संयुक्ताक्षर ४",
+    "prompt": "पत्ता भक्त बुद्ध गद्दा",
+    "order": 27,
+    "level": "conjunct"
   }
 ]

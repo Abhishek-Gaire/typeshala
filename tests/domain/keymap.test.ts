@@ -17,6 +17,10 @@ describe("nextKey", () => {
     expect(nextKey(";")).toEqual({ key: ";", finger: "pinky" });
   });
 
+  it("maps the shifted bracket to the right pinky", () => {
+    expect(nextKey("}")).toEqual({ key: "}", finger: "pinky" });
+  });
+
   it("treats upper and lower case the same", () => {
     expect(nextKey("S").finger).toBe(nextKey("s").finger);
   });

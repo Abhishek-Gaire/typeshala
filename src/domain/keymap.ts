@@ -16,7 +16,7 @@ const LEFT_INDEX = new Set(["4", "5", "r", "t", "f", "g", "v", "b"]);
 const RIGHT_INDEX = new Set(["6", "7", "y", "u", "h", "j", "n", "m"]);
 const RIGHT_MIDDLE = new Set(["8", "i", "k", ","]);
 const RIGHT_RING = new Set(["9", "o", "l", "."]);
-const RIGHT_PINKY = new Set(["0", "-", "=", "p", "[", "]", ";", "'", "/", ";"]);
+const RIGHT_PINKY = new Set(["0", "-", "=", "p", "[", "]", "}", ";", "'", "/"]);
 
 /** Map a prompt char to its physical key plus finger. Space uses thumb. */
 export function nextKey(char: string): KeyHint {

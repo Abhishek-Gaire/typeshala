@@ -112,6 +112,9 @@ export const PREETI_KEYMAP: PreetiKeyEntry[] = [
   { character: "ण्", keys: "0" },
   { character: "त्", keys: "T" },
   { character: "थ्", keys: "Y" },
+  // Chart W row is ambiguous at chart size (likely misread): the runtime
+  // follows the unanimous Shuvayatra mirror (W -> half ध), see the
+  // differences note. Full ङ lives on "," in the app.
   { character: "ङ्", keys: "W" },
   { character: "न्", keys: "G" },
   { character: "प्", keys: "K" },

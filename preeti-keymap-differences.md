@@ -102,12 +102,18 @@ Two `Character = Keys` columns of rarer units.
 
 | Key | App (`preeti.ts`) | Chart (`preeti-keymap.ts`) |
 | --- | ----------------- | -------------------------- |
-| `E` | `ो`               | `भ्`                       |
-| `W` | `ङ`               | `ङ्`                       |
+| `W` | `ध्`              | `ङ्`                       |
+| `,` | `ङ`               | `,`                        |
 
-`E` and `W` are the important ones: the app uses the canonical Preeti values
-(`ो`, `ङ`), while `preeti1.png` puts `भ्` and `ङ्` on those keys. The charts
-may describe a slightly different Preeti variant.
+`E` now agrees with the chart (`भ्` on both sides, spec 0018). `W` remains
+a true conflict: the app uses half `ध` per the unanimous Shuvayatra converter
+mirror (`reference/shuvayatra-preeti.ts`: `W` → `ध्` in all three fonts),
+while `preeti1.png` prints `ङ्` on `W`. The chart `W` row is ambiguous at
+chart size and likely misread, so the runtime follows Shuvayatra here.
+Full `ङ` lives on `,`, a second same-key conflict: the chart prints a comma
+there, and the app follows Shuvayatra's full `ङ` instead. The `ो` on `f]` and
+`ौ` on `f}` are two-press composed marks matching genuine Preeti post-rules
+(`ा`+`े` → `ो`, `ा`+`ै` → `ौ`).
 
 ### Same unit, app uses one key where the chart uses a sequence
 
@@ -128,6 +134,7 @@ unit. Both can be true at once since the app buffers.
 ### In the app only
 
 - `i → ई`, `I → क्ष`, `N → ण`, `D → म्`, `: → स्`, `qm → क्र`.
+- `, → ङ`, `f] → ो`, `f} → ौ` (spec 0018 homes needing no special keys).
 - All pre-posed i-matra combos (`ls → कि` … `lem → झि`). The chart only
   defines the bare matra `l = ि`.
 - `? → रु`, `~ → ञ्`, `> → श्र`.
@@ -135,10 +142,10 @@ unit. Both can be true at once since the app buffers.
 ### In the chart only
 
 - Conjuncts and half forms: ट्ट, ट्ठ, ठ्ठ, द्व, हृ, रू, ङ्क, ङ्ग, घ्, झ्, फ्,
-  भ्, र्.
+  र्.
 - Legacy Alt glyphs: ॐ, ॠ, ॡ, `–`, `—`, `…`, quote marks, and the rest of
   Table 2.
-- Punctuation outputs on `,` `-` `_` `<` → `,` `(` `)` `?`.
+- Punctuation outputs on `-` `_` `<` → `(` `)` `?` (`,` now types `ङ` in the app).
 
 ### Ambiguous in the chart
 

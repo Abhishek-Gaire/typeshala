@@ -1,4 +1,4 @@
-/** Preeti step tests (spec 0007, AC-2, AC-5). */
+/** Preeti step tests (spec 0007, AC-2, AC-5; spec 0018 map correction). */
 import { describe, expect, it } from "vitest";
 import {
   advancePreeti,
@@ -128,5 +128,93 @@ describe("unit scoring", () => {
   it("reports error spots as unit indexes (covers AC-5)", () => {
     expect(deriveFinalUnitErrors(["क्ष", "म", "ा"], ["क", "म", "X"])).toEqual([0, 2]);
     expect(deriveFinalUnitErrors(["क", "म"], ["क", "म"])).toEqual([]);
+  });
+});
+
+describe("spec 0018 map correction", () => {
+  it("commits half bha on E and half dha on W (covers AC-1)", () => {
+    expect(advancePreeti("", "E")).toEqual({ commits: ["भ्"], buffer: "", error: false });
+    expect(advancePreeti("", "W")).toEqual({ commits: ["ध्"], buffer: "", error: false });
+  });
+
+  it("keeps lowercase full letters untouched (covers map invariants)", () => {
+    expect(advancePreeti("", "w")).toEqual({ commits: ["ध"], buffer: "", error: false });
+    // e stays pending since em extends to झ, but still resolves to full bha on flush.
+    expect(advancePreeti("", "e")).toEqual({ commits: [], buffer: "e", error: false });
+    expect(exactCommitPreeti("e")).toBe("भ");
+    expect(advancePreeti("e", "m")).toEqual({ commits: ["झ"], buffer: "", error: false });
+  });
+
+  it("commits the o and au marks on two-press sequences (covers AC-2)", () => {
+    expect(advancePreeti("", "f")).toEqual({ commits: [], buffer: "f", error: false });
+    expect(advancePreeti("f", "]")).toEqual({ commits: ["ो"], buffer: "", error: false });
+    expect(advancePreeti("f", "}")).toEqual({ commits: ["ौ"], buffer: "", error: false });
+  });
+
+  it("completes नौ in nt-common-words-c with the new au sequence (covers AC-2)", () => {
+    expect(splitUnits("नौ")).toEqual(["न", "ौ"]);
+    expect(sequenceForPreeti("न")).toBe("g");
+    expect(sequenceForPreeti("ौ")).toBe("f}");
+    expect(advancePreeti("", "g")).toEqual({ commits: ["न"], buffer: "", error: false });
+    expect(advancePreeti("f", "}")).toEqual({ commits: ["ौ"], buffer: "", error: false });
+  });
+
+  it("commits full nga on comma (covers AC-3)", () => {
+    expect(advancePreeti("", ",")).toEqual({ commits: ["ङ"], buffer: "", error: false });
+    expect(exactCommitPreeti(",")).toBe("ङ");
+  });
+
+  it("holds f pending and flushes the aa mark (covers AC-4)", () => {
+    expect(advancePreeti("", "f")).toEqual({ commits: [], buffer: "f", error: false });
+    expect(exactCommitPreeti("f")).toBe("ा");
+  });
+
+  it("resolves aa first on a non-matching tail without spurious error (covers AC-4)", () => {
+    expect(advancePreeti("f", "a")).toEqual({
+      commits: ["ा", "ब"],
+      buffer: "",
+      error: false,
+    });
+  });
+
+  it("reverse looks up the corrected rows (covers AC-5)", () => {
+    expect(sequenceForPreeti("भ्")).toBe("E");
+    expect(sequenceForPreeti("ध्")).toBe("W");
+    expect(sequenceForPreeti("ो")).toBe("f]");
+    expect(sequenceForPreeti("ौ")).toBe("f}");
+    expect(sequenceForPreeti("ङ")).toBe(",");
+  });
+
+  it("types the alphabet row and nga drills end to end (covers AC-3)", () => {
+    for (const unit of ["ङ", "भ्", "ध्", "ो", "ौ"]) {
+      const seq = sequenceForPreeti(unit);
+      expect(seq).not.toBe("");
+      let buffer = "";
+      let committed: string[] = [];
+      for (const key of seq) {
+        const step = advancePreeti(buffer, key);
+        committed = [...committed, ...step.commits];
+        buffer = step.buffer;
+        expect(step.error).toBe(false);
+      }
+      if (buffer !== "") {
+        const flushed = exactCommitPreeti(buffer);
+        expect(flushed).toBe(unit);
+      } else {
+        expect(committed).toContain(unit);
+      }
+    }
+    // नौ is two units (न + ौ) typed as g then f} end to end.
+    expect(splitUnits("नौ")).toEqual(["न", "ौ"]);
+    let buffer = "";
+    const got: string[] = [];
+    for (const key of ["g", "f", "}"]) {
+      const step = advancePreeti(buffer, key);
+      got.push(...step.commits);
+      buffer = step.buffer;
+      expect(step.error).toBe(false);
+    }
+    expect(buffer).toBe("");
+    expect(got).toEqual(["न", "ौ"]);
   });
 });
