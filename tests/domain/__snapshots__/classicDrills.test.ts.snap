@@ -89,7 +89,7 @@ exports[`bundled drill rows > locks the generated prompts against accidental dri
     "id": "cl-all-1-en",
     "layout": "qwerty",
     "order": 210,
-    "prompt": "aaa ;;; aaa ;;; aaa ;;; aaa ;;; aaa ;;; aaa ;;; aaa ;;; aaa ;;; aaa ;;; aaa ;;; sss lll sss lll sss lll sss lll sss lll sss lll sss lll sss lll sss lll sss lll ddd kkk ddd kkk ddd kkk ddd kkk ddd kkk ddd kkk ddd kkk ddd kkk ddd kkk ddd kkk fff jjj fff jjj fff jjj fff jjj fff jjj fff jjj fff jjj fff jjj fff jjj fff jjj ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh ggg hhh qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp qqq ppp www ooo www ooo www ooo www ooo www ooo www ooo www ooo www ooo www ooo www ooo eee iii eee iii eee iii eee iii eee iii eee iii eee iii eee iii eee iii eee iii rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu rrr uuu ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy ttt yyy zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// zzz /// xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... xxx ... ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, ccc ,,, vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm vvv mmm bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn bbb nnn",
+    "prompt": "qqq aaa qqq aaa qqq aaa qqq aaa qqq aaa qqq aaa qqq aaa qqq aaa qqq aaa qqq aaa aaa zzz aaa zzz aaa zzz aaa zzz aaa zzz aaa zzz aaa zzz aaa zzz aaa zzz aaa zzz www sss www sss www sss www sss www sss www sss www sss www sss www sss www sss sss xxx sss xxx sss xxx sss xxx sss xxx sss xxx sss xxx sss xxx sss xxx sss xxx eee ddd eee ddd eee ddd eee ddd eee ddd eee ddd eee ddd eee ddd eee ddd eee ddd ddd ccc ddd ccc ddd ccc ddd ccc ddd ccc ddd ccc ddd ccc ddd ccc ddd ccc ddd ccc rrr fff rrr fff rrr fff rrr fff rrr fff rrr fff rrr fff rrr fff rrr fff rrr fff fff vvv fff vvv fff vvv fff vvv fff vvv fff vvv fff vvv fff vvv fff vvv fff vvv ttt ggg ttt ggg ttt ggg ttt ggg ttt ggg ttt ggg ttt ggg ttt ggg ttt ggg ttt ggg ggg bbb ggg bbb ggg bbb ggg bbb ggg bbb ggg bbb ggg bbb ggg bbb ggg bbb ggg bbb yyy hhh yyy hhh yyy hhh yyy hhh yyy hhh yyy hhh yyy hhh yyy hhh yyy hhh yyy hhh hhh nnn hhh nnn hhh nnn hhh nnn hhh nnn hhh nnn hhh nnn hhh nnn hhh nnn hhh nnn uuu jjj uuu jjj uuu jjj uuu jjj uuu jjj uuu jjj uuu jjj uuu jjj uuu jjj uuu jjj jjj mmm jjj mmm jjj mmm jjj mmm jjj mmm jjj mmm jjj mmm jjj mmm jjj mmm jjj mmm iii kkk iii kkk iii kkk iii kkk iii kkk iii kkk iii kkk iii kkk iii kkk iii kkk kkk ,,, kkk ,,, kkk ,,, kkk ,,, kkk ,,, kkk ,,, kkk ,,, kkk ,,, kkk ,,, kkk ,,, ooo lll ooo lll ooo lll ooo lll ooo lll ooo lll ooo lll ooo lll ooo lll ooo lll lll ... lll ... lll ... lll ... lll ... lll ... lll ... lll ... lll ... lll ... ppp ;;; ppp ;;; ppp ;;; ppp ;;; ppp ;;; ppp ;;; ppp ;;; ppp ;;; ppp ;;; ppp ;;; ;;; /// ;;; /// ;;; /// ;;; /// ;;; /// ;;; /// ;;; /// ;;; /// ;;; /// ;;; ///",
     "title": "All L1",
   },
   {
@@ -98,7 +98,7 @@ exports[`bundled drill rows > locks the generated prompts against accidental dri
     "id": "cl-all-2-en",
     "layout": "qwerty",
     "order": 211,
-    "prompt": "asd asd asd asd asd asd asd asd asd asd hjk hjk hjk hjk hjk hjk hjk hjk hjk hjk qwe qwe qwe qwe qwe qwe qwe qwe qwe qwe yui yui yui yui yui yui yui yui yui yui zxc zxc zxc zxc zxc zxc zxc zxc zxc zxc nm, nm, nm, nm, nm, nm, nm, nm, nm, nm,",
+    "prompt": "qaz qaz qaz qaz qaz qaz qaz qaz qaz qaz wsx wsx wsx wsx wsx wsx wsx wsx wsx wsx edc edc edc edc edc edc edc edc edc edc rfv rfv rfv rfv rfv rfv rfv rfv rfv rfv tgb tgb tgb tgb tgb tgb tgb tgb tgb tgb yhn yhn yhn yhn yhn yhn yhn yhn yhn yhn ujm ujm ujm ujm ujm ujm ujm ujm ujm ujm ik, ik, ik, ik, ik, ik, ik, ik, ik, ik, ol. ol. ol. ol. ol. ol. ol. ol. ol. ol. p;/ p;/ p;/ p;/ p;/ p;/ p;/ p;/ p;/ p;/",
     "title": "All L2",
   },
   {
@@ -107,7 +107,7 @@ exports[`bundled drill rows > locks the generated prompts against accidental dri
     "id": "cl-all-3-en",
     "layout": "qwerty",
     "order": 212,
-    "prompt": "a;d a;d a;d a;d a;d a;d a;d a;d a;d a;d slf slf slf slf slf slf slf slf slf slf qpe qpe qpe qpe qpe qpe qpe qpe qpe qpe wor wor wor wor wor wor wor wor wor wor z/c z/c z/c z/c z/c z/c z/c z/c z/c z/c x.v x.v x.v x.v x.v x.v x.v x.v x.v x.v",
+    "prompt": "The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs. Vex a dwarf, jog, blink quickly. Crazy Frederick bought many jugs of whisky. Sip cup and/or juice; relax, enjoy calm air. Bright vixens waltz; nymphs quiz jack doves. How vexingly quick daft zebras jump. Five boxing wizards jump quickly.",
     "title": "All L3",
   },
   {
@@ -197,7 +197,7 @@ exports[`bundled drill rows > locks the generated prompts against accidental dri
     "id": "cl-all-1-tr",
     "layout": "traditional",
     "order": 310,
-    "prompt": "बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस बस कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि कि मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप मप वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा वा नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज नज त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ त्रउ धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय धय भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई भई चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग चग तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ तथ शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर शर ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। ह। खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप खप दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल दल",
+    "prompt": "बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ बसत्रउ किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय किधय मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई मपभई वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग वाचग नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ नजतथ बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर बसशर किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। किह। मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप मपखप वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल वादल",
     "title": "All L1",
   },
   {
@@ -206,7 +206,7 @@ exports[`bundled drill rows > locks the generated prompts against accidental dri
     "id": "cl-all-2-tr",
     "layout": "traditional",
     "order": 311,
-    "prompt": "बसि बसि बसि बसि बसि बसि बसि बसि बसि बसि किम किम किम किम किम किम किम किम किम किम त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ त्रधभ धयई धयई धयई धयई धयई धयई धयई धयई धयई धयई खदल खदल खदल खदल खदल खदल खदल खदल खदल खदल शहख शहख शहख शहख शहख शहख शहख शहख शहख शहख",
+    "prompt": "बसित्र बसित्र बसित्र बसित्र बसित्र बसित्र बसित्र बसित्र बसित्र बसित्र किमच किमच किमच किमच किमच किमच किमच किमच किमच किमच वानश वानश वानश वानश वानश वानश वानश वानश वानश वानश त्रबस त्रबस त्रबस त्रबस त्रबस त्रबस त्रबस त्रबस त्रबस त्रबस धयख धयख धयख धयख धयख धयख धयख धयख धयख धयख भईद भईद भईद भईद भईद भईद भईद भईद भईद भईद शहम शहम शहम शहम शहम शहम शहम शहम शहम शहम खपत खपत खपत खपत खपत खपत खपत खपत खपत खपत दलक दलक दलक दलक दलक दलक दलक दलक दलक दलक",
     "title": "All L2",
   },
   {
@@ -215,7 +215,7 @@ exports[`bundled drill rows > locks the generated prompts against accidental dri
     "id": "cl-all-3-tr",
     "layout": "traditional",
     "order": 312,
-    "prompt": "बसकि बसकि बसकि बसकि बसकि बसकि बसकि बसकि बसकि बसकि त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय त्रधय शहख शहख शहख शहख शहख शहख शहख शहख शहख शहख मपवा मपवा मपवा मपवा मपवा मपवा मपवा मपवा मपवा मपवा भईच भईच भईच भईच भईच भईच भईच भईच भईच भईच खदल खदल खदल खदल खदल खदल खदल खदल खदल खदल नजमप नजमप नजमप नजमप नजमप नजमप नजमप नजमप नजमप नजमप गथउ गथउ गथउ गथउ गथउ गथउ गथउ गथउ गथउ गथउ दल दल दल दल दल दल दल दल दल दल",
+    "prompt": "राम्रो काम गर। धेरै राम्रो छ। सानी नानी खेल। बाबा घर आउ। आमा चिया बनाउ। दाजु किताब पढ। साथी बाटो हेर। पानी खा अनि जा। कलमले लेख। ठूलो झोला बोक। चामल भात खाउ। टोपी किनेर ल्याउ। शहर बजार घुम। पैसा हिसाब गर। गाउँ घर फर्क। नयाँ पुरानो साट। भाइ बहिनी बोल। बिहान उठेर हिँड। बेलुका खाना खाउ।",
     "title": "All L3",
   },
 ]

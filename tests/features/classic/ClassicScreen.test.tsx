@@ -103,3 +103,51 @@ describe("ClassicScreen tap input", () => {
     expect(fireEvent.pointerDown(box, { pointerType: "mouse" })).toBe(true);
   });
 });
+
+describe("ClassicScreen All review rows (spec 0019)", () => {
+  it("shows the cross row All L1 prompt in English and lights its first key (covers AC-1, AC-5)", () => {
+    render(
+      <ClassicScreen
+        screen="all"
+        level={1}
+        layout="qwerty"
+        text={text}
+        onDone={() => {}}
+        onStats={() => {}}
+      />,
+    );
+    expect(screen.getByRole("textbox").getAttribute("aria-label")).toBe("All L1");
+    expect(screen.getByLabelText("reference").textContent).toContain("qqq");
+    expect(screen.getByRole("button", { name: "KeyQ" }).getAttribute("aria-current")).toBe("true");
+  });
+
+  it("shows the cross row All L2 prompt in Traditional (covers AC-4, AC-5)", () => {
+    render(
+      <ClassicScreen
+        screen="all"
+        level={2}
+        layout="traditional"
+        text={text}
+        onDone={() => {}}
+        onStats={() => {}}
+      />,
+    );
+    expect(screen.getByRole("textbox").getAttribute("aria-label")).toBe("All L2");
+    expect(screen.getByLabelText("reference").textContent).toContain("बसित्र");
+  });
+
+  it("lights the opposite hand Shift with a capital prompt head", () => {
+    const { container } = render(
+      <ClassicScreen
+        screen="all"
+        level={3}
+        layout="qwerty"
+        text={text}
+        onDone={() => {}}
+        onStats={() => {}}
+      />,
+    );
+    expect(screen.getByRole("button", { name: "KeyT" }).getAttribute("aria-current")).toBe("true");
+    expect(container.querySelectorAll('[aria-current="true"]')).toHaveLength(2);
+  });
+});

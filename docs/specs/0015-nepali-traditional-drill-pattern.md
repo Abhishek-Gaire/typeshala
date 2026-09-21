@@ -106,6 +106,8 @@ The English Home rows already prove the pattern in code and the engineer confirm
 - All L2: `a;l`, `lsd`, `qwe`, `woi`, `vbn`, `zxv`
 - All L3: `a;ls`, `qwo`, `zxv`, `dkjf`, `eir`, `vbn`, `ghdk`, `uyp`, `bn`
 
+Note (2026-09-21): the All rows above no longer apply. All L1 and L2 now use cross row groups under spec 0019. All L3 holds 19 review sentences, emitted once; see the second correction note in spec 0017, which lists the sentences and the rule they follow.
+
 Group order was adjusted from the first draft so a group's last unit never equals the next group's first unit. The draft order `dkj` then `jfg` (and similar pairs) collided at the boundary, which the Level 2 and Level 3 lint rule rejects.
 
 **Data model sketch**: no shape change. `Lesson` rows keep id, layout `traditional`, category, difficulty, and order values. Twelve new Traditional rows (`cl-home-1-tr` through `cl-all-3-tr`) replace the retired placeholder rows in `CLASSIC_DRILLS_TRADITIONAL`. English `cl-*-en` rows and Nepali Romanized rows are untouched.

@@ -4,7 +4,13 @@ import type { ClassicCategory, ClassicScreenId, ClassicKey } from "../../domain/
 import type { LayoutId, Lesson, NewAttempt } from "../../domain/datastore";
 import type { StringKey } from "../../i18n/keys";
 import { ALL_CLASSIC_DRILLS } from "../../domain/classicDrills";
-import { codeForChar, codeForNextUnit, lessonsForClassic } from "../../domain/classicLayout";
+import {
+  codeForChar,
+  codeForNextUnit,
+  lessonsForClassic,
+  oppositeShiftForCode,
+  shiftNeededForChar,
+} from "../../domain/classicLayout";
 import {
   PROMPT_PAGE_SIZE,
   chunkGroupsForPages,
@@ -230,6 +236,19 @@ export function ClassicScreen({
     return codeForChar(traditional.hint, layout);
   }
 
+  /** Next physical char to press: prompt char in English, raw sequence remainder in Traditional.
+   * The session `hint` is a display key name (uppercased), so Shift detection
+   * must read `sequenceHint`, which holds the literal chars still to press. */
+  function nextPressChar(): string {
+    if (lesson.layout !== "traditional") return next;
+    return traditional.sequenceHint.charAt(0);
+  }
+
+  const litCode = expectedKeyCode();
+  const pressChar = nextPressChar();
+  const shiftCode =
+    pressChar !== "" && shiftNeededForChar(pressChar) ? oppositeShiftForCode(litCode) : "";
+
   function onKey(e: React.KeyboardEvent) {
     if (e.key === "Backspace") {
       e.preventDefault();
@@ -310,7 +329,8 @@ export function ClassicScreen({
         <ClassicKeyboard
           layout={layout}
           next={next}
-          litCode={lesson.layout === "traditional" ? expectedKeyCode() : undefined}
+          litCode={lesson.layout === "traditional" ? litCode : undefined}
+          shiftCode={shiftCode === "" ? undefined : shiftCode}
           fingerHint={
             lesson.layout === "traditional" && traditional.sequenceHint.length > 1
               ? traditional.sequenceHint.split("").join(" ")

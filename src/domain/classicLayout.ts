@@ -122,6 +122,62 @@ export function glyphForKey(key: ClassicKey, layout: LayoutId): { main: string; 
   };
 }
 
+/** True when typing this char needs Shift held (shifted label, e.g. "D" for म्, "T" for "T"). */
+export function shiftNeededForChar(char: string): boolean {
+  if (char === "") return false;
+  for (const row of ROWS) {
+    for (const k of row) {
+      if (k.kind !== "char") continue;
+      if (k.base === char) return false;
+      if (k.shifted !== undefined && k.shifted === char && k.shifted !== k.base) return true;
+    }
+  }
+  return false;
+}
+
+/** Physical codes typed by the left hand (right Shift serves them). */
+const LEFT_HAND_CODES = new Set([
+  "Backquote",
+  "Digit1",
+  "Digit2",
+  "Digit3",
+  "Digit4",
+  "Digit5",
+  "Tab",
+  "KeyQ",
+  "KeyW",
+  "KeyE",
+  "KeyR",
+  "KeyT",
+  "CapsLock",
+  "KeyA",
+  "KeyS",
+  "KeyD",
+  "KeyF",
+  "KeyG",
+  "ShiftLeft",
+  "KeyZ",
+  "KeyX",
+  "KeyC",
+  "KeyV",
+  "KeyB",
+]);
+
+/**
+ * Opposite hand Shift for a lit key code, so the board teaches real
+ * touch typing (left hand key glows with right Shift). Empty when the
+ * code is not a one hand char key.
+ */
+export function oppositeShiftForCode(code: string): string {
+  if (code === "" || code === "Space" || code === "Backspace") return "";
+  for (const row of ROWS) {
+    for (const k of row) {
+      if (k.code !== code || k.kind !== "char") continue;
+      return LEFT_HAND_CODES.has(code) ? "ShiftRight" : "ShiftLeft";
+    }
+  }
+  return "";
+}
 /** Old level names map to classic drill categories. Unknown maps to all. */
 export function mapLevelToCategory(level?: string): ClassicCategory {
   if (level === "home-row") return "home";

@@ -36,4 +36,25 @@ describe("ClassicKeyboard tap input", () => {
     );
     expect(screen.getByRole("button", { name: "KeyL" }).getAttribute("aria-current")).toBeNull();
   });
+
+  it("lights opposite hand Shift with a Shift key", () => {
+    const { container } = render(
+      <ClassicKeyboard
+        layout="traditional"
+        next="म्"
+        litCode="KeyD"
+        shiftCode="ShiftRight"
+        onTapKey={() => {}}
+      />,
+    );
+    expect(screen.getByRole("button", { name: "KeyD" }).getAttribute("aria-current")).toBe("true");
+    expect(container.querySelectorAll('[aria-current="true"]')).toHaveLength(2);
+  });
+
+  it("keeps one lit key when Shift is not needed", () => {
+    const { container } = render(
+      <ClassicKeyboard layout="qwerty" next="a" onTapKey={() => {}} />,
+    );
+    expect(container.querySelectorAll('[aria-current="true"]')).toHaveLength(1);
+  });
 });

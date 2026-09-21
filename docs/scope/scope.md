@@ -30,6 +30,8 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 17  | Release pipeline with mirrored CI         | Release 9  | done   |
 | 18  | Dynamic classic drill generation          | Release 10 | done   |
 | 19  | Preeti map correction and lesson coverage | Release 11 | done   |
+| 20  | All own syllabus                          | Release 12 | done        |
+| 21  | All drill feel from real use              | Release 13 | planned     |
 
 ## Foundations
 
@@ -299,6 +301,28 @@ Correct five Traditional map rows to genuine Preeti values (half भ and ध, co
 - [x] Verify it: `/check verify preeti map correction and lesson coverage` (live run done in an earlier session)
 - [x] Test it: `/test preeti map correction and lesson coverage`
       Spec [0018](../specs/0018-preeti-map-correction-lesson-coverage/index.md) · code in `src/domain/preeti.ts`, `src/domain/keymap.ts`, `src/data/lessons/ne-traditional.json`
+
+## Release 12: all syllabus
+
+### 20. All own syllabus · done
+Give All level 1 and 2 their own cross row groups in both layouts, so the review screen stops replaying row content.
+**Done when:** All level 1 and 2 prompts mix rows in English and Traditional, lint and the snapshot pass, and row local plus All level 3 prompts are byte identical.
+- [x] Design it (spec): `/architect all own syllabus`
+- [x] Build it: `/develop all own syllabus`
+  - [x] English columns plus All rows rewired (AC-1, AC-2)
+  - [x] Traditional tables plus all four rows rewired, suite green (AC-3, AC-4, AC-5, AC-7)
+  - [x] Snapshot plus spec pointers, untouched rows byte identical (AC-6, AC-7, AC-8)
+- [x] Verify it: `/check verify all own syllabus`
+      Spec [0019](../specs/0019-all-own-syllabus.md)
+      Code in `src/domain/drillPattern.ts`, `src/domain/classicDrills.ts`
+
+## Release 13: all drill feel
+
+### 21. All drill feel from real use
+
+Revisit the 400 token All L1 length plus a mid row checkpoint, and the All L2 column difficulty, once real use reports back, so the review rows stay fair and steady.
+**Done when:** real use gives a call on L1 length and L2 difficulty, and any agreed tune ships with lint plus snapshot green.
+- [ ] Tune from use: `/develop all drill feel` (Needs spec: no, small tuning)
 
 ## Deferred
 

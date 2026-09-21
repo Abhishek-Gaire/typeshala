@@ -7,6 +7,8 @@ import {
   hasConsecutiveRepeat,
   lessonsForClassic,
   mapLevelToCategory,
+  oppositeShiftForCode,
+  shiftNeededForChar,
 } from "../../src/domain/classicLayout";
 import { ALL_CLASSIC_DRILLS, lintClassicDrills } from "../../src/domain/classicDrills";
 import { splitUnits } from "../../src/domain/preeti";
@@ -47,6 +49,39 @@ describe("traditional drill rows (spec 0015)", () => {
     expect(home?.prompt).toContain("कि");
     expect(home?.prompt).toContain("वा");
     expect(splitUnits(home?.prompt ?? "")).not.toContain("ि");
+  });
+});
+
+describe("english drill rows (spec 0019 AC-5)", () => {
+  it("serves one row per screen and level in the English layout", () => {
+    const english = ALL_CLASSIC_DRILLS.filter((l) => l.layout === "qwerty");
+    for (const screen of ["home", "top", "bottom", "all"] as const) {
+      for (const level of [1, 2, 3]) {
+        const hits = lessonsForClassic(english, screen, level);
+        expect(hits.map((l) => l.id)).toEqual([`cl-${screen}-${String(level)}-en`]);
+      }
+    }
+  });
+});
+
+describe("shift hint", () => {
+  it("asks for Shift only on shifted labels", () => {
+    expect(shiftNeededForChar("d")).toBe(false);
+    expect(shiftNeededForChar("D")).toBe(true);
+    expect(shiftNeededForChar(";")).toBe(false);
+    expect(shiftNeededForChar(":")).toBe(true);
+    expect(shiftNeededForChar("T")).toBe(true);
+    expect(shiftNeededForChar(" ")).toBe(false);
+    expect(shiftNeededForChar("")).toBe(false);
+  });
+
+  it("picks the opposite hand Shift for a lit key", () => {
+    expect(oppositeShiftForCode("KeyD")).toBe("ShiftRight");
+    expect(oppositeShiftForCode("KeyL")).toBe("ShiftLeft");
+    expect(oppositeShiftForCode("Semicolon")).toBe("ShiftLeft");
+    expect(oppositeShiftForCode("Space")).toBe("");
+    expect(oppositeShiftForCode("")).toBe("");
+    expect(oppositeShiftForCode("Nope")).toBe("");
   });
 });
 

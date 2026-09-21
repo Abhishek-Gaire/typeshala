@@ -44,6 +44,13 @@ describe("useTraditionalSession", () => {
     expect(result.current.typed).toBe("");
   });
 
+  it("keeps raw sequence chars for Shift detection (म needs none, म् needs Shift)", () => {
+    const { result: plain } = setup("म");
+    expect(plain.current.sequenceHint).toBe("d");
+    const { result: half } = setup("म्");
+    expect(half.current.sequenceHint).toBe("D");
+  });
+
   it("surfaces a pending pre-posed mark before its base (covers AC-3)", () => {
     const { result } = setup("कि");
     expect(result.current.pendingMark).toBe("");

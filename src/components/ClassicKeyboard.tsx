@@ -1,4 +1,4 @@
-/** Full five row classic keyboard (spec 0012 AC-6). Exactly one key glows red, derived from the cursor. */
+/** Full five row classic keyboard (spec 0012 AC-6). The next key glows red, plus its opposite hand Shift when needed. */
 import {
   classicRowsFor,
   codeForChar,
@@ -20,6 +20,7 @@ export function ClassicKeyboard({
   layout,
   next,
   litCode,
+  shiftCode,
   wrongKey,
   fingerHint,
   press,
@@ -29,6 +30,8 @@ export function ClassicKeyboard({
   next: string;
   /** Physical key to light instead of deriving it from `next`, for multi-key units. */
   litCode?: string;
+  /** Opposite hand Shift to light with the lit key, empty when Shift is not needed. */
+  shiftCode?: string;
   wrongKey?: string | null;
   fingerHint?: string;
   press?: KeyPress | null;
@@ -42,6 +45,7 @@ export function ClassicKeyboard({
 }) {
   const rows = classicRowsFor(layout);
   const lit = litCode ?? (next === "" ? "" : codeForNextUnit(next, layout));
+  const shiftLit = shiftCode ?? "";
   const wrong =
     wrongKey === null || wrongKey === undefined || wrongKey === ""
       ? ""
@@ -56,7 +60,7 @@ export function ClassicKeyboard({
         {rows.map((row, i) => (
           <div key={i} className="mb-1 flex min-h-0 flex-1 gap-1 last:mb-0">
             {row.map((key) => {
-              const active = key.code === lit;
+              const active = key.code === lit || (shiftLit !== "" && key.code === shiftLit);
               const missed = key.code !== "" && key.code === wrong && !active;
               const pressed = press !== null && press !== undefined && key.code === press.code;
               const glyph = glyphForKey(key, layout);

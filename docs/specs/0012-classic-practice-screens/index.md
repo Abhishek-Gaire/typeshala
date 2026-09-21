@@ -26,6 +26,7 @@ This spec recreates the classic practice shell as six screens (Home, Top, Bottom
   - Retired for Nepali Traditional rows: the Traditional drill rows that this criterion once covered now follow spec [0015](../0015-nepali-traditional-drill-pattern.md) (mirrored finger pair pattern with matra combos).
 - **AC-5**: Language switch (Nepal versus UK flag) preserves screen, level, and session state and swaps only the lesson source plus keyboard labels. Traditional shows Preeti Devanagari glyphs, English shows QWERTY letters, same geometry and color logic.
 - **AC-6**: Virtual keyboard matches the reference geometry (full five row board with number row plus Tab, Caps Lock, Shift, Ctrl, Alt, Backspace, Enter, Space). Character keys render light with blue glyphs (dual shifted variant where the layout defines one). Modifier keys render olive with no glyph. Exactly one key at a time renders red, tracking the cursor in the prompt, landing on any key including space.
+  - Note (2026-09-21): when the next press needs Shift held (Traditional half forms like म्, English capitals), the opposite hand Shift glows red together with the key, so two keys glow at once. The lit Shift is derived from the cursor, never stored.
 - **AC-7**: Header shows an in window menu bar (`Perform`, `Lessons`, `Options`, `Help`), six redrawn category icons (never traced from the original art), a session only name field, and a live `Avg.speed` readout wired to the same WPM math as spec 0004.
 - **AC-8**: All new strings exist in English plus Nepali with English fallback, all colors come from tokens (never hardcoded), every action is reachable by keyboard with always visible focus, and all data stays local with no network call.
 
@@ -88,7 +89,7 @@ Reasoning and options: see `rationale.md` beside this file.
 - Scoring math stays in `domain` with no framework imports per spec 0004 formulas. Traditional counts units (documented divergence from spec 0007), English and Romanized count chars. Views never compute WPM or accuracy inline.
 - Difficulty rule is enforced as data plus a pure validator: L1 may repeat, L2 and L3 never repeat the same unit back to back. Lesson lint tests assert this for every bundled drill row.
 - Glyph labels come from layout tables (`PREETI_MAP` inverse, QWERTY letters), never from screenshot reading. Dual glyph display shows shifted variant only where the layout defines one.
-- Exactly one keyboard key carries the red next state at a time. It is derived from the cursor, never stored.
+- Exactly one keyboard key carries the red next state at a time, plus the opposite hand Shift when the next press needs Shift held. It is derived from the cursor, never stored.
 - Category icons are redrawn originals. Flags plus generic chrome may match the reference directly.
 - Attempts are append only (drill screens). Settings are last write wins. Free and game runs never write lesson attempts.
 
@@ -140,3 +141,4 @@ None. No new env vars or secrets.
 - [ ] Author real L2 plus L3 drill rows per screen (no repeat rule plus longer mixed prompts) once the shell lands.
 - [ ] Decide whether Free runs should ever save (word count history) or stay fully ephemeral.
 - [ ] Retire the root `typeshala-ui-recreation-spec.md` into `docs/design/` history once Screen 1 content is confirmed moved.
+- [ ] Touch boards cannot type Shift units yet (taps send the plain key only), so the new sentence rows with half forms and capitals need a Shift tap or hold before they play fully on touch.

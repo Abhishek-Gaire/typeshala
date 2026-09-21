@@ -1,5 +1,5 @@
 /**
- * Classic drill pattern generators (spec 0017).
+ * Classic drill pattern generators (specs 0017, 0019).
  * English rows are built from the screen key set plus a level rule.
  * Pure code with no framework imports.
  */
@@ -30,9 +30,72 @@ export const CLASSIC_KEYS: Record<DrillKeyRow, { left: string[]; right: string[]
   bottom: { left: ["z", "x", "c", "v", "b"], right: ["n", "m", ",", ".", "/"] },
 };
 
-const KEY_ROWS: DrillKeyRow[] = ["home", "top", "bottom"];
+/**
+ * All Level 3 review sentences (not char triples).
+ * Each sentence is one group of word tokens, emitted once.
+ * Covers a-z plus `, . / ;`, capitals teach Shift.
+ * Vetted: no consecutive duplicate chars (spaces excluded),
+ * so the existing char-level lint still passes.
+ */
+export const ALL_L3_SENTENCES: string[] = [
+  "The quick brown fox jumps over the lazy dog.",
+  "Pack my box with five dozen liquor jugs.",
+  "Vex a dwarf, jog, blink quickly.",
+  "Crazy Frederick bought many jugs of whisky.",
+  "Sip cup and/or juice; relax, enjoy calm air.",
+  "Bright vixens waltz; nymphs quiz jack doves.",
+  "How vexingly quick daft zebras jump.",
+  "Five boxing wizards jump quickly.",
+];
+
+/** All Level 3 groups: each sentence split into its word tokens. */
+export function allLevel3SentenceGroups(): string[][] {
+  return ALL_L3_SENTENCES.map((s) => s.split(/\s+/).filter((t) => t.length > 0));
+}
 
 const PAIR_MEMBER_REPEAT = 3;
+
+/**
+ * All Level 2 finger column triples (spec 0019), top then home then bottom
+ * of the same finger, left hand columns then right hand columns.
+ */
+export function columnTriples(): string[][] {
+  const triples: string[][] = [];
+  for (let i = 0; i < 5; i++) {
+    triples.push([
+      `${CLASSIC_KEYS.top.left[i]}${CLASSIC_KEYS.home.left[i]}${CLASSIC_KEYS.bottom.left[i]}`,
+    ]);
+  }
+  for (let i = 0; i < 5; i++) {
+    triples.push([
+      `${CLASSIC_KEYS.top.right[i]}${CLASSIC_KEYS.home.right[i]}${CLASSIC_KEYS.bottom.right[i]}`,
+    ]);
+  }
+  return triples;
+}
+
+/**
+ * All Level 1 vertical pairs (spec 0019): per finger column, top with home
+ * then home with bottom, each member tripled, in column order.
+ */
+export function columnPairs(): string[][] {
+  const pairs: string[][] = [];
+  for (let i = 0; i < 5; i++) {
+    const top = CLASSIC_KEYS.top.left[i];
+    const home = CLASSIC_KEYS.home.left[i];
+    const bottom = CLASSIC_KEYS.bottom.left[i];
+    pairs.push([top.repeat(PAIR_MEMBER_REPEAT), home.repeat(PAIR_MEMBER_REPEAT)]);
+    pairs.push([home.repeat(PAIR_MEMBER_REPEAT), bottom.repeat(PAIR_MEMBER_REPEAT)]);
+  }
+  for (let i = 0; i < 5; i++) {
+    const top = CLASSIC_KEYS.top.right[i];
+    const home = CLASSIC_KEYS.home.right[i];
+    const bottom = CLASSIC_KEYS.bottom.right[i];
+    pairs.push([top.repeat(PAIR_MEMBER_REPEAT), home.repeat(PAIR_MEMBER_REPEAT)]);
+    pairs.push([home.repeat(PAIR_MEMBER_REPEAT), bottom.repeat(PAIR_MEMBER_REPEAT)]);
+  }
+  return pairs;
+}
 
 /** Level 1 groups: left[i] with right[4 - i], each pair member tripled. */
 export function mirrorPairs(keys: { left: string[]; right: string[] }): string[][] {
@@ -69,39 +132,21 @@ export function mixedTriples(keys: { left: string[]; right: string[] }): string[
 
 /**
  * Token groups for one English screen and level.
- * All is a mixed review: Level 2 samples the first window per hand per row,
- * Level 3 samples the first two mixed groups per row.
+ * All Level 1 uses cross row vertical pairs, All Level 2 uses finger
+ * column triples (spec 0019). All Level 3 is review sentences (repeat 1).
  */
 export function englishGroups(category: ClassicCategory, difficulty: number): string[][] {
   if (difficulty === 1) {
-    if (category === "all") return KEY_ROWS.flatMap((row) => mirrorPairs(CLASSIC_KEYS[row]));
+    if (category === "all") return columnPairs();
     return mirrorPairs(CLASSIC_KEYS[category]);
   }
   if (difficulty === 2) {
-    if (category === "all") {
-      return KEY_ROWS.flatMap((row) => {
-        const keys = CLASSIC_KEYS[row];
-        const leftWindows = sameHandTriples(keys.left);
-        const rightWindows = sameHandTriples(keys.right);
-        if (leftWindows.length === 0 || rightWindows.length === 0) {
-          throw new Error("drill pattern: a hand needs at least one triple window");
-        }
-        return [leftWindows[0], rightWindows[0]];
-      });
-    }
+    if (category === "all") return columnTriples();
     const keys = CLASSIC_KEYS[category];
     return [...sameHandTriples(keys.left), ...sameHandTriples(keys.right)];
   }
   if (difficulty === 3) {
-    if (category === "all") {
-      return KEY_ROWS.flatMap((row) => {
-        const groups = mixedTriples(CLASSIC_KEYS[row]).slice(0, 2);
-        if (groups.length < 2) {
-          throw new Error("drill pattern: a row needs at least two mixed groups");
-        }
-        return groups;
-      });
-    }
+    if (category === "all") return allLevel3SentenceGroups();
     return mixedTriples(CLASSIC_KEYS[category]);
   }
   throw new Error(`drill pattern: unsupported difficulty ${String(difficulty)}`);
