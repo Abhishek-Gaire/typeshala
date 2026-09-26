@@ -51,8 +51,10 @@ Two `Character = Keys` columns of rarer units.
 - **Left, conjuncts and signs:** ङ `Alt+0149`, ऱ `Alt+0140`, त्त `Q`, क्त `Qm`,
   ट्ठ `Alt+0229`, द्ध `4`, द्द `Alt+0162`, दृ `b[`, हृ `Alt+0155`, द्घ
   `Alt+0132`, द्य `B`, ट्ट `Alt+0204`, ठ्ठ `Alt+0136`, द्व `Alt+0216`,
-  `Alt+0171`, `` ` `` `|`, `Alt+0165`, द्घ `Alt+0165+o`, रु `?`, रू `Alt+0191`,
-  श्र `>`, ङ्ख `x|`, ङ्क `X`, द्द `2`, द्य `Alt+0223`, then matras and marks
+  `Alt+0171`, `` ` `` `|`, `Alt+0165`, `Alt+0165+o` (the reph dead key then
+  `o`, so र्य; the glyph reads as a plain च at chart size), रु `?`,
+  रू `Alt+0191`, श्र `>`, ह्र `x|`, ङ्क `X`, द्द `2`, द्य `Alt+0223`, then
+  matras and marks
   (`f`, `l`, `L`, `]`, `}`, `=`, `+`, `F`, `M`, `[`, `{`, `\`, `,`, `Alt+0230`).
   The matra rows render the Preeti glyph, so their exact Devanagari names are
   hard to read at chart size.
@@ -73,7 +75,9 @@ Two `Character = Keys` columns of rarer units.
   श्र `>`, ऱ `X`; matras ी `L`, ु `'`, ू `"`, ृ `[`, े `]`, ै `}`, ं `+`,
   ः `M`, ँ `F`; punctuation and digits.
 - **Table 2, "Preeti Font मा use हुने Alt Keys":** the `Alt+NNNN` list for
-  legacy glyphs (ङ, ष, झ, ञ्, ऱ, द्द, घ, ट्ट, हृ, quotes, dashes, ॐ, …).
+  legacy glyphs (ङ, ष, झ, ञ्, ऱ, द्द, द्घ, ट्ट, हृ, quotes, dashes, ॐ, …).
+  Its first row repeats `द्घ` on `Alt+0132`, and `हृ` appears on both
+  `Alt+0155` (preeti2) and `Alt+0197` (here).
 
 ## What the app uses
 
@@ -93,8 +97,10 @@ Two `Character = Keys` columns of rarer units.
 - **Pre-posed i-matra combos:** `l` is typed before its consonant but stored
   after, so every `l`+consonant pair is listed explicitly (`ls` → कि …).
 - **Devanagari digits** on the shifted number row (`!` → १ … `)` → ०).
-- Deliberately omitted: dead-key / extended Latin-1 combinations reachable
-  only through legacy keyboard drivers. See the header of `preeti.ts`.
+- Deliberately left out as single units: 13 rare conjuncts plus reph. All 13
+  are typeable today by halant and matra composition, but they score as two
+  or three units instead of one, which is a scoring decision, not a missing
+  key. See the header of `preeti.ts` and the reachability table below.
 
 ## Differences
 
@@ -126,10 +132,12 @@ there, and the app follows Shuvayatra's full `ङ` instead. The `ो` on `f]` an
 | `अं`  | composed `c` + `ं` | `c++` (atomic)                    |
 | `अ:`  | composed `c` + `ः` | `c+M` (atomic)                    |
 | `दृ`  | —                  | `b+[`                             |
-| `ङ्ख` | —                  | `x                                | `   |
+| `ङ्ख` | —                  | `x\|`                             |
 
 The app composes अं and अ: from their parts; the chart types them as one
-unit. Both can be true at once since the app buffers.
+unit. Both can be true at once since the app buffers. The `x|` row is a
+misread in the transcription: `x` is `ह` and `|` is `्र` on both the chart's
+own rows and in all three mirror fonts, so the row composes to `ह्र`.
 
 ### In the app only
 
@@ -141,16 +149,73 @@ unit. Both can be true at once since the app buffers.
 
 ### In the chart only
 
-- Conjuncts and half forms: ट्ट, ट्ठ, ठ्ठ, द्व, हृ, रू, ङ्क, ङ्ग, घ्, झ्, फ्,
-  र्.
+- Conjuncts and half forms the app has no atomic row for: ट्ट, ट्ठ, ठ्ठ, द्व, द्घ,
+  र्य, हृ, रू, ङ्क, घ्, झ्, फ्, plus the reph dead key.
 - Legacy Alt glyphs: ॐ, ॠ, ॡ, `–`, `—`, `…`, quote marks, and the rest of
   Table 2.
 - Punctuation outputs on `-` `_` `<` → `(` `)` `?` (`,` now types `ङ` in the app).
+
+### In the mirror only
+
+ङ्ग, ङ्घ, ङ्ढ, and ड्ड appear in the Shuvayatra mirror but in none of the
+three charts. The mirror is the only source in the repo that attests them, and
+all four are reachable in the app by composition (see the table below).
 
 ### Ambiguous in the chart
 
 - `X` maps to ऱ, ङ्क, and ह् across the charts. The app picks `ह्`; the
   transcription keeps all three, so a lookup by `X` is not single-valued.
+
+### Reachability of the rare conjuncts
+
+Every one of these is typeable and scoreable in the app today. None of them is
+unreachable: the ones without their own key compose from halant (`\`) and a
+matra, the same way the map already ships `स्व` (`:j`), `स्त्र` (`;q`), and `द्र`
+(`b|`). What they lack is a single unit, so a prompt full of `ट्ठ` or `द्व`
+counts two or three units against a learner who typed it correctly. That is a
+scoring decision, not a keymap gap. It is open as its own spec,
+[0021](docs/specs/0021-rare-conjuncts-as-one-unit.md).
+
+Chart column is `reference/preeti-keymap.ts` unless noted. The mirror column is
+the dead key in `SHUVAYATRA_PREETI_CHAR_MAP`
+(`reference/shuvayatra-preeti.ts`), where an `Alt+NNNN` number is that byte, so
+`Alt+0203` is `U+00CB`. The app column is locked in by the coverage test in
+`tests/domain/preeti.test.ts`.
+
+| Unit      | Chart claim                                                                                | Mirror           | Reachable in app        | Single unit |
+| --------- | ------------------------------------------------------------------------------------------ | ---------------- | ----------------------- | ----------- |
+| ङ्ख       | `x\|` (`:99`, misread, the row prints ह्र)                                                 | `U+00CE`         | `,\v`                   | no, 3       |
+| ङ्क       | `X` (`:100`)                                                                               | `U+00CD`         | `,\s`                   | no, 3       |
+| ङ्ग       | none, the old `Alt+0132` row was a misattribution                                          | `U+00CB`         | `,\u`                   | no, 3       |
+| ङ्घ       | none                                                                                       | `U+2039`         | `,\3`                   | no, 3       |
+| ङ्ढ       | none                                                                                       | `U+00B0`         | `,\9`                   | no, 3       |
+| ड्ड       | none                                                                                       | `U+2022`         | `8\8`                   | no, 3       |
+| ट्ट       | `Alt+0248`, `Alt+0204` (`:92`, `:94`)                                                      | `U+00A7`         | `6\6`                   | no, 3       |
+| ट्ठ       | `Alt+0229` (`:96`), `Alt+0171`, `Alt+0176` (`:167`, `:168`)                                | `U+00DD`         | `6\7`                   | no, 3       |
+| ठ्ठ       | `Alt+0136` (`:95`)                                                                         | `U+00B6`         | `7\7`                   | no, 3       |
+| द्घ       | `Alt+0132` (`:105`)                                                                        | `U+00A2`         | `b\3`                   | no, 3       |
+| द्व       | `Alt+0216` (`:93`)                                                                         | `U+00E5`         | `b\j`                   | no, 3       |
+| हृ        | `Alt+0155` (`:97`), `Alt+0197` (`:173`)                                                    | `U+00C5`         | `x[`                    | no, 2       |
+| रू        | `Alt+0191` (`:98`)                                                                         | `U+00BF`         | `/"`                    | no, 2       |
+| reph `र्` | a bare virama on `\|` (`:148`) and `Alt+0165` (`:165`); `Alt+0165+o` reads as र्य (`:108`) | `U+00A5` → `र्‍` | not typeable (dead key) | n/a         |
+
+Two cautions for whoever reads that table next. First, mirror dead keys are not
+interchangeable with the chart's `Alt+NNNN` numbers. Within Latin 1 a
+codepoint's byte equals the Alt number, confirmed by `U+00A3` giving `घ्` in all
+three font maps (`:70`, `:234`, `:332`) against `Alt+0163` in the chart, but
+past that the fonts disagree about the same codepoint: `U+00B0` is `ङ्ढ` in
+Preeti (`:163`) and Kantipur (`:435`) but `ङ्क` in PCS Nepali (`:281`), and
+`U+00CE` is `ङ्ख` in Preeti (`:94`) and `फ्` in Kantipur (`:357`). One Alt number
+is also claimed for different characters across sources: `Alt+0203` is `फ्` in
+`preeti1.png` where the mirror has `ङ्ग`, and `Alt+0167` is `द्द` in
+`preeti1.png`, `ऱ` at `reference/preeti-keymap.ts:166`, and `ट्ट` in the mirror.
+A mirror entry proves a unit is reachable in principle, never which key types
+it.
+
+Second, `ट्ठ`'s three chart codes are not three independent sources. Two are
+best effort Alt glyph names the transcription itself flags, and `Alt+0171`'s
+glyph is `्र` in the mirror (`:73`), so it is most likely a misread rather than
+a contradiction.
 
 ## Transcription caveats
 

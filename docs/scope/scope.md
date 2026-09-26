@@ -9,29 +9,30 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 
 ## At a glance
 
-| #   | Feature                                   | Phase      | Status |
-| --- | ----------------------------------------- | ---------- | ------ |
-| 1   | Stack and architecture                    | Foundation | done   |
-| 2   | Coding standards and tooling              | Foundation | done   |
-| 3   | Data model local store                    | Foundation | done   |
-| 4   | Design system and bilingual UI foundation | Foundation | done   |
-| 5   | Smallest usable English tutor             | Release 1  | done   |
-| 6   | Structured lessons and progression        | Release 2  | done   |
-| 7   | Nepali Romanized layout                   | Release 3  | done   |
-| 8   | Nepali Traditional Preeti layout          | Release 3  | done   |
-| 9   | Progress trends and stats screen          | Release 4  | done   |
-| 10  | Settings language and themes              | Release 4  | done   |
-| 11  | Bonus Ramayana game                       | Release 5  | done   |
-| 12  | Polish and packaging three systems        | Release 6  | done   |
-| 13  | Classic practice screens                  | Release 7  | done   |
-| 14  | Single line prompt paging                 | Release 7  | done   |
-| 15  | Nepali Traditional drill content pattern  | Release 7  | done   |
-| 16  | Android immersive plus touch board        | Release 8  | done   |
-| 17  | Release pipeline with mirrored CI         | Release 9  | done   |
-| 18  | Dynamic classic drill generation          | Release 10 | done   |
-| 19  | Preeti map correction and lesson coverage | Release 11 | done   |
-| 20  | All own syllabus                          | Release 12 | done        |
-| 21  | All drill feel from real use              | Release 13 | planned     |
+| #   | Feature                                   | Phase      | Status  |
+| --- | ----------------------------------------- | ---------- | ------- |
+| 1   | Stack and architecture                    | Foundation | done    |
+| 2   | Coding standards and tooling              | Foundation | done    |
+| 3   | Data model local store                    | Foundation | done    |
+| 4   | Design system and bilingual UI foundation | Foundation | done    |
+| 5   | Smallest usable English tutor             | Release 1  | done    |
+| 6   | Structured lessons and progression        | Release 2  | done    |
+| 7   | Nepali Romanized layout                   | Release 3  | done    |
+| 8   | Nepali Traditional Preeti layout          | Release 3  | done    |
+| 9   | Progress trends and stats screen          | Release 4  | done    |
+| 10  | Settings language and themes              | Release 4  | done    |
+| 11  | Bonus Ramayana game                       | Release 5  | done    |
+| 12  | Polish and packaging three systems        | Release 6  | done    |
+| 13  | Classic practice screens                  | Release 7  | done    |
+| 14  | Single line prompt paging                 | Release 7  | done    |
+| 15  | Nepali Traditional drill content pattern  | Release 7  | done    |
+| 16  | Android immersive plus touch board        | Release 8  | done    |
+| 17  | Release pipeline with mirrored CI         | Release 9  | done    |
+| 18  | Dynamic classic drill generation          | Release 10 | done    |
+| 19  | Preeti map correction and lesson coverage | Release 11 | done    |
+| 20  | All own syllabus                          | Release 12 | done    |
+| 21  | All drill feel from real use              | Release 13 | planned |
+| 22  | Preeti legacy conjunct gaps               | Release 14 | done    |
 
 ## Foundations
 
@@ -305,8 +306,10 @@ Correct five Traditional map rows to genuine Preeti values (half भ and ध, co
 ## Release 12: all syllabus
 
 ### 20. All own syllabus · done
+
 Give All level 1 and 2 their own cross row groups in both layouts, so the review screen stops replaying row content.
 **Done when:** All level 1 and 2 prompts mix rows in English and Traditional, lint and the snapshot pass, and row local plus All level 3 prompts are byte identical.
+
 - [x] Design it (spec): `/architect all own syllabus`
 - [x] Build it: `/develop all own syllabus`
   - [x] English columns plus All rows rewired (AC-1, AC-2)
@@ -322,7 +325,26 @@ Give All level 1 and 2 their own cross row groups in both layouts, so the review
 
 Revisit the 400 token All L1 length plus a mid row checkpoint, and the All L2 column difficulty, once real use reports back, so the review rows stay fair and steady.
 **Done when:** real use gives a call on L1 length and L2 difficulty, and any agreed tune ships with lint plus snapshot green.
+
 - [ ] Tune from use: `/develop all drill feel` (Needs spec: no, small tuning)
+
+## Release 14: preeti reference truth
+
+### 22. Preeti legacy conjunct gaps · done
+
+The 13 rare conjuncts plus reph are all typeable today through halant and matra composition, so the map header that calls them unreachable gets corrected, the coverage claim becomes a test, and the chart transcription gets its errors fixed.
+**Done when:** the header describes the real situation, one test locks every barakhadi letter plus the 14 composition rows, the reference files match the charts, and lint, format, typecheck, and the suite pass.
+
+- [x] Design it (spec): `/architect preeti legacy conjunct gaps`
+- [x] Build it: `/develop preeti legacy conjunct gaps`
+  - [x] Header gap paragraph rewritten in `src/domain/preeti.ts` (AC-2)
+  - [x] Coverage block for the alphabet and the 14 composition rows (AC-3)
+  - [x] Transcription corrected: `ङ्ग` row gone, `द्घ`, `र्य`, `हृ` rows added (AC-4)
+  - [x] Differences note updated with the reachability table and codepoint caveat (AC-5)
+  - [x] Full gate: lint, format, typecheck, suite (AC-1, AC-6, AC-7) (lint and typecheck clean, 274 tests green; format check still red on 2 pre existing files outside this change)
+- [x] Verify it: `/check verify preeti legacy conjunct gaps` (AC-1, AC-6, AC-7 proved by a 303 line before and after runtime dump, AC-3 proved by mutating the map, AC-4 and AC-5 by reading the charts, AC-2 by source text)
+      Spec [0020](../specs/0020-preeti-legacy-conjunct-gaps.md)
+      Code in `src/domain/preeti.ts`, `tests/domain/preeti.test.ts`, `reference/preeti-keymap.ts`, `preeti-keymap-differences.md`
 
 ## Deferred
 
