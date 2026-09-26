@@ -26,13 +26,14 @@
  *      `m` key has no letter on its own in Traditional; it only acts as
  *      this modifier right after क(प)/भ/उ's keys.
  *
- * Deliberately left out (documented gap, not a silent one): a handful of
- * rarer conjuncts (ङ्ग, ङ्ख, ङ्क, ङ्घ, ङ्ढ, ट्ट, ड्ड, ठ्ठ, ट्ठ, द्घ, द्व,
- * हृ, रू, and the reph/floating र् auto-placement for arbitrary text) were
- * only reachable in the original software via obscure legacy-keyboard-
- * driver combinations (dead keys / extended Latin-1 characters) that
- * don't map cleanly onto a standard browser KeyboardEvent. Add them here
- * if a lesson ever needs one — the architecture below extends cleanly.
+ * Deliberately left out as single units (documented, not silent): 13 rare
+ * conjuncts plus reph. All 13 are typeable today by halant and matra
+ * composition (`,\s` for ङ्क, `6\7` for ट्ठ, `b\j` for द्व), but they score
+ * as two or three units rather than one, which is a scoring decision, not a
+ * missing key. `X` stays `ह्` and `x|` is not ङ्ख (that chart row is
+ * misread; it composes to ह्र). Reph is blocked by dead key unreachability,
+ * not by the map. Coverage evidence and triage:
+ * docs/specs/0020-preeti-legacy-conjunct-gaps.md
  *
  * Units in this file mean prompt units (single chars, matras, or
  * conjunct clusters), not raw chars. Callers pass completed unit

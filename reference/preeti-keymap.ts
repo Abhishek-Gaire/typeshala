@@ -98,7 +98,14 @@ export const PREETI_KEYMAP: PreetiKeyEntry[] = [
   { character: "रू", keys: "Alt+0191" },
   { character: "ङ्ख", keys: "x|" },
   { character: "ङ्क", keys: "X" },
-  { character: "ङ्ग", keys: "Alt+0132" },
+  // Both charts print द्घ on Alt+0132 (preeti2 left column, repeated in
+  // preeti3 Table 2). An earlier transcription filed this row as ङ्ग, a
+  // character that appears in no chart; the mirror has ङ्ग on dead key
+  // U+00CB, see reference/shuvayatra-preeti.ts.
+  { character: "द्घ", keys: "Alt+0132" },
+  // Reph dead key then o (य), so र्य. The printed glyph reads as a plain च
+  // at chart size, so take the name as best effort.
+  { character: "र्य", keys: "Alt+0165+o" },
 
   // half forms and dead consonants
   { character: "ष", keys: "S" },
@@ -124,7 +131,6 @@ export const PREETI_KEYMAP: PreetiKeyEntry[] = [
   { character: "व्", keys: "J" },
   { character: "श्", keys: "Z" },
   { character: "ह्", keys: "X" },
-  { character: "र्", keys: "Alt+0165+o" },
 
   // matras and signs
   { character: "ा", keys: "f" },
@@ -162,6 +168,9 @@ export const PREETI_ALT_KEYMAP: PreetiKeyEntry[] = [
   { character: "ट्ठ", keys: "Alt+0176" },
   { character: "+", keys: "Alt+0177" },
   { character: "झ", keys: "Alt+0180" },
+  // preeti3 Table 2 repeats हृ, which preeti2 prints on Alt+0155; the mirror
+  // agrees (U+00C5 = 197).
+  { character: "हृ", keys: "Alt+0197" },
   { character: "ॠ", keys: "Alt+0205" },
   { character: "ॡ", keys: "Alt+0206" },
   { character: "…", keys: "Alt+0210" },
