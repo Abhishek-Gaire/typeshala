@@ -1,4 +1,4 @@
-/** Preeti step tests (spec 0007, AC-2, AC-5; spec 0018 map correction). */
+/** Preeti step tests (spec 0007, AC-2, AC-5; spec 0018 map correction; spec 0020 coverage). */
 import { describe, expect, it } from "vitest";
 import {
   advancePreeti,
@@ -216,5 +216,70 @@ describe("spec 0018 map correction", () => {
     }
     expect(buffer).toBe("");
     expect(got).toEqual(["न", "ौ"]);
+  });
+});
+
+/** Feed keys through the map, flush the tail, and collect the committed units. */
+function typeKeys(keys: string): string[] {
+  let buffer = "";
+  const units: string[] = [];
+  for (const key of keys) {
+    const step = advancePreeti(buffer, key);
+    expect(step.error).toBe(false);
+    units.push(...step.commits);
+    buffer = step.buffer;
+  }
+  const flushed = exactCommitPreeti(buffer);
+  return flushed === null ? units : [...units, flushed];
+}
+
+/** Every barakhadi consonant, each one unit on its own key. */
+const BARAKHADI = "क ख ग घ ङ च छ ज झ ञ ट ठ ड ढ ण त थ द ध न प फ ब भ म य र ल व श ष स ह".split(" ");
+
+/** All 11 vowels, the independent ones plus the long ones. */
+const VOWELS = "अ आ इ ई उ ऊ ऋ ए ऐ ओ औ".split(" ");
+
+/** All 10 matras, the vowel signs. */
+const MATRAS = "ा ि ी ु ू ृ े ै ो ौ".split(" ");
+
+/** The eight conjuncts the charts give a key of their own. */
+const CHART_CONJUNCTS = "क्ष त्र ज्ञ श्र द्ध द्द द्य क्र".split(" ");
+
+/** The 13 rare conjuncts plus ह्र, each with the keys that type it today. */
+const COMPOSITION_ROWS: ReadonlyArray<readonly [string, string]> = [
+  ["ङ्ग", ",\\u"],
+  ["ङ्ख", ",\\v"],
+  ["ङ्क", ",\\s"],
+  ["ङ्घ", ",\\3"],
+  ["ङ्ढ", ",\\9"],
+  ["ट्ट", "6\\6"],
+  ["ड्ड", "8\\8"],
+  ["ठ्ठ", "7\\7"],
+  ["ट्ठ", "6\\7"],
+  ["द्घ", "b\\3"],
+  ["द्व", "b\\j"],
+  ["हृ", "x["],
+  ["रू", '/"'],
+  ["ह्र", "X/"],
+];
+
+describe("spec 0020 coverage", () => {
+  it("gives every barakhadi consonant, vowel, matra, and chart conjunct one unit (covers AC-3)", () => {
+    for (const unit of [...BARAKHADI, ...VOWELS, ...MATRAS, ...CHART_CONJUNCTS]) {
+      expect(sequenceForPreeti(unit)).not.toBe("");
+      expect(splitUnits(unit)).toEqual([unit]);
+    }
+  });
+
+  it("commits exactly the prompt units for all 14 composition rows (covers AC-3)", () => {
+    for (const [unit, keys] of COMPOSITION_ROWS) {
+      expect(typeKeys(keys)).toEqual(splitUnits(unit));
+    }
+  });
+
+  it("splits ह्र the way X/ types it, not the way x| types it (covers AC-3)", () => {
+    expect(splitUnits("ह्र")).toEqual(["ह्", "र"]);
+    expect(typeKeys("X/")).toEqual(["ह्", "र"]);
+    expect(typeKeys("x|")).toEqual(["ह", "्र"]);
   });
 });

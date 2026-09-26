@@ -37,6 +37,8 @@ npm run format:check
 
 Build specs live in `docs/specs/`. Format: `docs/specs/NNNN-title.md` for short specs, or `docs/specs/NNNN-title/index.md` with `rationale.md` beside it for decided slices. Visual guides live in `docs/design/` with plain slugs (for example `docs/design/classic-practice-screens.md`). New screens need both or an explicit note why one is skipped.
 
+Preeti typing truth lives in `src/domain/preeti.ts`. Chart disagreements, the reachability table, and the dead key caveats live in `preeti-keymap-differences.md`, with the chart transcription in `reference/preeti-keymap.ts` and the converter mirror in `reference/shuvayatra-preeti.ts`. Never type or judge a unit from a chart row alone: read the chart PNG and check the mirror, several chart rows are misreads.
+
 ## Rules
 
 - Layers: `domain` holds typing rules, `application` holds use cases, `infrastructure` holds store plus Tauri bridge, `presentation` holds React views. Outer depends on inner, never reverse.
