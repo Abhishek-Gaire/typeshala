@@ -1,7 +1,7 @@
 # 0021. Score rare conjuncts as one unit
 
 **Date**: 2026-09-25
-**Status**: In Progress
+**Status**: Accepted
 **Revised**: 2026-09-30. The map decision held up under a live run of the
 fourteen rows, and so did every criterion except the one about content.
 That criterion added a thirteenth drill row, which no learner can reach, and
