@@ -1,6 +1,6 @@
 [package]
 name = "typeshala"
-version = "1.0.0"
+version = "1.0.1"
 description = "Open-source cross-platform typing tutor for English and Nepali"
 authors = ["Abhishek Gaire"]
 edition = "2021"
