@@ -26,13 +26,13 @@
  *      `m` key has no letter on its own in Traditional; it only acts as
  *      this modifier right after क(प)/भ/उ's keys.
  *
- * Deliberately left out as single units (documented, not silent): 13 rare
- * conjuncts plus reph. All 13 are typeable today by halant and matra
- * composition (`,\s` for ङ्क, `6\7` for ट्ठ, `b\j` for द्व), but they score
- * as two or three units rather than one, which is a scoring decision, not a
- * missing key. `X` stays `ह्` and `x|` is not ङ्ख (that chart row is
- * misread; it composes to ह्र). Reph is blocked by dead key unreachability,
- * not by the map. Coverage evidence and triage:
+ * Deliberately left out as single units (documented, not silent): reph only.
+ * Reph is blocked by dead key unreachability, not by the map. The 13 rare
+ * conjuncts plus रू used to sit here too, and now score as one unit each
+ * (spec 0021); their rows are in the rare conjunct block below, spelled with
+ * the three keys the legacy layout already uses, because no source gives any
+ * of them a shorter spelling. `X` stays `ह्` and `x|` is not ङ्ख (that chart
+ * row is misread; it composes to ह्र). Source coverage and triage:
  * docs/specs/0020-preeti-legacy-conjunct-gaps.md
  *
  * Units in this file mean prompt units (single chars, matras, or
@@ -138,6 +138,25 @@ export const PREETI_MAP: Record<string, string> = {
 
   // conjunct only reachable via Shift, not otherwise covered
   I: "क्ष",
+
+  // rare conjuncts and रू (spec 0021): each is the three key spelling the
+  // legacy layout already uses, base + halant + base, because no source
+  // gives any of them a shorter one. `x[`, `/"` and `X/` are two key rows
+  // for the same reason: they compose from live keys with no shorter form.
+  ",\\u": "ङ्ग",
+  ",\\v": "ङ्ख",
+  ",\\s": "ङ्क",
+  ",\\3": "ङ्घ",
+  ",\\9": "ङ्ढ",
+  "6\\6": "ट्ट",
+  "8\\8": "ड्ड",
+  "7\\7": "ठ्ठ",
+  "6\\7": "ट्ठ",
+  "b\\3": "द्घ",
+  "b\\j": "द्व",
+  "x[": "हृ",
+  '/"': "रू",
+  "X/": "ह्र",
 
   // Devanagari digits (Shift + digit row — a clean 1:1, no legacy quirks)
   "!": "१",

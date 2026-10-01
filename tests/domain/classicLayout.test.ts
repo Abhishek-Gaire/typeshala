@@ -35,10 +35,14 @@ describe("difficulty validator", () => {
 
 describe("traditional drill rows (spec 0015)", () => {
   it("serves one new row per screen and level in the traditional layout", () => {
+    // Reachability guard (spec 0021 AC-7): ClassicScreen.tsx opens hits[0],
+    // so a second row in a filled slot is content no learner can ever open.
+    // It would pass every other test, so this is where it has to fail.
     const traditional = ALL_CLASSIC_DRILLS.filter((l) => l.layout === "traditional");
     for (const screen of ["home", "top", "bottom", "all"] as const) {
       for (const level of [1, 2, 3]) {
         const hits = lessonsForClassic(traditional, screen, level);
+        expect(hits).toHaveLength(1);
         expect(hits.map((l) => l.id)).toEqual([`cl-${screen}-${String(level)}-tr`]);
       }
     }
@@ -49,6 +53,21 @@ describe("traditional drill rows (spec 0015)", () => {
     expect(home?.prompt).toContain("कि");
     expect(home?.prompt).toContain("वा");
     expect(splitUnits(home?.prompt ?? "")).not.toContain("ि");
+  });
+
+  it("lights the first key of a rare conjunct through the keyboard fallback (spec 0021 AC-5)", () => {
+    // ClassicScreen.expectedKeyCode reads the session hint, so this path is
+    // only the ClassicKeyboard fallback. It must still light the first key of
+    // the sequence rather than nothing, or the board goes dead mid letter.
+    for (const [letter, code] of [
+      ["ट्ट", "Digit6"],
+      ["द्व", "KeyB"],
+      ["हृ", "KeyX"],
+      ["रू", "Slash"],
+      ["ह्र", "KeyX"],
+    ] as const) {
+      expect(codeForNextUnit(letter, "traditional"), letter).toBe(code);
+    }
   });
 });
 

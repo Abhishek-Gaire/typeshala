@@ -292,7 +292,7 @@ No map, lesson, or drill content changes.
 
 - [ ] Scoring and single unit question for the 11 three unit and 3 two unit
       conjuncts is decided in
-      [0021](0021-rare-conjuncts-as-one-unit.md), which adds the rows. The
+      [0021](0021-rare-conjuncts-as-one-unit/index.md), which adds the rows. The
       keys are already known from the reachability table above.
 - [ ] `ङ्क` is the only item where a shorter path would be a genuine
       improvement rather than a cosmetic one, and only if `X` is ever freed

@@ -97,10 +97,10 @@ Two `Character = Keys` columns of rarer units.
 - **Pre-posed i-matra combos:** `l` is typed before its consonant but stored
   after, so every `l`+consonant pair is listed explicitly (`ls` → कि …).
 - **Devanagari digits** on the shifted number row (`!` → १ … `)` → ०).
-- Deliberately left out as single units: 13 rare conjuncts plus reph. All 13
-  are typeable today by halant and matra composition, but they score as two
-  or three units instead of one, which is a scoring decision, not a missing
-  key. See the header of `preeti.ts` and the reachability table below.
+- Reph is deliberately left out as a single unit. The 13 rare conjuncts plus
+  रू used to sit here too and now score as one unit each, from three key rows
+  spelled with the keys the layout already uses (spec 0021). See the header of
+  `preeti.ts` and the reachability table below.
 
 ## Differences
 
@@ -168,13 +168,17 @@ all four are reachable in the app by composition (see the table below).
 
 ### Reachability of the rare conjuncts
 
-Every one of these is typeable and scoreable in the app today. None of them is
-unreachable: the ones without their own key compose from halant (`\`) and a
-matra, the same way the map already ships `स्व` (`:j`), `स्त्र` (`;q`), and `द्र`
-(`b|`). What they lack is a single unit, so a prompt full of `ट्ठ` or `द्व`
-counts two or three units against a learner who typed it correctly. That is a
-scoring decision, not a keymap gap. It is open as its own spec,
-[0021](docs/specs/0021-rare-conjuncts-as-one-unit.md).
+Every one of these is typeable and scoreable in the app today, and since spec
+[0021](docs/specs/0021-rare-conjuncts-as-one-unit/index.md) each is one scoring unit:
+the map has a row for it, spelled with the keys the layout already used for it
+(base plus halant plus base, or two keys for `हृ`, `रू`, and `ह्र`). No source
+gives any of them a shorter spelling, so the rows add no key.
+
+That is not true of the composition only clusters the app also spells by hand.
+`स्व` and `स्त्र` still split as two units because the map's `:` gives `स्`,
+`द्र` splits as `["द", "्र"]` from the `|` row, and `क्व` still costs three,
+because none of them is a map row. Those remain open, and `क्व` among the rare
+conjuncts' siblings is the widest scoring effect still to decide.
 
 Chart column is `reference/preeti-keymap.ts` unless noted. The mirror column is
 the dead key in `SHUVAYATRA_PREETI_CHAR_MAP`
@@ -182,22 +186,23 @@ the dead key in `SHUVAYATRA_PREETI_CHAR_MAP`
 `Alt+0203` is `U+00CB`. The app column is locked in by the coverage test in
 `tests/domain/preeti.test.ts`.
 
-| Unit      | Chart claim                                                                                | Mirror           | Reachable in app        | Single unit |
-| --------- | ------------------------------------------------------------------------------------------ | ---------------- | ----------------------- | ----------- |
-| ङ्ख       | `x\|` (`:99`, misread, the row prints ह्र)                                                 | `U+00CE`         | `,\v`                   | no, 3       |
-| ङ्क       | `X` (`:100`)                                                                               | `U+00CD`         | `,\s`                   | no, 3       |
-| ङ्ग       | none, the old `Alt+0132` row was a misattribution                                          | `U+00CB`         | `,\u`                   | no, 3       |
-| ङ्घ       | none                                                                                       | `U+2039`         | `,\3`                   | no, 3       |
-| ङ्ढ       | none                                                                                       | `U+00B0`         | `,\9`                   | no, 3       |
-| ड्ड       | none                                                                                       | `U+2022`         | `8\8`                   | no, 3       |
-| ट्ट       | `Alt+0248`, `Alt+0204` (`:92`, `:94`)                                                      | `U+00A7`         | `6\6`                   | no, 3       |
-| ट्ठ       | `Alt+0229` (`:96`), `Alt+0171`, `Alt+0176` (`:167`, `:168`)                                | `U+00DD`         | `6\7`                   | no, 3       |
-| ठ्ठ       | `Alt+0136` (`:95`)                                                                         | `U+00B6`         | `7\7`                   | no, 3       |
-| द्घ       | `Alt+0132` (`:105`)                                                                        | `U+00A2`         | `b\3`                   | no, 3       |
-| द्व       | `Alt+0216` (`:93`)                                                                         | `U+00E5`         | `b\j`                   | no, 3       |
-| हृ        | `Alt+0155` (`:97`), `Alt+0197` (`:173`)                                                    | `U+00C5`         | `x[`                    | no, 2       |
-| रू        | `Alt+0191` (`:98`)                                                                         | `U+00BF`         | `/"`                    | no, 2       |
-| reph `र्` | a bare virama on `\|` (`:148`) and `Alt+0165` (`:165`); `Alt+0165+o` reads as र्य (`:108`) | `U+00A5` → `र्‍` | not typeable (dead key) | n/a         |
+| Unit      | Chart claim                                                                                | Mirror            | Reachable in app        | Single unit |
+| --------- | ------------------------------------------------------------------------------------------ | ----------------- | ----------------------- | ----------- |
+| ङ्ख       | `x\|` (`:99`, misread, the row prints ह्र)                                                 | `U+00CE`          | `,\v`                   | yes         |
+| ङ्क       | `X` (`:100`)                                                                               | `U+00CD`          | `,\s`                   | yes         |
+| ङ्ग       | none, the old `Alt+0132` row was a misattribution                                          | `U+00CB`          | `,\u`                   | yes         |
+| ङ्घ       | none                                                                                       | `U+2039`          | `,\3`                   | yes         |
+| ङ्ढ       | none                                                                                       | `U+00B0`          | `,\9`                   | yes         |
+| ड्ड       | none                                                                                       | `U+2022`          | `8\8`                   | yes         |
+| ट्ट       | `Alt+0248`, `Alt+0204` (`:92`, `:94`)                                                      | `U+00A7`          | `6\6`                   | yes         |
+| ट्ठ       | `Alt+0229` (`:96`), `Alt+0171`, `Alt+0176` (`:167`, `:168`)                                | `U+00DD`          | `6\7`                   | yes         |
+| ठ्ठ       | `Alt+0136` (`:95`)                                                                         | `U+00B6`          | `7\7`                   | yes         |
+| द्घ       | `Alt+0132` (`:105`)                                                                        | `U+00A2`          | `b\3`                   | yes         |
+| द्व       | `Alt+0216` (`:93`)                                                                         | `U+00E5`          | `b\j`                   | yes         |
+| हृ        | `Alt+0155` (`:97`), `Alt+0197` (`:173`)                                                    | `U+00C5`          | `x[`                    | yes         |
+| ह्र       | `x\|` (`:99`, misread, the same row read as ङ्ख)                                           | none, no dead key | `X/`                    | yes         |
+| रू        | `Alt+0191` (`:98`)                                                                         | `U+00BF`          | `/"`                    | yes         |
+| reph `र्` | a bare virama on `\|` (`:148`) and `Alt+0165` (`:165`); `Alt+0165+o` reads as र्य (`:108`) | `U+00A5` → `र्‍`  | not typeable (dead key) | n/a         |
 
 Two cautions for whoever reads that table next. First, mirror dead keys are not
 interchangeable with the chart's `Alt+NNNN` numbers. Within Latin 1 a

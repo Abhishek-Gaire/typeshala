@@ -17,7 +17,12 @@ import {
   columnTriples,
 } from "../../src/domain/drillPattern";
 import { tokensForPrompt } from "../../src/domain/promptPaging";
-import { sequenceForPreeti, splitUnits } from "../../src/domain/preeti";
+import {
+  advancePreeti,
+  exactCommitPreeti,
+  sequenceForPreeti,
+  splitUnits,
+} from "../../src/domain/preeti";
 
 /** Meta every row must keep: id, layout, title, order, category, difficulty. */
 const EXPECTED_META: Array<[string, string, string, number, string, number]> = [
@@ -51,6 +56,39 @@ const tokenCounts = (prompt: string): Map<string, number> => {
   const counts = new Map<string, number>();
   for (const token of tokensForPrompt(prompt)) counts.set(token, (counts.get(token) ?? 0) + 1);
   return counts;
+};
+
+/**
+ * Replay a prompt the way the session does: type each unit by its own keys and
+ * flush at every unit edge, since a space is not a map row and is handled
+ * between units. Returns the units the engine actually committed.
+ */
+const typePromptUnits = (prompt: string): string[] => {
+  const out: string[] = [];
+  let buffer = "";
+  for (const unit of splitUnits(prompt)) {
+    if (unit === " ") {
+      const held = exactCommitPreeti(buffer);
+      if (held !== null) {
+        out.push(held);
+        buffer = "";
+      }
+      out.push(" ");
+      continue;
+    }
+    for (const key of sequenceForPreeti(unit)) {
+      const step = advancePreeti(buffer, key);
+      expect(step.error, `${unit} on ${key}`).toBe(false);
+      out.push(...step.commits);
+      buffer = step.buffer;
+    }
+    const held = exactCommitPreeti(buffer);
+    if (held !== null) {
+      out.push(held);
+      buffer = "";
+    }
+  }
+  return out;
 };
 
 describe("bundled drill rows", () => {
@@ -103,7 +141,7 @@ describe("bundled drill rows", () => {
     }
   });
 
-  it("holds the nine cross row Traditional L1 pairs on the All row (spec 0019 AC-3)", () => {
+  it("holds the nine cross row and three rare conjunct Traditional L1 tokens on the All row (spec 0019 AC-3, spec 0021 AC-7)", () => {
     const all = ALL_CLASSIC_DRILLS.find((row) => row.id === "cl-all-1-tr");
     expect(all?.prompt).toBe(
       buildPrompt(
@@ -112,8 +150,54 @@ describe("bundled drill rows", () => {
       ),
     );
     const tokens = tokensForPrompt(all?.prompt ?? "");
-    expect(tokens).toHaveLength(9 * 30);
-    expect(new Set(tokens).size).toBe(9);
+    expect(tokens).toHaveLength(12 * 30);
+    expect(new Set(tokens).size).toBe(12);
+  });
+
+  it("drills the rare conjuncts from the reachable All L1 Traditional row (spec 0021 AC-7)", () => {
+    // No new row: the classic screen shows one row per screen and level
+    // (ClassicScreen takes the first match), so a thirteenth row would be
+    // content no learner can open. These tokens carry the letters instead.
+    const all = ALL_CLASSIC_DRILLS.find((row) => row.id === "cl-all-1-tr");
+    const units = splitUnits(all?.prompt ?? "").filter((u) => u !== " ");
+    for (const letter of ["ट्ट", "द्व", "हृ"]) {
+      expect(units, letter).toContain(letter);
+      expect(sequenceForPreeti(letter), letter).not.toBe("");
+    }
+    // The row keeps its slot: still the single All L1 Traditional row, with
+    // its category, difficulty, and order, and still 30 repeats per token.
+    expect(all?.category).toBe("all");
+    expect(all?.difficulty).toBe(1);
+    expect(all?.order).toBe(310);
+    for (const [token, count] of tokenCounts(all?.prompt ?? "")) {
+      expect(count % 30, token).toBe(0);
+    }
+  });
+
+  it("replays every Traditional row to its exact prompt, rare letters included (spec 0021 AC-1, AC-2)", () => {
+    // The byte for byte guarantee, over all twelve rows rather than one token:
+    // typing each unit by its own keys must rebuild the prompt, so the rare
+    // rows changed the grouping and nothing else.
+    const rows = ALL_CLASSIC_DRILLS.filter((r) => r.layout === "traditional");
+    expect(rows).toHaveLength(12);
+    for (const row of rows) {
+      expect(typePromptUnits(row.prompt), row.id).toEqual(splitUnits(row.prompt));
+      expect(typePromptUnits(row.prompt).join(""), row.id).toBe(row.prompt);
+    }
+  });
+
+  it("gives each rare conjunct the same thirty practices as the cross row tokens (spec 0021 AC-7)", () => {
+    // The repeat count is what makes a three key spelling learnable, so the
+    // new tokens must carry it, not trail the row.
+    const all = ALL_CLASSIC_DRILLS.find((row) => row.id === "cl-all-1-tr");
+    const counts = tokenCounts(all?.prompt ?? "");
+    for (const token of TRADITIONAL_ALL_L1_TOKENS) {
+      expect(counts.get(token), token).toBe(30);
+    }
+    for (const letter of ["ट्ट", "द्व", "हृ"]) {
+      const hits = [...counts.keys()].filter((t) => t.includes(letter));
+      expect(hits.length, letter).toBe(1);
+    }
   });
 
   it("holds the nine cross row Traditional L2 triples on the All row (spec 0019 AC-4)", () => {
@@ -210,7 +294,7 @@ describe("traditional row lengths", () => {
       ["cl-bottom-1-tr", 4 * 30],
       ["cl-bottom-2-tr", 5 * 10],
       ["cl-bottom-3-tr", 8 * 10],
-      ["cl-all-1-tr", 9 * 30],
+      ["cl-all-1-tr", 12 * 30],
       ["cl-all-2-tr", 9 * 10],
       ["cl-all-3-tr", 57],
     ];
@@ -265,6 +349,9 @@ describe("all cross row content rules (spec 0019 AC-1 through AC-4)", () => {
       "किह।",
       "मपखप",
       "वादल",
+      "खट्ट",
+      "पद्व",
+      "तहृ",
     ]);
     expect(TRADITIONAL_ALL_L2_TOKENS).toEqual([
       "बसित्र",

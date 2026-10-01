@@ -160,7 +160,10 @@ describe("spec 0018 map correction", () => {
   });
 
   it("commits full nga on comma (covers AC-3)", () => {
-    expect(advancePreeti("", ",")).toEqual({ commits: ["ङ"], buffer: "", error: false });
+    // Deliberate since spec 0021: comma now also begins five three key
+    // conjuncts (ङ्ग, ङ्ख, ङ्क, ङ्घ, ङ्ढ), so it holds for one key first.
+    // The session settles it at once whenever ङ is the expected unit.
+    expect(advancePreeti("", ",")).toEqual({ commits: [], buffer: ",", error: false });
     expect(exactCommitPreeti(",")).toBe("ङ");
   });
 
@@ -233,6 +236,39 @@ function typeKeys(keys: string): string[] {
   return flushed === null ? units : [...units, flushed];
 }
 
+/**
+ * Replay a whole prompt the way the session does: type each unit by its own
+ * keys and flush at every unit edge, since a space is not a map row and has
+ * to be handled between units. Returns the units the engine committed.
+ */
+function typePrompt(prompt: string): string[] {
+  const out: string[] = [];
+  let buffer = "";
+  for (const unit of splitUnits(prompt)) {
+    if (unit === " ") {
+      const held = exactCommitPreeti(buffer);
+      if (held !== null) {
+        out.push(held);
+        buffer = "";
+      }
+      out.push(" ");
+      continue;
+    }
+    for (const key of sequenceForPreeti(unit)) {
+      const step = advancePreeti(buffer, key);
+      expect(step.error, `${unit} on ${key}`).toBe(false);
+      out.push(...step.commits);
+      buffer = step.buffer;
+    }
+    const held = exactCommitPreeti(buffer);
+    if (held !== null) {
+      out.push(held);
+      buffer = "";
+    }
+  }
+  return out;
+}
+
 /** Every barakhadi consonant, each one unit on its own key. */
 const BARAKHADI = "क ख ग घ ङ च छ ज झ ञ ट ठ ड ढ ण त थ द ध न प फ ब भ म य र ल व श ष स ह".split(" ");
 
@@ -245,7 +281,9 @@ const MATRAS = "ा ि ी ु ू ृ े ै ो ौ".split(" ");
 /** The eight conjuncts the charts give a key of their own. */
 const CHART_CONJUNCTS = "क्ष त्र ज्ञ श्र द्ध द्द द्य क्र".split(" ");
 
-/** The 13 rare conjuncts plus ह्र, each with the keys that type it today. */
+/** The 13 rare conjuncts plus रू, each with the keys that type it today.
+ *  Since spec 0021 every one of these is also a PREETI_MAP row, so this list
+ *  is the map rows under test, not a reachability probe. */
 const COMPOSITION_ROWS: ReadonlyArray<readonly [string, string]> = [
   ["ङ्ग", ",\\u"],
   ["ङ्ख", ",\\v"],
@@ -278,8 +316,136 @@ describe("spec 0020 coverage", () => {
   });
 
   it("splits ह्र the way X/ types it, not the way x| types it (covers AC-3)", () => {
-    expect(splitUnits("ह्र")).toEqual(["ह्", "र"]);
-    expect(typeKeys("X/")).toEqual(["ह्", "र"]);
+    // Spec 0021: ह्र is its own map row now, so it is one unit both ways.
+    expect(splitUnits("ह्र")).toEqual(["ह्र"]);
+    expect(typeKeys("X/")).toEqual(["ह्र"]);
     expect(typeKeys("x|")).toEqual(["ह", "्र"]);
+  });
+});
+
+describe("spec 0021 rare conjunct rows", () => {
+  it("gives every one of the fourteen its own unit and commits only that unit (covers AC-1, AC-2)", () => {
+    for (const [unit, keys] of COMPOSITION_ROWS) {
+      expect(splitUnits(unit), unit).toEqual([unit]);
+      expect(sequenceForPreeti(unit), unit).toBe(keys);
+      // Walk the keys key by key: nothing commits until the row completes,
+      // and the last key commits exactly the letter and nothing else.
+      let buffer = "";
+      const committed: string[] = [];
+      for (const key of keys) {
+        const step = advancePreeti(buffer, key);
+        expect(step.error, `${unit} on ${key}`).toBe(false);
+        committed.push(...step.commits);
+        buffer = step.buffer;
+      }
+      expect(buffer, unit).toBe("");
+      expect(committed, unit).toEqual([unit]);
+    }
+  });
+
+  it("leaves plain typing of the eight first keys unchanged (covers AC-3)", () => {
+    // Each first key now holds for one key, so a key that does not continue
+    // the sequence must still commit the base letter first.
+    const plain: ReadonlyArray<readonly [string, string, string]> = [
+      [",", "s", "ङ"],
+      ["6", "s", "ट"],
+      ["7", "s", "ठ"],
+      ["8", "s", "ड"],
+      ["b", "s", "द"],
+      ["x", "s", "ह"],
+      ["/", "s", "र"],
+      ["X", "s", "ह्"],
+    ];
+    for (const [first, next, letter] of plain) {
+      expect(advancePreeti("", first), first).toEqual({
+        commits: [],
+        buffer: first,
+        error: false,
+      });
+      expect(advancePreeti(first, next), `${first} then ${next}`).toEqual({
+        commits: [letter, "क"],
+        buffer: "",
+        error: false,
+      });
+    }
+  });
+
+  it("flushes ह, र, and ह् exactly while the halant rows stay stuck (covers AC-9)", () => {
+    for (const [key, letter] of [
+      ["x", "ह"],
+      ["/", "र"],
+      ["X", "ह्"],
+    ] as const) {
+      expect(exactCommitPreeti(key), key).toBe(letter);
+    }
+    // The five halant rows leave a buffer with no exact row, so a space
+    // after it drops the keys and counts a miss (pinned in the session
+    // test). No valid Nepali word contains a dead ट, ङ, ड, ठ, or द.
+    for (const [first, second] of [
+      ["6", "\\"],
+      ["8", "\\"],
+      ["7", "\\"],
+      ["b", "\\"],
+      [",", "\\"],
+    ] as const) {
+      const step = advancePreeti(first, second);
+      expect(step.buffer, `${first}${second}`).toBe(`${first}\\`);
+      expect(exactCommitPreeti(`${first}\\`), `${first}\\`).toBeNull();
+    }
+  });
+
+  it("keeps the fourteen rows usable without adding a key to the board (covers AC-1)", () => {
+    // The rules the spec pins: every row uses keys the map already had, the
+    // leading keys form a prefix of the row so the buffer can hold, and no row
+    // invents a value another row already owns.
+    const rare = new Set([
+      "ङ्ग",
+      "ङ्ख",
+      "ङ्क",
+      "ङ्घ",
+      "ङ्ढ",
+      "ट्ट",
+      "ड्ड",
+      "ठ्ठ",
+      "ट्ठ",
+      "द्घ",
+      "द्व",
+      "हृ",
+      "रू",
+      "ह्र",
+    ]);
+    const entries = Object.entries(PREETI_MAP);
+    for (const [seq, letter] of entries) {
+      if (!rare.has(letter)) continue;
+      expect(rare.has(letter), letter).toBe(true);
+      for (const key of seq) {
+        expect(key in PREETI_MAP, `${letter} uses new key ${key}`).toBe(true);
+      }
+      // A three key row must be able to hold through its first two keys.
+      for (let cut = 1; cut < seq.length; cut++) {
+        const held = seq.slice(0, cut);
+        expect(
+          advancePreeti("", held.slice(0, -1)).buffer,
+          `${letter} holds ${held.slice(0, -1)}`,
+        ).toBe(held.slice(0, -1));
+        expect(
+          advancePreeti(held.slice(0, -1), held.slice(-1)).buffer,
+          `${letter} holds ${held}`,
+        ).toBe(held);
+      }
+      expect(sequenceForPreeti(letter), letter).toBe(seq);
+    }
+    // Exactly fourteen, so a later row cannot slip in unnoticed.
+    expect(entries.filter(([, v]) => rare.has(v))).toHaveLength(14);
+  });
+
+  it("produces byte for byte the same text for a word with a rare letter (covers AC-1)", () => {
+    // Grouping is allowed to change; the text a learner sees is not. Typing
+    // the honest keys for a mixed word must rebuild the prompt exactly.
+    const prompt = "खट्ट पद्व";
+    const units = splitUnits(prompt);
+    expect(units).toEqual(["ख", "ट्ट", " ", "प", "द्व"]);
+    expect(typePrompt(prompt)).toEqual(units);
+    expect(typePrompt(prompt).join("")).toBe(prompt);
   });
 });

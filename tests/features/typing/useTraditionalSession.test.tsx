@@ -244,6 +244,115 @@ describe("useTraditionalSession", () => {
   });
 });
 
+describe("useTraditionalSession rare conjunct rows (spec 0021)", () => {
+  it("settles the pending base letter at once when the drill expects it (covers AC-4)", () => {
+    // Eight keys now hold for one key, so द, ह, and र must still commit on
+    // the press rather than wait. That is the whole wait is invisible claim.
+    for (const [prompt, key] of [
+      ["द", "b"],
+      ["ह", "x"],
+      ["र", "/"],
+      ["ङ", ","],
+    ] as const) {
+      const { result } = setup(prompt);
+      typeKeys(result.current, [key]);
+      expect(result.current.typed, prompt).toBe(prompt);
+      expect(result.current.done, prompt).toBe(true);
+      expect(result.current.accuracy, prompt).toBe(100);
+    }
+  });
+
+  it("lights each key of a three key letter in turn (covers AC-5)", () => {
+    const { result } = setup("ट्ट");
+    expect(result.current.hint).toBe("6");
+    expect(result.current.sequenceHint).toBe("6\\6");
+    typeKeys(result.current, ["6"]);
+    expect(result.current.typed).toBe("");
+    expect(result.current.hint).toBe("\\");
+    expect(result.current.sequenceHint).toBe("\\6");
+    typeKeys(result.current, ["\\"]);
+    expect(result.current.typed).toBe("");
+    expect(result.current.hint).toBe("6");
+    expect(result.current.sequenceHint).toBe("6");
+    typeKeys(result.current, ["6"]);
+    expect(result.current.typed).toBe("ट्ट");
+    expect(result.current.done).toBe(true);
+    expect(result.current.accuracy).toBe(100);
+  });
+
+  it("types each rare letter end to end through the session (covers AC-2)", () => {
+    for (const [unit, keys] of [
+      ["ट्ट", ["6", "\\", "6"]],
+      ["द्व", ["b", "\\", "j"]],
+      ["हृ", ["x", "["]],
+      ["रू", ["/", '"']],
+      ["ह्र", ["X", "/"]],
+    ] as const) {
+      const { result } = setup(unit);
+      typeKeys(result.current, [...keys]);
+      expect(result.current.typed, unit).toBe(unit);
+      expect(result.current.done, unit).toBe(true);
+      expect(result.current.errorHits, unit).toBe(0);
+    }
+  });
+
+  it("guides the two key letters one step at a time (covers AC-5)", () => {
+    // x[, /" and X/ are two key rows, so the hint must advance exactly once.
+    for (const [unit, keys] of [
+      ["हृ", ["x", "["]],
+      ["रू", ["/", '"']],
+      ["ह्र", ["X", "/"]],
+    ] as const) {
+      const { result } = setup(unit);
+      expect(result.current.sequenceHint, unit).toBe(keys.join(""));
+      typeKeys(result.current, [keys[0]]);
+      expect(result.current.typed, `${unit} after one key`).toBe("");
+      expect(result.current.sequenceHint, `${unit} remaining`).toBe(keys[1]);
+      expect(result.current.hint, `${unit} next hint`).toBe(
+        keys[1] === keys[1].toUpperCase() && keys[1] !== "/" ? keys[1] : keys[1].toUpperCase(),
+      );
+      typeKeys(result.current, [keys[1]]);
+      expect(result.current.typed, unit).toBe(unit);
+      expect(result.current.errorHits, unit).toBe(0);
+    }
+  });
+
+  it("counts a rare letter as one unit of score, not three (covers AC-2)", () => {
+    // The whole point of the change: a perfect ट्ट must score the same per
+    // letter as a perfect क, and WPM is units per minute by design. calcWpm
+    // divides by 5 for the standard word convention, so one unit in sixty
+    // seconds is 0.2 wpm; a three key letter is no longer credited as three.
+    const { result: rare } = setup("ट्ट");
+    typeKeys(rare.current, ["6", "\\", "6"]);
+    const rareAttempt = rare.current.buildAttempt("t", "2026-09-30T00:00:00Z", 60000);
+    expect(rareAttempt.wpm).toBe(0.2);
+
+    const { result: plain } = setup("क");
+    typeKeys(plain.current, ["s"]);
+    const plainAttempt = plain.current.buildAttempt("t", "2026-09-30T00:00:00Z", 60000);
+    expect(plainAttempt.wpm).toBe(rareAttempt.wpm);
+    expect(rareAttempt.errors).toEqual([]);
+  });
+
+  it("scores a space after a stuck halant buffer as a miss and drops the keys (covers AC-9)", () => {
+    // Accepted regression: 6\ has no exact row, so the keys cannot be
+    // flushed. No valid Nepali word carries a dead ट, so the learner types
+    // the right key next anyway.
+    const { result } = setup("ट्ट ब");
+    typeKeys(result.current, ["6", "\\"]);
+    expect(result.current.typed).toBe("");
+    typeKeys(result.current, [" "]);
+    expect(result.current.typed).toBe("");
+    expect(result.current.keystrokes).toBe(3);
+    expect(result.current.errorHits).toBe(1);
+    expect(result.current.wrongKey).toBe(" ");
+    // The drill recovers: typing the full letter from a clean buffer works.
+    typeKeys(result.current, ["6", "\\", "6", " "]);
+    expect(result.current.typed).toBe("ट्ट ");
+    expect(result.current.errorHits).toBe(1);
+  });
+});
+
 describe("usePreetiSequenceHint", () => {
   it("returns the full sequence for the next unit", () => {
     expect(usePreetiSequenceHint("क्षमा", [])).toBe("I");

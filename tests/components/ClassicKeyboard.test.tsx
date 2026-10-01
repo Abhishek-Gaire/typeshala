@@ -52,9 +52,7 @@ describe("ClassicKeyboard tap input", () => {
   });
 
   it("keeps one lit key when Shift is not needed", () => {
-    const { container } = render(
-      <ClassicKeyboard layout="qwerty" next="a" onTapKey={() => {}} />,
-    );
+    const { container } = render(<ClassicKeyboard layout="qwerty" next="a" onTapKey={() => {}} />);
     expect(container.querySelectorAll('[aria-current="true"]')).toHaveLength(1);
   });
 });

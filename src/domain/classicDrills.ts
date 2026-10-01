@@ -192,7 +192,10 @@ function sentenceGroups(sentences: string[]): string[][] {
 
 /**
  * Traditional All L1 cross row pair tokens (spec 0019): 5 Home with Top
- * then 4 Home with Bottom, each a single token group emitted 30 times.
+ * then 4 Home with Bottom, plus three rare conjunct tokens (spec 0021),
+ * each a single token group emitted 30 times. The rare ones are pseudo
+ * keyboard strings in the same style, never dictionary words, because no
+ * everyday Nepali word carries ट्ट, द्व, or हृ.
  */
 export const TRADITIONAL_ALL_L1_TOKENS: string[] = [
   "बसत्रउ",
@@ -204,6 +207,9 @@ export const TRADITIONAL_ALL_L1_TOKENS: string[] = [
   "किह।",
   "मपखप",
   "वादल",
+  "खट्ट",
+  "पद्व",
+  "तहृ",
 ];
 
 /**

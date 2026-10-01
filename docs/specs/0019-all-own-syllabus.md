@@ -115,23 +115,23 @@ Traditional All level 2 triple tokens, in order, each emitted 10 times:
 
 **API surface**:
 
-| Surface | Kind | Key inputs | Key outputs | Auth | Key errors |
-|---|---|---|---|---|---|
-| `columnPairs` | pure domain (new) | none | `string[][]`, 20 pair groups | local only | none |
-| `columnTriples` | pure domain (new) | none | `string[][]`, 10 triple groups | local only | none |
-| `englishGroups` | pure domain (extended) | `category`, `difficulty` | `string[][]` | local only | throws on unknown difficulty |
-| `buildPrompt` | pure domain (unchanged) | `groups`, `repeat` | `string` | local only | throws on invalid rule |
-| `lintClassicDrills` | pure domain (unchanged) | `rows` (opt) | failing row ids | local only | none |
-| `ALL_CLASSIC_DRILLS` | pure domain constant (unchanged) | none | `Lesson[]` | local only | none |
+| Surface              | Kind                             | Key inputs               | Key outputs                    | Auth       | Key errors                   |
+| -------------------- | -------------------------------- | ------------------------ | ------------------------------ | ---------- | ---------------------------- |
+| `columnPairs`        | pure domain (new)                | none                     | `string[][]`, 20 pair groups   | local only | none                         |
+| `columnTriples`      | pure domain (new)                | none                     | `string[][]`, 10 triple groups | local only | none                         |
+| `englishGroups`      | pure domain (extended)           | `category`, `difficulty` | `string[][]`                   | local only | throws on unknown difficulty |
+| `buildPrompt`        | pure domain (unchanged)          | `groups`, `repeat`       | `string`                       | local only | throws on invalid rule       |
+| `lintClassicDrills`  | pure domain (unchanged)          | `rows` (opt)             | failing row ids                | local only | none                         |
+| `ALL_CLASSIC_DRILLS` | pure domain constant (unchanged) | none                     | `Lesson[]`                     | local only | none                         |
 
 **Value sourcing**:
 
-| Action | Value produced / displayed | Source |
-|---|---|---|
-| Open All level 1 or 2 | Prompt text | `buildPrompt` over the groups above, computed at module load into `Lesson.prompt`, read through `lessonsForClassic` |
-| Lint check | Pass or fail per row | `lintClassicDrills` over `ALL_CLASSIC_DRILLS` |
-| Drift guard | Expected prompt strings | snapshot test over `ALL_CLASSIC_DRILLS` |
-| Typing session | Lit key plus live speed | unchanged derivations from spec 0012, `codeForNextUnit` |
+| Action                | Value produced / displayed | Source                                                                                                              |
+| --------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Open All level 1 or 2 | Prompt text                | `buildPrompt` over the groups above, computed at module load into `Lesson.prompt`, read through `lessonsForClassic` |
+| Lint check            | Pass or fail per row       | `lintClassicDrills` over `ALL_CLASSIC_DRILLS`                                                                       |
+| Drift guard           | Expected prompt strings    | snapshot test over `ALL_CLASSIC_DRILLS`                                                                             |
+| Typing session        | Lit key plus live speed    | unchanged derivations from spec 0012, `codeForNextUnit`                                                             |
 
 **Key invariants**:
 
