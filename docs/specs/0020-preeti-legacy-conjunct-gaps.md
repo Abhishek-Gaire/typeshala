@@ -8,6 +8,21 @@ unscoreable; withdrawn, `X` + `/` types it correctly. What survives is a
 coverage claim that turns out to be complete, a header that misstates why,
 and four transcription errors.
 
+**Revised**: 2026-10-01, third pass, after
+[0021](0021-rare-conjuncts-as-one-unit/index.md) shipped. The audit below is
+sound and every measurement in it was right when taken, but the scoring
+conclusion drawn from it no longer holds, so four things are corrected here.
+All fourteen rare conjuncts plus `रू` now score one unit each, from map rows
+this spec deliberately declined to add. The parenthetical naming `स्व`, `स्त्र`,
+and `द्र` as compositions the map already ships was wrong when written: none
+of the three is a map row, and all three still split. The `## Decision`
+section's "why no row is added" is superseded in part, and the open question it
+routed to a scoring spec has been answered. Line references into files that
+0021 edited have drifted and are fixed where the claim depends on them; the
+broader rot is logged as a Follow-up. Acceptance criteria are left as
+delivered: they record what this spec built, and AC-2's header wording was
+itself superseded by 0021.
+
 ## Summary
 
 The header of `src/domain/preeti.ts` lists 13 rarer conjuncts plus reph as
@@ -15,40 +30,58 @@ things that "were only reachable in the original software via obscure
 legacy-keyboard-driver combinations ... that don't map cleanly onto a
 standard browser KeyboardEvent". That framing is wrong in a way that matters:
 **every one of the 13 is typeable and scoreable in the app today.** They are
-not unreachable. They are reachable as two or three scored units instead of
-one, through the same halant and matra composition the map already ships for
-`स्व` (`:j`), `स्त्र` (`:q`), and `द्र` (`b|`).
+not unreachable. At the time this spec was written they were reachable as two
+or three scored units instead of one, through halant and matra composition.
+**As of spec 0021 every one of them scores as a single unit**, because the map
+now carries a row for each, spelled with the same keys the learner already
+pressed.
 
-A BFS over `advancePreeti` confirms it, prompt units matched keystroke for
-keystroke:
+One parenthetical in the original version of this summary was wrong and is
+withdrawn: it described these as composing "the same way the map already ships
+for `स्व` (`:j`), `स्त्र` (`:q`), and `द्र` (`b|`)". The map does not ship those.
+`स्व` splits as `["स्", "व"]`, `स्त्र` as `["स्", "त्र"]`, `द्र` as `["द", "्र"]`,
+and `क्व` still costs three units. None of the four is a map row, which is why
+they remain open while these fourteen are closed.
 
-| Unit | Keys        | Scored units |
-| ---- | ----------- | ------------ |
-| ङ्ग  | `,` `\` `u` | 3            |
-| ङ्ख  | `,` `\` `v` | 3            |
-| ङ्क  | `,` `\` `s` | 3            |
-| ङ्घ  | `,` `\` `3` | 3            |
-| ङ्ढ  | `,` `\` `9` | 3            |
-| ट्ट  | `6` `\` `6` | 3            |
-| ड्ड  | `8` `\` `8` | 3            |
-| ठ्ठ  | `7` `\` `7` | 3            |
-| ट्ठ  | `6` `\` `7` | 3            |
-| द्घ  | `b` `\` `3` | 3            |
-| द्व  | `b` `\` `j` | 3            |
-| हृ   | `x` `[`     | 2            |
-| रू   | `/` `"`     | 2            |
-| ह्र  | `X` `/`     | 2            |
+A BFS over `advancePreeti` confirmed the reachability claim, prompt units
+matched keystroke for keystroke. The scored unit counts are given as measured
+then and as they stand now, since 0021 changed every one of them:
+
+| Unit | Keys        | Scored units, then | Scored units, now |
+| ---- | ----------- | ------------------ | ----------------- |
+| ङ्ग  | `,` `\` `u` | 3                  | 1                 |
+| ङ्ख  | `,` `\` `v` | 3                  | 1                 |
+| ङ्क  | `,` `\` `s` | 3                  | 1                 |
+| ङ्घ  | `,` `\` `3` | 3                  | 1                 |
+| ङ्ढ  | `,` `\` `9` | 3                  | 1                 |
+| ट्ट  | `6` `\` `6` | 3                  | 1                 |
+| ड्ड  | `8` `\` `8` | 3                  | 1                 |
+| ठ्ठ  | `7` `\` `7` | 3                  | 1                 |
+| ट्ठ  | `6` `\` `7` | 3                  | 1                 |
+| द्घ  | `b` `\` `3` | 3                  | 1                 |
+| द्व  | `b` `\` `j` | 3                  | 1                 |
+| हृ   | `x` `[`     | 2                  | 1                 |
+| रू   | `/` `"`     | 2                  | 1                 |
+| ह्र  | `X` `/`     | 2                  | 1                 |
+
+The keys column did not change and did not need to. That is the whole point of
+0021: same keystrokes, different grouping. Reph is the one item in this family
+still not typeable, and it is not a scoring question (see **AC-6**).
 
 The rest of the alphabet is single-unit and direct: all 33 barakhadi
 consonants (`s v u 3 ,` … `फ` on `km`, `ण` on `N`, `ङ` on `,`), all 11 vowels,
 all 10 matras, and the eight chart conjuncts `क्ष` `त्र` `ज्ञ` `श्र` `द्ध` `द्द`
 `द्य` `क्र`. Nothing in ordinary Nepali text is missing.
 
-So this spec adds no key path. It does four things:
+So this spec adds no key path. That was the right call for it and 0021 has now
+reversed it, having established that the keys are already correct and only the
+grouping was wrong. Read the rest of this document as the audit and the
+evidence, not as the current state of the map. It does four things:
 
 - **Correct the header** so it stops implying these units are unreachable. The
   real distinction is one scored unit versus several, and that is a scoring
-  decision, not a keymap gap.
+  decision, not a keymap gap. (0021 has since rewritten that paragraph again;
+  the current one names reph as the only exception.)
 - **Add a coverage test** that locks the claim above in, so a future map edit
   cannot silently make one of the 14 untypeable.
 - **Fix four transcription errors** in `reference/preeti-keymap.ts`, found by
@@ -67,15 +100,21 @@ three fonts — `x` → `ह` (`:111`, `:187`, `:376`), `|` → `्र` (`:110`
 `:375`) — and no post-rule (`:451-496`) rewrites `ह्र` into `ङ्ख`. The
 mirror's own `ङ्ख` is a dead key (`:94`). This is the `W` case, not the `E`
 case: `W` was rejected as "ambiguous at chart size and likely misread"
-(`preeti-keymap-differences.md:111-112`). Two smaller signals: the
-differences note carries a literally broken table row for this entry (`:129`,
-an unescaped `|` inside a cell), and the transcription's caveats admit
-small-text misreads on exactly this chart (`:155-161`).
+(`preeti-keymap-differences.md`, the "Hard conflicts" section). Two smaller
+signals at the time: the differences note carried a broken table row for this
+entry, an unescaped `|` inside a cell, and the transcription's caveats admitted
+small-text misreads on exactly this chart. **Both of those are now false.** The
+note's row is properly escaped, in the "Reachability of the rare conjuncts"
+table, and its transcription caveats section no longer names this chart. The
+substantive signals, the mirror's unanimity and the chart's self-contradiction,
+are unaffected and still hold.
 
 Adding `"x|": "ङ्ख"` would also be a downgrade, not an upgrade: `,\v` already
 types `ङ्ख` correctly in three keystrokes with matching prompt units, and the
 new row would both rest on a contradicted source and force a single-unit
-segmentation that no lesson currently teaches.
+segmentation that no lesson currently teaches. (0021 later made exactly that
+segmentation change, but with the `,\v` row rather than this one, which is why
+the misread stayed out of the map.)
 
 **`ह्र` is not unscoreable.** `splitUnits("ह्र")` is `["ह्", "र"]`, and
 `x` `|` commits `["ह", "्र"]` — the same three codepoints, differently split,
@@ -91,25 +130,33 @@ identical text; only the unit boundaries differ, which is a scoring question
 Chart column is `reference/preeti-keymap.ts` unless noted. Mirror column is
 the `SHUVAYATRA_PREETI_CHAR_MAP` line in `reference/shuvayatra-preeti.ts`.
 
-| Unit      | Chart claim                                                 | Mirror claim   | Reachable in-app | Single unit |
-| --------- | ----------------------------------------------------------- | -------------- | ---------------- | ----------- |
-| ङ्ख       | `x\|` (`:99`, misread)                                      | `:94`          | `,\v`            | no, 3       |
-| ङ्क       | `X` (`:100`)                                                | `:126`         | `,\s`            | no, 3       |
-| ङ्ग       | none — `:101` is a misattribution                           | `:61`          | `,\u`            | no, 3       |
-| ङ्घ       | none                                                        | `:166`         | `,\3`            | no, 3       |
-| ङ्ढ       | none                                                        | `:163`         | `,\9`            | no, 3       |
-| ड्ड       | none                                                        | `:71`          | `8\8`            | no, 3       |
-| ट्ट       | `Alt+0248`, `Alt+0204` (`:92`, `:94`)                       | `:68`          | `6\6`            | no, 3       |
-| ट्ठ       | `Alt+0229` (`:96`), `Alt+0171`, `Alt+0176` (`:161`, `:162`) | `:119`         | `6\7`            | no, 3       |
-| ठ्ठ       | `Alt+0136` (`:95`)                                          | `:97`          | `7\7`            | no, 3       |
-| द्घ       | `Alt+0132`, `Alt+0165+o`                                    | `:104`         | `b\3`            | no, 3       |
-| द्व       | `Alt+0216` (`:93`)                                          | `:112`         | `b\j`            | no, 3       |
-| हृ        | `Alt+0155` (`:97`), `Alt+0197` in `preeti3.png`             | `:123`         | `x[`             | no, 2       |
-| रू        | `Alt+0191` (`:98`)                                          | `:65`          | `/"`             | no, 2       |
-| reph `र्` | `Alt+0165+o` (`:127`)                                       | `:134` → `र्‍` | n/a              | n/a         |
+| Unit      | Chart claim                                                 | Mirror claim      | Reachable in-app | Single unit |
+| --------- | ----------------------------------------------------------- | ----------------- | ---------------- | ----------- |
+| ङ्ख       | `x\|` (`:99`, misread)                                      | `:94`             | `,\v`            | yes         |
+| ङ्क       | `X` (`:100`)                                                | `:126`            | `,\s`            | yes         |
+| ङ्ग       | none — `:101` is a misattribution                           | `:61`             | `,\u`            | yes         |
+| ङ्घ       | none                                                        | `:166`            | `,\3`            | yes         |
+| ङ्ढ       | none                                                        | `:163`            | `,\9`            | yes         |
+| ड्ड       | none                                                        | `:71`             | `8\8`            | yes         |
+| ट्ट       | `Alt+0248`, `Alt+0204` (`:92`, `:94`)                       | `:68`             | `6\6`            | yes         |
+| ट्ठ       | `Alt+0229` (`:96`), `Alt+0171`, `Alt+0176` (`:161`, `:162`) | `:119`            | `6\7`            | yes         |
+| ठ्ठ       | `Alt+0136` (`:95`)                                          | `:97`             | `7\7`            | yes         |
+| द्घ       | `Alt+0132`, `Alt+0165+o`                                    | `:104`            | `b\3`            | yes         |
+| द्व       | `Alt+0216` (`:93`)                                          | `:112`            | `b\j`            | yes         |
+| हृ        | `Alt+0155` (`:97`), `Alt+0197` in `preeti3.png`             | `:123`            | `x[`             | yes         |
+| ह्र       | none, the chart row read as `ङ्ख` composes to ह्र           | none, not carried | `X/`             | yes         |
+| रू        | `Alt+0191` (`:98`)                                          | `:65`             | `/"`             | yes         |
+| reph `र्` | `Alt+0165+o` (`:127`)                                       | `:134` → `र्‍`    | n/a              | n/a         |
 
-Every "single unit = no" is a scoring consequence, not a reachability
-failure. The mirror matters for a different reason: it is the only source
+The `ह्र` row was missing from this table when the spec was written, which is
+why the two tables above disagreed on the size of the family. The BFS table
+counted fourteen typeable units including `ह्र`; this table counted thirteen
+plus reph. Fifteen rows are now listed: fourteen that are typeable and single
+unit, and reph, which is neither.
+
+Every "single unit = no" above was a scoring consequence, not a reachability
+failure, and every one of those consequences is now fixed. The mirror matters
+for a different reason: it is the only source
 that attests these units at all, and the first draft of this spec claimed
 three of them had no source in the repo. They do —
 `reference/shuvayatra-preeti.ts:71` (`ड्ड`), `:166` (`ङ्घ`), `:163` (`ङ्ढ`).
@@ -118,13 +165,13 @@ Two cautions for whoever reads that table next. First, mirror dead keys are
 not interchangeable with the chart's `Alt+NNNN` numbers: within Latin-1 a
 codepoint's byte equals the Alt number, confirmed by `U+00A3` → `घ्` in all
 three font maps (`:70`, `:234`, `:332`) against `Alt+0163`
-(`reference/preeti-keymap.ts:107`), but past that the fonts disagree about
+(`reference/preeti-keymap.ts`, the `Alt+0163` row), but past that the fonts disagree about
 the same codepoint — `U+00B0` is `ङ्ढ` in Preeti (`:163`) and Kantipur
 (`:435`) but `ङ्क` in PCS-Nepali (`:281`); `U+00CE` is `ङ्ख` in Preeti (`:94`)
 and `फ्` in Kantipur (`:357`). And one Alt number is claimed for different
 characters across sources: `Alt+0203` is `फ्` in `preeti1.png` and `U+00CB` →
 `ङ्ग` in the mirror; `Alt+0167` is `द्द` in `preeti1.png`, `ऱ` in
-`reference/preeti-keymap.ts:160`, and `U+00A7` → `ट्ट` in the mirror. A mirror
+`reference/preeti-keymap.ts`, its `Alt+0167` row, and `U+00A7` → `ट्ट` in the mirror. A mirror
 entry proves a unit is reachable in principle, never which key types it.
 
 Second, `ट्ठ`'s three chart codes are not three independent sources. Two are
@@ -143,6 +190,12 @@ misread rather than a contradiction.
   situation, and I want the coverage claim tested so I can trust it.
 
 **Acceptance criteria**:
+
+These record what this spec delivered and are left as written. **AC-2 in
+particular describes a header paragraph that no longer exists**: 0021 rewrote
+it again, and the current one names reph as the sole exception because these
+thirteen are no longer left out. Do not restore AC-2's wording if you touch the
+header.
 
 - **AC-1**: `PREETI_MAP` is unchanged. No sequence added, removed, or
   remapped. Only the leading block comment of `src/domain/preeti.ts` is
@@ -164,9 +217,12 @@ misread rather than a contradiction.
   `Alt+0132` and gains the three chart rows it is missing.
   - `public/preeti2.png` prints two `द्घ` rows, `Alt+0132` and `Alt+0165+o`,
     and `preeti3.png` Table 2 repeats `द्घ` on `Alt+0132`. The differences
-    note records all of them (`:52-54`, `:75-76`), but the transcription
-    filed the first as `ङ्ग` (`reference/preeti-keymap.ts:101`, a character
-    that appears in no chart) and dropped the other two.
+    note records all of them, in its chart only lists, but the transcription
+    filed the first as `ङ्ग` (a character
+    that appears in no chart) and dropped the other two. **Done**: that row was
+    deleted, and the `Alt+0132` slot in `reference/preeti-keymap.ts` now holds
+    `द्घ` with a comment recording the misattribution, so the line number this
+    bullet used to cite no longer points at an `ङ्ग` row.
   - `preeti3.png` Table 2 appears to list `हृ` on `Alt+0197`, which the
     mirror's `U+00C5` (197) corroborates; the transcription kept only
     `Alt+0155` (`:97`). The glyph is small, so read it before trusting it.
@@ -194,6 +250,15 @@ misread rather than a contradiction.
 test, correct four transcription errors, and route the single-unit question
 to a scoring spec.
 
+**Superseded in part by 0021.** The evidence below held up and 0021 adopted all
+of it, but the conclusion drawn from it did not. Each candidate below is
+correctly dismissed _as a source of a shorter spelling_, which is not the same
+as a reason to leave the letters scoring as two or three units. 0021 added
+rows for all fourteen using the keystrokes this spec had already documented,
+and the letters now score one unit each. What survives from this section is the
+evidence against `x|`, `X`, and `?"` as key assignments. What does not survive
+is "and therefore add no row at all".
+
 ### Why no row is added
 
 Every candidate fails on one of three counts, and none of them is "it is
@@ -204,7 +269,7 @@ hard".
   three-key path with a shorter one built on a misread.
 - **Unsourced**: `?"` for `रू` is a coherent proposal — `?` is `रु`, `"` is
   `ू`, and the precedent for collapsing base + long matra is `pm` → `ऊ`
-  (`src/domain/preeti.ts:155`) — but no source attests it, and `/"` already
+  (`src/domain/preeti.ts`, the `m` upgrades block) — but no source attests it, and `/"` already
   types `रू` correctly in two keystrokes. Teaching a reflex the original
   software never had, to save one keystroke on a letter pair that occurs in
   perhaps a handful of words, is a bad trade.
@@ -215,7 +280,8 @@ hard".
 
 Eleven of the 14 score as 3 units and three score as 2, where a learner who
 knows Preeti expects one keystroke and one unit. WPM here is units per minute
-by design (`src/domain/preeti.ts:38-40`), so a prompt full of `ट्ठ` or `द्व`
+by design (`src/domain/preeti.ts`, the header paragraph), so a prompt full of
+`ट्ठ` or `द्व`
 inflates the unit count against a learner who typed it correctly. Fixing that
 means deciding what a "unit" is, then adding map rows and accepting the
 segmentation change: `splitUnits` would start returning `["ट्ठ"]` where it
@@ -223,11 +289,21 @@ returns `["ट", "्", "ठ"]` today, which invalidates any lesson or drill tha
 already teaches the three-key form. That is a scoring-design decision with
 content fallout, not a table edit, and it wants its own spec.
 
+**Answered.** That spec is
+[0021](0021-rare-conjuncts-as-one-unit/index.md), and it landed exactly as this
+section predicted: the segmentation changed, `splitUnits("ट्ट")` is now `["ट्ट"]`,
+and the content fallout was handled by folding the letters into an existing
+drill row rather than a new one. The reason this was the right call to route
+out is the reason it was hard: it was a scoring decision wearing a keymap
+costume, and a keymap audit is the wrong place to settle it.
+
 ## Feature design
 
 **No data model change.** `PREETI_MAP` is untouched (AC-1).
 
-**Header rewrite.** Lines 29-35 become roughly:
+**Header rewrite.** Lines 29-35 become roughly the following. **This is the
+text 0020 produced; 0021 replaced it**, and the current header says reph alone
+is left out:
 
 ```
  * Deliberately left out as single units (documented, not silent): 13 rare
@@ -281,7 +357,10 @@ No map, lesson, or drill content changes.
 - This PR still adds no glyph. The user-visible change is zero; the value is
   in the header, the test, and the corrected reference data.
 - The scoring question stays open, so a learner still counts `ट्ठ` as three
-  units. That is a deliberate deferral, not a fix.
+  units. That is a deliberate deferral, not a fix. **Superseded:** 0021 fixed
+  this, and a learner now counts `ट्ठ` as one unit. The deferral was still the
+  right call here, since the fix needed the scoring decision this spec had no
+  authority to make.
 
 **Neutral**:
 
@@ -290,18 +369,39 @@ No map, lesson, or drill content changes.
 
 ## Follow-up
 
-- [ ] Scoring and single unit question for the 11 three unit and 3 two unit
+- [x] Scoring and single unit question for the 11 three unit and 3 two unit
       conjuncts is decided in
       [0021](0021-rare-conjuncts-as-one-unit/index.md), which adds the rows. The
-      keys are already known from the reachability table above.
+      keys are already known from the reachability table above. Closed: 0021
+      shipped and was verified against the running app.
 - [ ] `ङ्क` is the only item where a shorter path would be a genuine
       improvement rather than a cosmetic one, and only if `X` is ever freed
-      from `ह्`. Revisit only alongside a decision on `X`.
+      from `ह्`. Revisit only alongside a decision on `X`. **Still open.** Note
+      that `X` carries more weight than it did when this was written: it is now
+      also the first key of `ह्र` on `X/`, so freeing it would break a shipped
+      row.
 - [ ] Reph: separate spec if wanted. Start from the mirror's `र्‍` (`:134`)
-      and the reordering problem, not from a keymap row.
+      and the reordering problem, not from a keymap row. **Still open**, and
+      the fourteen rows have not made it easier: reph is now the only letter in
+      this family with no single-unit row, which makes it the most visible
+      remaining inconsistency in the header.
+- [ ] The other composition only clusters the app also spells by hand:
+      `स्व`, `स्त्र`, `द्र`, `क्व`. None is a map row, all still split, and
+      `द्र` and `दृ` are common enough to deserve their own decision rather
+      than riding along with a rare-letter fix. Carried from this spec's own
+      withdrawn claim and from 0021's follow-up. Decide before adding rows.
 - [ ] Cleared during this audit, no spec needed: `दृ` and `फ्` look like
-      omissions in `preeti-keymap-differences.md:128` and `:144` because the
+      omissions in `preeti-keymap-differences.md`, in the chart tables, because the
       app has no atomic row for them, but both resolve through existing keys
       with matching prompt units (`b` `[`, and `km` `\`).
 - [ ] Lesson coverage for any unit that lands, in the style of spec 0018's
-      lesson-coverage child (append, don't edit shipped prompts).
+      lesson-coverage child (append, don't edit shipped prompts). Partly done:
+      0021 folded `ट्ट`, `द्व`, and `हृ` into the All Level 1 Traditional row.
+      The other eleven have no reachable prompt.
+- [ ] Line-number references into `src/` and `preeti-keymap-differences.md`
+      have rotted badly in this file, and the same hazard exists across the
+      spec set. They break silently every time a cited file is edited, and a
+      reader cannot tell a drifted pointer from a real finding. Recommend
+      anchoring citations to a symbol, table row, or heading name rather than a
+      line number, and adding a check that fails when a cited line no longer
+      contains what the sentence claims.
