@@ -35,7 +35,7 @@ npm test
 npm run typecheck
 ```
 
-CI runs the same checks on push.
+Run all four yourself before you open a merge request. There is no CI that runs them for you: the only GitHub workflow builds release installers, and GitLab has no pipeline at all. Nobody will catch a failing check but you, so paste the results in your merge request description.
 
 ## Specs and docs
 
@@ -49,8 +49,16 @@ Open merge requests on GitLab against `main`.
 1. Branch from `main` with the `feat/` prefix (e.g. `feat/classic-drills`).
 2. Keep the scope to one milestone per MR where possible.
 3. Describe what changed and how you verified it (tests run, manual checks).
-4. Make sure lint, format, typecheck, and tests all pass.
+4. Make sure lint, format, typecheck, and tests all pass locally, and say so in the description.
 
 ## Reporting issues
 
-Open issues on GitLab. Include steps to reproduce, expected vs. actual behavior, and your OS plus app version.
+Open issues on GitLab using one of the templates in [`.gitlab/issue_templates/`](./.gitlab/issue_templates/): a bug report or a feature request. Include steps to reproduce, expected vs. actual behavior, and your OS plus app version.
+
+## Code of conduct
+
+Participation is governed by [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md), which is the Contributor Covenant 2.1 unmodified. Reports go to the maintainer at the address in its Enforcement section.
+
+## Security
+
+Do not open a public issue for a vulnerability. Follow [`SECURITY.md`](./SECURITY.md) and email the maintainer instead.
