@@ -71,7 +71,7 @@ Preeti typing truth lives in `src/domain/preeti.ts`. Chart disagreements, the re
 
 - GitLab is source of truth, push mirrored to GitHub. CI runs on GitHub only.
 - Release branch is `release`. Push `main` there to ship: `git push origin main:release`.
-- Workflow `.github/workflows/release.yml` builds macOS arm64 plus x64, Ubuntu, Windows and opens a draft release. Review assets, then publish by hand.
+- Workflow `.github/workflows/release.yml` builds macOS arm64 plus x64, Ubuntu, Windows and opens a draft release. Review assets, paste the release body from `docs/release-notes/vX.Y.Z.md`, then publish by hand.
 - Bump `package.json` plus `src-tauri/tauri.conf.json` plus `src-tauri/Cargo.toml` in lockstep per release, else the next push reuses the old draft.
 - Main window launches maximized (`tauri.conf.json`). Swap to `fullscreen` only if chrome free kiosk mode is wanted.
 

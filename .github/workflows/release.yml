@@ -45,13 +45,15 @@ jobs:
 
       - run: npm ci
 
+      # Every job publishes a draft, so all four land before anything goes live.
+      # Before publishing, review the nine assets and paste the release body from
+      # docs/release-notes/vX.Y.Z.md over the placeholder this action writes.
       - uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: v__VERSION__
           releaseName: "Typeshala v__VERSION__"
-          releaseBody: "See the assets to download and install."
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
