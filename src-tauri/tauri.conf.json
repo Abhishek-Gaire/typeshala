@@ -27,6 +27,11 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "publisher": "Abhishek Gaire",
+    "homepage": "https://typeshala.abhishekgaire.com.np",
+    "category": "Education",
+    "shortDescription": "Free Nepali and English typing tutor",
+    "longDescription": "Typeshala is a free, open-source typing tutor for English and Nepali, built with Tauri v2 and React. It teaches three layouts from the same set of structured lessons: English QWERTY, Romanized Nepali, and Traditional Preeti, the legacy Nepali key layout that turns familiar QWERTY key positions into Devanagari text. Practice with live words-per-minute and accuracy scoring, virtual keyboard guidance with the next key lit, progress trends, light and dark themes, a bilingual English and Nepali interface, and a bonus Ramayana typing game. Runs natively on Windows, macOS and Linux. Works entirely offline: no account, no subscription, no network calls, and all progress stays on your device.",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

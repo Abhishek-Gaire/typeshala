@@ -1,8 +1,14 @@
 # Typeshala (working title)
 
+[![release](https://img.shields.io/github/v/release/Abhishek-Gaire/typeshala)](https://github.com/Abhishek-Gaire/typeshala/releases)
+[![license](https://img.shields.io/github/license/Abhishek-Gaire/typeshala)](./LICENSE)
+[![downloads](https://img.shields.io/github/downloads/Abhishek-Gaire/typeshala/total)](https://github.com/Abhishek-Gaire/typeshala/releases)
+
 An open-source, cross-platform typing tutor for English and Nepali (Traditional/Preeti and Romanized Unicode), built with Tauri v2, React, and Vite. Runs natively on Windows, macOS, and Linux.
 
 A bilingual (English / Nepali) typing tutor desktop app. Practice English typing, Nepali romanized typing, and the traditional Preeti layout, with structured lessons, progress stats, themes, and a bonus Ramayana game.
+
+![The classic practice screen: a Devanagari prompt line above an on-screen keyboard whose key caps print the Preeti key position above each Devanagari letter it produces, with the next key to press lit red.](docs/images/classic-practice-screen.png)
 
 ## Why this exists
 
@@ -14,6 +20,50 @@ GitLab is the source of truth: [abhishek_gaire/typeshala on GitLab](https://gitl
 
 The GitHub repository is a read-only mirror — it only hosts release assets (CI builds for Windows, macOS, and Linux). Please do all contributing, issues, and merge requests on GitLab, not GitHub.
 
+## Download
+
+Installers for v1.0.1, built by CI. No account, no subscription, works offline.
+
+| Platform              | File                                                                                                                    | Notes                               |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| Windows               | [`x64-setup.exe`](https://github.com/Abhishek-Gaire/typeshala/releases/download/v1.0.1/Typeshala_1.0.1_x64-setup.exe)   | Recommended. Runs the setup wizard. |
+| Windows               | [`x64_en-US.msi`](https://github.com/Abhishek-Gaire/typeshala/releases/download/v1.0.1/Typeshala_1.0.1_x64_en-US.msi)   | For managed or scripted installs.   |
+| macOS (Apple Silicon) | [`aarch64.dmg`](https://github.com/Abhishek-Gaire/typeshala/releases/download/v1.0.1/Typeshala_1.0.1_aarch64.dmg)       | M1/M2/M3.                           |
+| macOS (Intel)         | [`x64.dmg`](https://github.com/Abhishek-Gaire/typeshala/releases/download/v1.0.1/Typeshala_1.0.1_x64.dmg)               |                                     |
+| Linux                 | [`amd64.AppImage`](https://github.com/Abhishek-Gaire/typeshala/releases/download/v1.0.1/Typeshala_1.0.1_amd64.AppImage) | Portable, runs on any distro.       |
+| Linux                 | [`amd64.deb`](https://github.com/Abhishek-Gaire/typeshala/releases/download/v1.0.1/Typeshala_1.0.1_amd64.deb)           | Debian, Ubuntu, Mint.               |
+| Linux                 | [`x86_64.rpm`](https://github.com/Abhishek-Gaire/typeshala/releases/download/v1.0.1/Typeshala-1.0.1-1.x86_64.rpm)       | Fedora, RHEL, openSUSE.             |
+
+All releases: [github.com/Abhishek-Gaire/typeshala/releases](https://github.com/Abhishek-Gaire/typeshala/releases) · project page: [typeshala.abhishekgaire.com.np](https://typeshala.abhishekgaire.com.np)
+
+<details>
+<summary>Install notes</summary>
+
+**macOS** — the builds are not yet notarized, so Gatekeeper quarantines the download. Either allow it once in System Settings → Privacy & Security, or clear the quarantine flag:
+
+```bash
+xattr -cr /Applications/Typeshala.app
+```
+
+**Linux AppImage** — make it executable first:
+
+```bash
+chmod +x Typeshala_1.0.1_amd64.AppImage && ./Typeshala_1.0.1_amd64.AppImage
+```
+
+**Linux .deb / .rpm**:
+
+```bash
+sudo dpkg -i Typeshala_1.0.1_amd64.deb && sudo apt-get install -f
+sudo dnf install Typeshala-1.0.1-1.x86_64.rpm
+```
+
+**Android** — a touch-board build exists but no APK is published yet.
+
+</details>
+
+Update the version and filenames above on each release, alongside the version bump in `package.json`, `src-tauri/tauri.conf.json`, and `src-tauri/Cargo.toml`.
+
 ## Features
 
 - English typing tutor with structured lessons and progression
@@ -23,13 +73,17 @@ The GitHub repository is a read-only mirror — it only hosts release assets (CI
 - Bilingual UI (English / Nepali) with themes and settings
 - Local-first: progress stored on-device via the Tauri store plugin
 
-## Requirements
+## Building from source
+
+To work on Typeshala itself rather than install it.
+
+### Requirements
 
 - Node 20+
 - Rust stable toolchain
 - npm
 
-## Getting started
+### Getting started
 
 ```bash
 npm install
