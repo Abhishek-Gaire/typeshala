@@ -103,9 +103,9 @@ Reasoning and options: see `rationale.md`.
 
 1. [x] Restore the romanized session engine in `src/features/typing/useRomanizedSession.ts`, written to the current shared session shape (units, buffer, sequence hint, wrong key, timer), with domain tests for flush, pending, error, and backspace order, satisfies **AC-3**, **AC-4**, **AC-6**
 2. [x] Wire the thinnest usable whole: add the romanized branch to the drill pool and session selection in `src/features/classic/ClassicScreen.tsx`, add the romanized branch to `codeForNextUnit` in `src/domain/classicLayout.ts`, and add the third toolbar control with localized titles in `src/components/ClassicShell.tsx`, shipping with level 1 rows as an interim checkpoint so the mode is usable end to end before the full set lands, with the full twelve rows closing **AC-2** in step 3, satisfies **AC-1**, **AC-3**
-3. [ ] Generate all twelve romanized drill rows in `src/domain/classicDrills.ts` from the roman map, with each char joining the screen row of the first pressed key of its roman sequence (a screen teaches the sequences that start on its row, so every screen holds rows), plus the difficulty lint and snapshot update, satisfies **AC-2**
-4. [ ] Bring guidance and save to full parity: buffer aware lit key from the session hint, spaced roman finger hint, wrong key highlight, and the save path carrying layout `romanized`, satisfies **AC-3**, **AC-4**
-5. [ ] Close the quality gate: titles present in both languages, Free and Settings behavior unchanged, stored data opens untouched, and lint, format, typecheck, and the full suite green, satisfies **AC-5**, **AC-6**
+3. [x] Generate all twelve romanized drill rows in `src/domain/classicDrills.ts` from the roman map, with each char joining the screen row of the first pressed key of its roman sequence (a screen teaches the sequences that start on its row, so every screen holds rows), plus the difficulty lint and snapshot update, satisfies **AC-2**
+4. [x] Bring guidance and save to full parity: buffer aware lit key from the session hint, spaced roman finger hint, wrong key highlight, and the save path carrying layout `romanized`, satisfies **AC-3**, **AC-4**
+5. [x] Close the quality gate: titles present in both languages, Free and Settings behavior unchanged, stored data opens untouched, and lint, format, typecheck, and the full suite green, satisfies **AC-5**, **AC-6**
 
 ## Consequences
 

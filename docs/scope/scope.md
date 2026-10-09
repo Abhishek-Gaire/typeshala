@@ -375,12 +375,12 @@ Bring the Romanized layout into the classic practice path so it works like Engli
 
 - [x] Design it (spec): `/architect Nepali Romanized classic access`
       Spec [0022](../specs/0022-nepali-romanized-classic-access/index.md) · code in `src/features/typing/useRomanizedSession.ts`, `src/domain/classicDrills.ts`, `src/domain/classicLayout.ts`, `src/features/classic/ClassicScreen.tsx`, `src/components/ClassicShell.tsx`
-- [ ] Build it: `/develop Nepali Romanized classic access`
+- [x] Build it: `/develop Nepali Romanized classic access`
   - [x] Restored engine on the shared session shape with domain tests for flush, pending, error, backspace order (AC-3, AC-4, AC-6)
   - [x] Thin wiring: third toolbar control, pool plus session branches, next key derivation, interim level 1 rows (AC-1, AC-3)
-  - [ ] Twelve generated drill rows with first key bucketing, lint, and snapshot (AC-2)
-  - [ ] Guidance plus save parity: buffer aware lit key, roman finger hint, wrong key mark, save with layout romanized (AC-3, AC-4)
-  - [ ] Quality gate: bilingual titles, Free and Settings unchanged, store opens untouched, suite green (AC-5, AC-6)
+  - [x] Twelve generated drill rows with first key bucketing, lint, and snapshot (AC-2)
+  - [x] Guidance plus save parity: buffer aware lit key, roman finger hint, wrong key mark, save with layout romanized (AC-3, AC-4)
+  - [x] Quality gate: bilingual titles, Free and Settings unchanged, store opens untouched, suite green (AC-5, AC-6)
 - [ ] Verify it: `/check verify Nepali Romanized classic access`
 
 ## Release 17: game roman access
