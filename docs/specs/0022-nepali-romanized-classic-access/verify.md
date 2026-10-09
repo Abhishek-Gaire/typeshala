@@ -33,13 +33,20 @@ open steps need.
 - [x] Switch the UI language to Nepali → all three layout control titles read correctly in Nepali → AC-1
 - [x] Free screen under romanized → raw key presses echo exactly as they do today in every layout, with no save → AC-5
 - [x] Restart the app after a run → stored settings (including a romanized selection) and past attempts open unchanged → AC-5
-- [ ] Level 2 and 3 on each screen → after milestone 3 lands, every level opens real romanized rows rather than the empty state → AC-2
+- [x] Level 2 and 3 on each screen → after milestone 3 lands, every level opens real romanized rows rather than the empty state → AC-2
 
 Manual steps run on 2026-10-09 against the real app; log channel events cited in the
-check report. Steps 5 and 10 stay unticked on purpose: the error hit and backspace of
-step 5 were exercised, but the buffer first backspace order and the wrong key board
-mark were only proven by the unit suite, and the level 2 plus top and bottom sweep was
-never clicked. Both are quick manual looks if you want them ticked too.
+check report. Step 10 was closed by the level sweep: all twelve rows resolved with the
+right ids, categories, and difficulties (`cl-home-1-rn` through `cl-all-3-rn`).
+
+Step 5 stays unticked on purpose. The log proves its main claim many times over: every
+wrong press moved `errorHits` by exactly one and left the units untouched, so one error
+hit per wrong sequence with the cursor held. Two parts were not exercised on screen: a
+backspace taken while a roman buffer was still pending (every backspace in the run found
+an empty buffer, so it removed a unit), and the wrong key board mark, which logs cannot
+show. Both are covered by the unit suite. To close the step by hand: get to a unit whose
+sequence starts with `a` (आ, ऐ, औ, क, ल and friends), press `a` so the buffer holds, then
+press backspace once. Expect the buffer to clear while the typed units stay put.
 
 ## Commands
 
