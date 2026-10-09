@@ -381,7 +381,7 @@ Bring the Romanized layout into the classic practice path so it works like Engli
   - [x] Twelve generated drill rows with first key bucketing, lint, and snapshot (AC-2)
   - [x] Guidance plus save parity: buffer aware lit key, roman finger hint, wrong key mark, save with layout romanized (AC-3, AC-4)
   - [x] Quality gate: bilingual titles, Free and Settings unchanged, store opens untouched, suite green (AC-5, AC-6)
-- [ ] Verify it: `/check verify Nepali Romanized classic access`
+- [x] Verify it: `/check verify Nepali Romanized classic access`
 
 ## Release 17: game roman access
 
