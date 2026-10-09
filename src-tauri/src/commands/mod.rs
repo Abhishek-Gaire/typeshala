@@ -3,3 +3,4 @@
 pub mod lessons;
 pub mod progress;
 pub mod settings;
+pub mod verify;

@@ -3,6 +3,7 @@ import { useState, type ReactNode } from "react";
 import type { ClassicScreenId } from "../domain/classicLayout";
 import type { LayoutId } from "../domain/datastore";
 import type { StringKey } from "../i18n/keys";
+import { verifyLog } from "../infrastructure/tauriApi";
 
 const SCREENS: ClassicScreenId[] = ["home", "top", "bottom", "all", "game", "free"];
 const SCREEN_KEYS: StringKey[] = [
@@ -266,6 +267,7 @@ export function ClassicShell({
               aria-label={text("layout.traditional")}
               title={text("layout.traditional")}
               onClick={() => {
+                verifyLog("toolbar_layout_switch", { from: layout, to: "traditional" });
                 onLayout("traditional");
               }}
               className={layout === "traditional" ? "outline-2 outline-black" : "opacity-50"}
@@ -278,6 +280,7 @@ export function ClassicShell({
               aria-label={text("layout.romanized")}
               title={text("layout.romanized")}
               onClick={() => {
+                verifyLog("toolbar_layout_switch", { from: layout, to: "romanized" });
                 onLayout("romanized");
               }}
               className={`${layout === "romanized" ? "outline-2 outline-black" : "opacity-50"} px-1 text-base font-bold`}
@@ -290,6 +293,7 @@ export function ClassicShell({
               aria-label={text("layout.english")}
               title={text("layout.english")}
               onClick={() => {
+                verifyLog("toolbar_layout_switch", { from: layout, to: "qwerty" });
                 onLayout("qwerty");
               }}
               className={layout === "qwerty" ? "outline-2 outline-black" : "opacity-50"}

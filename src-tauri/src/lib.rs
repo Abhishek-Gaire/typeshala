@@ -5,7 +5,7 @@ mod commands;
 mod models;
 mod store;
 
-use commands::{lessons, progress, settings};
+use commands::{lessons, progress, settings, verify};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -18,7 +18,8 @@ pub fn run() {
             progress::save_result,
             progress::get_progress,
             settings::get_settings,
-            settings::save_settings
+            settings::save_settings,
+            verify::verify_log
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -10,7 +10,7 @@ import { ClassicShell } from "./components/ClassicShell";
 import { ClassicScreen } from "./features/classic/ClassicScreen";
 import type { ClassicScreenId } from "./domain/classicLayout";
 import { isStringKey } from "./i18n/keys";
-import { loadLessons, saveResult } from "./infrastructure/tauriApi";
+import { loadLessons, saveResult, verifyLog } from "./infrastructure/tauriApi";
 import type { NewAttempt } from "./domain/datastore";
 
 type View = { name: "classic" } | { name: "settings" };
@@ -47,6 +47,10 @@ export default function App() {
     if (classicScreen !== "game") return;
     void loadGame();
   }, [classicScreen, loadGame, reloadKey]);
+
+  useEffect(() => {
+    verifyLog("app_boot", { layout, locale: ui.locale });
+  }, [layout, ui.locale]);
 
   async function handleDone(attempt: NewAttempt) {
     try {
@@ -92,6 +96,7 @@ export default function App() {
               ui.setTheme(t);
             }}
             onLocale={(l) => {
+              verifyLog("ui_language", { locale: l });
               ui.setLocale(l);
             }}
             onLayout={(l) => {
@@ -114,9 +119,16 @@ export default function App() {
           name={classicName}
           avgWpm={classicWpm}
           text={ui.text}
-          onScreen={setClassicScreen}
-          onLevel={setClassicLevel}
+          onScreen={(s) => {
+            verifyLog("screen_change", { screen: s, level: classicLevel, layout });
+            setClassicScreen(s);
+          }}
+          onLevel={(l) => {
+            verifyLog("level_change", { screen: classicScreen, level: l, layout });
+            setClassicLevel(l);
+          }}
           onLayout={(l) => {
+            verifyLog("shell_layout_switch", { from: layout, to: l });
             ui.setLayout(l);
             setReloadKey((k) => k + 1);
           }}

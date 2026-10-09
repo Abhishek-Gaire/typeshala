@@ -2,6 +2,33 @@
 
 _Steps derived from spec 0022 acceptance criteria. `/check verify` runs these; `/test` locks the durable ones._
 
+## Log evidence
+
+The app carries a verification log channel: every observable event prints to the
+`npm run tauri dev` terminal and appends to
+`~/.local/share/com.abhishek.typeshala/typeshala-verify.log`. Send that log (or
+the terminal section) to check the runtime behavior without screen access.
+
+| Event                           | Emitted when                        | Carries                                                                                  | Covers     |
+| ------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------- | ---------- |
+| `settings_loaded`               | app boot after the store read       | full settings, layout included                                                           | AC-5       |
+| `settings_saved`                | any settings write                  | the patch plus layout after                                                              | AC-1, AC-5 |
+| `settings_save_failed`          | a settings write fails              | the patch                                                                                | AC-5       |
+| `app_boot`                      | shell mounts                        | layout plus UI language                                                                  | AC-1, AC-5 |
+| `toolbar_layout_switch`         | a layout control is clicked         | from and to layout                                                                       | AC-1       |
+| `shell_layout_switch`           | the shell layout handler runs       | from and to layout                                                                       | AC-1       |
+| `settings_layout_choice`        | a Settings layout button is clicked | chosen layout                                                                            | AC-1       |
+| `toolbar_titles`                | shell mount or language change      | all three titles in the active language                                                  | AC-1       |
+| `ui_language`                   | UI language is changed              | locale                                                                                   | AC-1       |
+| `screen_change`, `level_change` | screen or level changes             | screen, level, layout                                                                    | AC-2, AC-1 |
+| `drill_row`                     | a drill screen resolves its row     | screen, level, layout, row id, difficulty, prompt preview                                | AC-2       |
+| `key_press`                     | a physical key is pressed           | key, code, expected code, correct flag, layout                                           | AC-3, AC-4 |
+| `tap_key`                       | the app board is tapped             | code, expected code, correct flag, layout                                                | AC-3       |
+| `key_backspace`                 | backspace is pressed                | layout                                                                                   | AC-4       |
+| `roman_state`                   | the romanized session state changes | units, buffer, next unit, hint, sequenceHint, keystrokes, errorHits, wpm, accuracy, done | AC-3, AC-4 |
+| `attempt_saved`                 | a drill finishes                    | the full saved attempt including layout                                                  | AC-4       |
+| `free_echo`                     | Free screen keys are echoed         | layout, chars, tail                                                                      | AC-5       |
+
 ## UI / manual
 
 - [ ] Launch the app, click the अ control in the toolbar → the whole shell switches to Nepali Romanized, अ shows pressed while the flag controls do not, and the screen, level, and restart state carry over → AC-1

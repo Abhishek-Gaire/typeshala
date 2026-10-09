@@ -4,6 +4,7 @@ import { calcAccuracy, calcWpm } from "../../domain/scoring";
 import { countCorrectUnits, deriveFinalUnitErrors, splitUnits } from "../../domain/preeti";
 import { advanceRoman, exactCommit, sequenceFor } from "../../domain/romanize";
 import { nextKey } from "../../domain/keymap";
+import { verifyLog } from "../../infrastructure/tauriApi";
 import type { NewAttempt } from "../../domain/datastore";
 import type { SessionApi } from "./useTypingSession";
 
@@ -83,6 +84,25 @@ export function useRomanizedSession(prompt: string, fingerGuidance: boolean): Ro
     () => deriveFinalUnitErrors(promptUnits, units),
     [promptUnits, units],
   );
+
+  // Verification trail (spec 0022, `/check verify`): one line per state
+  // change carries the pressed key evidence, the buffer, the committed
+  // units, and the guidance values, so typing behavior is checkable from
+  // logs alone.
+  useEffect(() => {
+    verifyLog("roman_state", {
+      units: units.join(""),
+      buffer,
+      next: upcoming,
+      hint: mapped?.key ?? "",
+      sequenceHint,
+      keystrokes,
+      errorHits,
+      wpm,
+      accuracy,
+      done,
+    });
+  }, [units, buffer, upcoming, mapped, sequenceHint, keystrokes, errorHits, wpm, accuracy, done]);
 
   function startClock() {
     if (startRef.current === null) startRef.current = Date.now();

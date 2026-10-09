@@ -26,6 +26,7 @@ import { Button } from "../../components/Button";
 import { useTypingSession } from "../typing/useTypingSession";
 import { useTraditionalSession } from "../typing/useTraditionalSession";
 import { useRomanizedSession } from "../typing/useRomanizedSession";
+import { verifyLog } from "../../infrastructure/tauriApi";
 
 /** Touch taps must not move focus into the practice box: on Android a touch
  * driven focus summons the device keyboard, which the app board replaces
@@ -75,6 +76,9 @@ function FreeView({
   useEffect(() => {
     onStats(wpm);
   }, [wpm, onStats]);
+  useEffect(() => {
+    verifyLog("free_echo", { layout, chars: typed.length, tail: typed.slice(-12) });
+  }, [layout, typed]);
   const last = typed.length > 0 ? typed.slice(-1) : "";
 
   function onKey(e: React.KeyboardEvent) {
@@ -209,6 +213,18 @@ export function ClassicScreen({
     startMs.current = Date.now();
   }, [lesson.id]);
   useEffect(() => {
+    verifyLog("drill_row", {
+      screen,
+      level,
+      layout,
+      lessonId: lesson.id,
+      category: lesson.category ?? null,
+      difficulty: lesson.difficulty ?? null,
+      promptChars: lesson.prompt.length,
+      prompt: lesson.prompt.slice(0, 80),
+    });
+  }, [screen, level, layout, lesson]);
+  useEffect(() => {
     onStats(session.wpm);
   }, [session.wpm, onStats]);
   useEffect(() => {
@@ -219,6 +235,7 @@ export function ClassicScreen({
         new Date(startMs.current).toISOString(),
         Date.now() - startMs.current,
       );
+      verifyLog("attempt_saved", { ...pending });
       onDone(pending, lesson);
       session.reset();
       startMs.current = Date.now();
@@ -275,12 +292,20 @@ export function ClassicScreen({
   function onKey(e: React.KeyboardEvent) {
     if (e.key === "Backspace") {
       e.preventDefault();
+      verifyLog("key_backspace", { code: "Backspace", layout });
       setPress((p) => ({ code: "Backspace", correct: false, n: (p?.n ?? 0) + 1 }));
       session.backspace();
     } else if (e.key.length === 1) {
       e.preventDefault();
       const expectedCode = expectedKeyCode();
       const hitCode = e.code !== "" ? e.code : expectedCode;
+      verifyLog("key_press", {
+        key: e.key,
+        code: hitCode,
+        expected: expectedCode,
+        correct: expectedCode !== "" && hitCode === expectedCode,
+        layout,
+      });
       setPress((p) => ({
         code: hitCode,
         correct: expectedCode !== "" && hitCode === expectedCode,
@@ -299,6 +324,12 @@ export function ClassicScreen({
       session.backspace();
     } else if (key.kind === "char" || key.kind === "space") {
       const expectedCode = expectedKeyCode();
+      verifyLog("tap_key", {
+        code: key.code,
+        expected: expectedCode,
+        correct: expectedCode !== "" && key.code === expectedCode,
+        layout,
+      });
       setPress((p) => ({
         code: key.code,
         correct: expectedCode !== "" && key.code === expectedCode,

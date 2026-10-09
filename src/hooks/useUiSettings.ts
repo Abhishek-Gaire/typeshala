@@ -7,7 +7,7 @@ import {
   type Theme,
   type UiLanguage,
 } from "../domain/datastore";
-import { getSettings, saveSettings } from "../infrastructure/tauriApi";
+import { getSettings, saveSettings, verifyLog } from "../infrastructure/tauriApi";
 import type { StringKey } from "../i18n/keys";
 import { t } from "../i18n/keys";
 import { promptFontSize, type PromptSize } from "../styles/tokens";
@@ -54,14 +54,24 @@ export function useUiSettings(): UiSettingsApi {
     getSettings()
       .then((s) => {
         setSettings(s);
+        verifyLog("settings_loaded", { ...s });
       })
       .catch(() => {
         setNotice("settings.restoredDefaults");
+        verifyLog("settings_load_failed", {});
       })
       .finally(() => {
         setLoaded(true);
       });
   }, []);
+
+  useEffect(() => {
+    verifyLog("toolbar_titles", {
+      traditional: t("layout.traditional", settings.uiLanguage),
+      romanized: t("layout.romanized", settings.uiLanguage),
+      english: t("layout.english", settings.uiLanguage),
+    });
+  }, [settings.uiLanguage]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -89,8 +99,10 @@ export function useUiSettings(): UiSettingsApi {
 
   const patch = useCallback((p: Partial<Settings>) => {
     setSettings((prev) => ({ ...prev, ...p }));
+    verifyLog("settings_saved", { patch: p, layout: p.layout ?? null });
     saveSettings(p).catch(() => {
       setNotice("settings.saveFailed");
+      verifyLog("settings_save_failed", { patch: p });
     });
   }, []);
 
