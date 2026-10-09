@@ -3,7 +3,6 @@ import type { LayoutId, Theme, UiLanguage } from "../../domain/datastore";
 import type { PromptSize } from "../../styles/tokens";
 import type { StringKey } from "../../i18n/keys";
 import { Button } from "../../components/Button";
-import { verifyLog } from "../../infrastructure/tauriApi";
 
 export interface SettingsViewProps {
   theme: Theme;
@@ -38,7 +37,6 @@ export function SettingsView(props: SettingsViewProps) {
         <Button
           variant={props.layout === "qwerty" ? "primary" : "quiet"}
           onClick={() => {
-            verifyLog("settings_layout_choice", { layout: "qwerty" });
             props.onLayout("qwerty");
           }}
         >
@@ -47,7 +45,6 @@ export function SettingsView(props: SettingsViewProps) {
         <Button
           variant={props.layout === "romanized" ? "primary" : "quiet"}
           onClick={() => {
-            verifyLog("settings_layout_choice", { layout: "romanized" });
             props.onLayout("romanized");
           }}
         >
@@ -56,7 +53,6 @@ export function SettingsView(props: SettingsViewProps) {
         <Button
           variant={props.layout === "traditional" ? "primary" : "quiet"}
           onClick={() => {
-            verifyLog("settings_layout_choice", { layout: "traditional" });
             props.onLayout("traditional");
           }}
         >

@@ -76,9 +76,6 @@ function FreeView({
   useEffect(() => {
     onStats(wpm);
   }, [wpm, onStats]);
-  useEffect(() => {
-    verifyLog("free_echo", { layout, chars: typed.length, tail: typed.slice(-12) });
-  }, [layout, typed]);
   const last = typed.length > 0 ? typed.slice(-1) : "";
 
   function onKey(e: React.KeyboardEvent) {
@@ -235,7 +232,6 @@ export function ClassicScreen({
         new Date(startMs.current).toISOString(),
         Date.now() - startMs.current,
       );
-      verifyLog("attempt_saved", { ...pending });
       onDone(pending, lesson);
       session.reset();
       startMs.current = Date.now();
@@ -324,12 +320,6 @@ export function ClassicScreen({
       session.backspace();
     } else if (key.kind === "char" || key.kind === "space") {
       const expectedCode = expectedKeyCode();
-      verifyLog("tap_key", {
-        code: key.code,
-        expected: expectedCode,
-        correct: expectedCode !== "" && key.code === expectedCode,
-        layout,
-      });
       setPress((p) => ({
         code: key.code,
         correct: expectedCode !== "" && key.code === expectedCode,

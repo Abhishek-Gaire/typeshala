@@ -85,10 +85,11 @@ export function useRomanizedSession(prompt: string, fingerGuidance: boolean): Ro
     [promptUnits, units],
   );
 
-  // Verification trail (spec 0022, `/check verify`): one line per state
-  // change carries the pressed key evidence, the buffer, the committed
-  // units, and the guidance values, so typing behavior is checkable from
-  // logs alone.
+  // Verification trail (spec 0022, `/check verify`): one line per state change
+  // carries the pressed key evidence, the buffer, the committed units, and the
+  // guidance values, so typing behavior is checkable from logs alone. Live
+  // speed stays out on purpose: it ticks every 100ms and would drown the
+  // events that matter, so this fires once per key press.
   useEffect(() => {
     verifyLog("roman_state", {
       units: units.join(""),
@@ -98,11 +99,9 @@ export function useRomanizedSession(prompt: string, fingerGuidance: boolean): Ro
       sequenceHint,
       keystrokes,
       errorHits,
-      wpm,
-      accuracy,
       done,
     });
-  }, [units, buffer, upcoming, mapped, sequenceHint, keystrokes, errorHits, wpm, accuracy, done]);
+  }, [units, buffer, upcoming, mapped, sequenceHint, keystrokes, errorHits, done]);
 
   function startClock() {
     if (startRef.current === null) startRef.current = Date.now();
