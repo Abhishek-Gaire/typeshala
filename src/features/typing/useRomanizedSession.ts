@@ -4,7 +4,6 @@ import { calcAccuracy, calcWpm } from "../../domain/scoring";
 import { countCorrectUnits, deriveFinalUnitErrors, splitUnits } from "../../domain/preeti";
 import { advanceRoman, exactCommit, sequenceFor } from "../../domain/romanize";
 import { nextKey } from "../../domain/keymap";
-import { verifyLog } from "../../infrastructure/tauriApi";
 import type { NewAttempt } from "../../domain/datastore";
 import type { SessionApi } from "./useTypingSession";
 
@@ -79,32 +78,11 @@ export function useRomanizedSession(prompt: string, fingerGuidance: boolean): Ro
   const stepAt = onPath ? Math.min(buffer.length, sequence.length - 1) : 0;
   const hintKey = sequence === "" ? upcoming : sequence.charAt(stepAt);
   const mapped = hintKey === "" ? null : nextKey(hintKey === " " ? " " : hintKey);
-  // Display name of the due key, kept as a string so effects and renders that
-  // read it do not churn on a fresh object every tick.
-  const hintDisplay = mapped?.key ?? "";
   const sequenceHint = sequence === "" ? "" : sequence.slice(stepAt);
   const finalErrors = useMemo(
     () => deriveFinalUnitErrors(promptUnits, units),
     [promptUnits, units],
   );
-
-  // Verification trail (spec 0022, `/check verify`): one line per state change
-  // carries the pressed key evidence, the buffer, the committed units, and the
-  // guidance values, so typing behavior is checkable from logs alone. Live
-  // speed stays out on purpose: it ticks every 100ms and would drown the
-  // events that matter, so this fires once per key press.
-  useEffect(() => {
-    verifyLog("roman_state", {
-      units: units.join(""),
-      buffer,
-      next: upcoming,
-      hint: hintDisplay,
-      sequenceHint,
-      keystrokes,
-      errorHits,
-      done,
-    });
-  }, [units, buffer, upcoming, hintDisplay, sequenceHint, keystrokes, errorHits, done]);
 
   function startClock() {
     if (startRef.current === null) startRef.current = Date.now();

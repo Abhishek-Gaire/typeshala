@@ -8,7 +8,6 @@ import { useUiSettings } from "../../src/hooks/useUiSettings";
 vi.mock("../../src/infrastructure/tauriApi", () => ({
   getSettings: vi.fn(),
   saveSettings: vi.fn(),
-  verifyLog: vi.fn(),
 }));
 
 const mockGet = vi.mocked(getSettings);

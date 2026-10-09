@@ -46,19 +46,6 @@ export function loadLessons(layout?: LayoutId): Promise<Lesson[]> {
   return call<Lesson[]>("load_lessons", { layout: layout ?? null });
 }
 
-/**
- * Fire and forget verification log line (spec 0022, `/check verify`).
- * One line per observable event lands in the terminal and in
- * `typeshala-verify.log` inside the app data dir. Never throws, so it
- * stays a pure observer of app behavior.
- */
-export function verifyLog(event: string, data: Record<string, unknown>): void {
-  if (!isTauri()) return;
-  void invoke("verify_log", { event, data: JSON.stringify(data) }).catch(() => {
-    // Logging must never surface an error to the learner.
-  });
-}
-
 /** Load one lesson by its stable id. */
 export function getLesson(id: string): Promise<Lesson> {
   return call<Lesson>("get_lesson", { id });

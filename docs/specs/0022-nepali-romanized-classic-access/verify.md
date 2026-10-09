@@ -4,12 +4,15 @@ _Steps derived from spec 0022 acceptance criteria. `/check verify` runs these; `
 
 ## Log evidence
 
-The app carries a verification log channel: the events below print to the
-`npm run tauri dev` terminal and append to
-`~/.local/share/com.abhishek.typeshala/typeshala-verify.log`. The channel stays
-in the Rust bridge, so it is cheap to add a frontend emitter back later. Only the
-events that the still open manual steps need are wired up now; the rest were
-removed once their steps passed, so a run stays readable.
+The verification log channel lives in the Rust bridge
+(`src-tauri/src/commands/verify.rs`, registered as `verify_log`): it appends one
+line per event to `~/.local/share/com.abhishek.typeshala/typeshala-verify.log`
+and prints to the `npm run tauri dev` terminal. The frontend emitters were
+removed once the check closed, so the app currently logs nothing on its own. To
+re-arm it, add a wrapper in `src/infrastructure/tauriApi.ts` and call it from
+the points listed below; the two Rust tests keep the channel itself honest.
+
+Events used during the check, and what each carried:
 
 | Event           | Emitted when                        | Carries                                                                   | Covers     |
 | --------------- | ----------------------------------- | ------------------------------------------------------------------------- | ---------- |
@@ -18,9 +21,9 @@ removed once their steps passed, so a run stays readable.
 | `key_backspace` | backspace is pressed                | layout                                                                    | AC-4       |
 | `roman_state`   | the romanized session state changes | units, buffer, next unit, hint, sequenceHint, keystrokes, errorHits, done | AC-3, AC-4 |
 
-`roman_state` fires once per key press. Live words per minute and accuracy are
-deliberately not logged: they tick every 100ms and would drown the events the
-open steps need.
+`roman_state` fired once per key press; live words per minute and accuracy were
+deliberately left out, since they tick every 100ms and drown the events that
+matter.
 
 ## UI / manual
 
@@ -47,10 +50,14 @@ backspace is needed after a wrong key. That holds in all three layouts: the roma
 and Preeti engines both clear the buffer in the miss branch, and qwerty keeps no buffer
 at all, its chars commit or miss in place.
 
-The pending key backspace step stays open on purpose. It covers the other kind of hold:
-a key that starts the expected sequence and waits for its second letter, where backspace
-does clear the buffer before touching a completed unit. The unit suite locks that rule
-for romanized and Preeti; nobody has watched it on screen yet.
+The pending key backspace step stays open. It covers the other kind of hold: a
+key that starts the expected sequence and waits for its second letter, where
+backspace does clear the buffer before touching a completed unit. The unit suite
+locks that rule for romanized and Preeti. The screen observation never landed:
+across the whole log, 11 backspace events were recorded and every one of them
+found an empty buffer, because the wrong keys typed in between had already
+cleared it. With the frontend emitters now removed, closing this one needs the
+emitters re-armed first.
 
 ## Commands
 
