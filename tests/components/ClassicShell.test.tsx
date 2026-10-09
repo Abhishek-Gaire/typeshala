@@ -80,4 +80,24 @@ describe("classic shell toolbar layout", () => {
     expect(screen.getByRole("group", { name: "classic.level" })).toBeDefined();
     expect(screen.getByRole("group", { name: "language" })).toBeDefined();
   });
+
+  it("switches all three layouts from the toolbar (spec 0022 AC-1)", () => {
+    const props = renderShell();
+    fireEvent.click(screen.getByRole("button", { name: "layout.traditional" }));
+    expect(props.onLayout).toHaveBeenCalledWith("traditional");
+    fireEvent.click(screen.getByRole("button", { name: "layout.romanized" }));
+    expect(props.onLayout).toHaveBeenCalledWith("romanized");
+    fireEvent.click(screen.getByRole("button", { name: "layout.english" }));
+    expect(props.onLayout).toHaveBeenCalledWith("qwerty");
+  });
+
+  it("marks only the active layout pressed", () => {
+    renderShell({ layout: "romanized" });
+    expect(
+      screen.getByRole("button", { name: "layout.romanized" }).getAttribute("aria-pressed"),
+    ).toBe("true");
+    expect(
+      screen.getByRole("button", { name: "layout.english" }).getAttribute("aria-pressed"),
+    ).toBe("false");
+  });
 });

@@ -102,6 +102,56 @@ describe("ClassicScreen tap input", () => {
     expect(fireEvent.pointerDown(box, { pointerType: "touch" })).toBe(false);
     expect(fireEvent.pointerDown(box, { pointerType: "mouse" })).toBe(true);
   });
+
+  it("guides a romanized drill by roman key and types it by tap (spec 0022 AC-3)", () => {
+    render(
+      <ClassicScreen
+        screen="home"
+        level={1}
+        layout="romanized"
+        text={text}
+        onDone={() => {}}
+        onStats={() => {}}
+      />,
+    );
+    const current = (name: string) =>
+      screen.getByRole("button", { name }).getAttribute("aria-current");
+    // Home L1 romanized opens on a home key char, so the lit key is the
+    // first roman letter of its sequence.
+    expect(current("KeyA")).toBe("true");
+    fireEvent.click(screen.getByRole("button", { name: "KeyA" }));
+    fireEvent.click(screen.getByRole("button", { name: "KeyA" }));
+    fireEvent.click(screen.getByRole("button", { name: "KeyA" }));
+    expect(screen.getByLabelText("typed").textContent).toContain("अअअ");
+    expect(current("Space")).toBe("true");
+    fireEvent.click(screen.getByRole("button", { name: "Space" }));
+    expect(current("KeyH")).toBe("true");
+    fireEvent.click(screen.getByRole("button", { name: "KeyH" }));
+    expect(current("KeyA")).toBe("true");
+    fireEvent.click(screen.getByRole("button", { name: "KeyA" }));
+    expect(screen.getByLabelText("typed").textContent).toContain("ह");
+  });
+
+  it("counts one wrong roman sequence and clears the buffer first on backspace (spec 0022 AC-4)", () => {
+    render(
+      <ClassicScreen
+        screen="home"
+        level={1}
+        layout="romanized"
+        text={text}
+        onDone={() => {}}
+        onStats={() => {}}
+      />,
+    );
+    const box = screen.getByRole("textbox");
+    box.focus();
+    fireEvent.keyDown(box, { key: "x", code: "KeyX" });
+    fireEvent.keyDown(box, { key: "Backspace", code: "Backspace" });
+    fireEvent.keyDown(box, { key: "a", code: "KeyA" });
+    fireEvent.keyDown(box, { key: "a", code: "KeyA" });
+    fireEvent.keyDown(box, { key: "a", code: "KeyA" });
+    expect(screen.getByLabelText("typed").textContent).toContain("अअअ");
+  });
 });
 
 describe("ClassicScreen All review rows (spec 0019)", () => {

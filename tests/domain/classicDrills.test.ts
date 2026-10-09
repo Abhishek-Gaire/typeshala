@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   ALL_CLASSIC_DRILLS,
   CLASSIC_DRILLS,
+  CLASSIC_DRILLS_ROMANIZED,
   CLASSIC_DRILLS_TRADITIONAL,
   lintClassicDrills,
   TRADITIONAL_ALL_L1_TOKENS,
@@ -23,6 +24,7 @@ import {
   sequenceForPreeti,
   splitUnits,
 } from "../../src/domain/preeti";
+import { advanceRoman, exactCommit, sequenceFor } from "../../src/domain/romanize";
 
 /** Meta every row must keep: id, layout, title, order, category, difficulty. */
 const EXPECTED_META: Array<[string, string, string, number, string, number]> = [
@@ -50,6 +52,10 @@ const EXPECTED_META: Array<[string, string, string, number, string, number]> = [
   ["cl-all-1-tr", "traditional", "All L1", 310, "all", 1],
   ["cl-all-2-tr", "traditional", "All L2", 311, "all", 2],
   ["cl-all-3-tr", "traditional", "All L3", 312, "all", 3],
+  ["cl-home-1-rn", "romanized", "Home L1", 401, "home", 1],
+  ["cl-top-1-rn", "romanized", "Top L1", 402, "top", 1],
+  ["cl-bottom-1-rn", "romanized", "Bottom L1", 403, "bottom", 1],
+  ["cl-all-1-rn", "romanized", "All L1", 404, "all", 1],
 ];
 
 const tokenCounts = (prompt: string): Map<string, number> => {
@@ -91,6 +97,39 @@ const typePromptUnits = (prompt: string): string[] => {
   return out;
 };
 
+/**
+ * Replay a prompt the roman way: type each unit by its roman sequence,
+ * flushing a pending short vowel after every unit, since the buffer is
+ * cleared between units. Returns the units the map actually commits.
+ */
+const typeRomanPrompt = (prompt: string): string[] => {
+  const out: string[] = [];
+  let buffer = "";
+  for (const unit of splitUnits(prompt)) {
+    if (unit === " ") {
+      const held = exactCommit(buffer);
+      if (held !== null) {
+        out.push(held);
+        buffer = "";
+      }
+      out.push(" ");
+      continue;
+    }
+    for (const key of sequenceFor(unit)) {
+      const step = advanceRoman(buffer, key);
+      expect(step.error, `${unit} on ${key}`).toBe(false);
+      out.push(...step.commits);
+      buffer = step.buffer;
+    }
+    const held = exactCommit(buffer);
+    if (held !== null) {
+      out.push(held);
+      buffer = "";
+    }
+  }
+  return out;
+};
+
 describe("bundled drill rows", () => {
   it("keeps every row id, layout, title, order, category, and difficulty", () => {
     expect(
@@ -105,6 +144,7 @@ describe("bundled drill rows", () => {
     ).toEqual(EXPECTED_META);
     expect(CLASSIC_DRILLS).toHaveLength(12);
     expect(CLASSIC_DRILLS_TRADITIONAL).toHaveLength(12);
+    expect(CLASSIC_DRILLS_ROMANIZED).toHaveLength(4);
   });
 
   it("builds Home English L1 from true finger mirror pairs, ten reps each", () => {
@@ -213,12 +253,46 @@ describe("bundled drill rows", () => {
     expect(new Set(tokens).size).toBe(9);
   });
 
-  it("passes lint on all 24 rows", () => {
+  it("passes lint on all 28 rows", () => {
     expect(lintClassicDrills()).toEqual([]);
   });
 
   it("locks the generated prompts against accidental drift", () => {
     expect(ALL_CLASSIC_DRILLS).toMatchSnapshot();
+  });
+});
+
+describe("romanized rows (spec 0022)", () => {
+  it("replays every romanized row to its exact prompt", () => {
+    const rows = ALL_CLASSIC_DRILLS.filter((r) => r.layout === "romanized");
+    expect(rows).toHaveLength(4);
+    for (const row of rows) {
+      expect(typeRomanPrompt(row.prompt), row.id).toEqual(splitUnits(row.prompt));
+      expect(typeRomanPrompt(row.prompt).join(""), row.id).toBe(row.prompt);
+    }
+  });
+
+  it("keeps every romanized char on the roman map with its first key on the screen row", () => {
+    const keysFor = (category: string): Set<string> => {
+      const rows = category === "all" ? ["home", "top", "bottom"] : [category];
+      const keys = new Set<string>();
+      for (const r of rows) {
+        const entry = CLASSIC_KEYS[r as "home" | "top" | "bottom"];
+        for (const k of [...entry.left, ...entry.right]) keys.add(k);
+      }
+      return keys;
+    };
+    for (const row of CLASSIC_DRILLS_ROMANIZED) {
+      for (const unit of splitUnits(row.prompt)) {
+        if (unit === " ") continue;
+        const sequence = sequenceFor(unit);
+        expect(sequence, `${row.id} unit ${unit}`).not.toBe("");
+        expect(
+          keysFor(row.category ?? "all").has(sequence.charAt(0).toLowerCase()),
+          `${row.id} unit ${unit} starts on ${sequence}`,
+        ).toBe(true);
+      }
+    }
   });
 });
 
