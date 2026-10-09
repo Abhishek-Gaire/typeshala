@@ -25,6 +25,7 @@ import { ClassicKeyboard, type KeyPress } from "../../components/ClassicKeyboard
 import { Button } from "../../components/Button";
 import { useTypingSession } from "../typing/useTypingSession";
 import { useTraditionalSession } from "../typing/useTraditionalSession";
+import { useRomanizedSession } from "../typing/useRomanizedSession";
 
 /** Touch taps must not move focus into the practice box: on Android a touch
  * driven focus summons the device keyboard, which the app board replaces
@@ -164,9 +165,7 @@ export function ClassicScreen({
     if (screen === "free") {
       return { id: "free", layout, title: "free", prompt: " ", order: 0 };
     }
-    const pool = ALL_CLASSIC_DRILLS.filter(
-      (l) => l.layout === (layout === "traditional" ? "traditional" : "qwerty"),
-    );
+    const pool = ALL_CLASSIC_DRILLS.filter((l) => l.layout === layout);
     const hits = lessonsForClassic(pool, screen, level);
     const hit = hits.length > 0 ? hits[0] : undefined;
     return hit ?? { id: "empty", layout, title: "empty", prompt: "", order: 0 };
@@ -177,7 +176,13 @@ export function ClassicScreen({
     lesson.layout === "traditional" ? lesson.prompt : "",
     true,
   );
-  const session = lesson.layout === "traditional" ? traditional : english;
+  const romanized = useRomanizedSession(lesson.layout === "romanized" ? lesson.prompt : "", true);
+  const session =
+    lesson.layout === "traditional"
+      ? traditional
+      : lesson.layout === "romanized"
+        ? romanized
+        : english;
   const units = useMemo(() => splitUnits(lesson.prompt), [lesson.prompt]);
   const doneUnits: string[] = session.units ?? session.typed.split("");
   const next: string = doneUnits.length < units.length ? units[doneUnits.length] : "";
@@ -228,20 +233,38 @@ export function ClassicScreen({
     boxRef.current?.focus();
   }, [lesson.id]);
 
-  /** Physical key due now. Traditional multi-key units (pre-posed i-matra,
-   * vowel composition) derive from the session buffer, not the whole unit. */
+  /** The session that guides key by key through a sequence: Traditional
+   * Preeti sequences or romanized roman sequences (spec 0022). */
+  const unitSession =
+    lesson.layout === "traditional"
+      ? traditional
+      : lesson.layout === "romanized"
+        ? romanized
+        : null;
+
+  /** Physical key due now. Multi key units (pre-posed i-matra, vowel
+   * composition, roman sequence steps) derive from the session buffer,
+   * not from the whole unit. */
   function expectedKeyCode(): string {
-    if (lesson.layout !== "traditional") return codeForNextUnit(next, layout);
-    if (traditional.hint === "Space") return "Space";
-    return codeForChar(traditional.hint, layout);
+    if (lesson.layout === "traditional") {
+      if (traditional.hint === "Space") return "Space";
+      return codeForChar(traditional.hint, layout);
+    }
+    if (lesson.layout === "romanized") {
+      if (romanized.hint === "Space") return "Space";
+      return codeForChar(romanized.hint, layout);
+    }
+    return codeForNextUnit(next, layout);
   }
 
-  /** Next physical char to press: prompt char in English, raw sequence remainder in Traditional.
-   * The session `hint` is a display key name (uppercased), so Shift detection
-   * must read `sequenceHint`, which holds the literal chars still to press. */
+  /** Next physical char to press: prompt char in English, raw sequence remainder
+   * in Traditional and Romanized. The session `hint` is a display key name
+   * (uppercased), so Shift detection must read `sequenceHint`, which holds
+   * the literal chars still to press. */
   function nextPressChar(): string {
-    if (lesson.layout !== "traditional") return next;
-    return traditional.sequenceHint.charAt(0);
+    if (lesson.layout === "traditional") return traditional.sequenceHint.charAt(0);
+    if (lesson.layout === "romanized") return romanized.sequenceHint.charAt(0);
+    return next;
   }
 
   const litCode = expectedKeyCode();
@@ -289,6 +312,7 @@ export function ClassicScreen({
   function handleRestart() {
     english.reset();
     traditional.reset();
+    romanized.reset();
     saved.current = false;
     startMs.current = Date.now();
     boxRef.current?.focus();
@@ -329,11 +353,12 @@ export function ClassicScreen({
         <ClassicKeyboard
           layout={layout}
           next={next}
-          litCode={lesson.layout === "traditional" ? litCode : undefined}
+          litCode={unitSession === null ? undefined : litCode}
           shiftCode={shiftCode === "" ? undefined : shiftCode}
+          wrongKey={session.wrongKey}
           fingerHint={
-            lesson.layout === "traditional" && traditional.sequenceHint.length > 1
-              ? traditional.sequenceHint.split("").join(" ")
+            unitSession !== null && unitSession.sequenceHint.length > 1
+              ? unitSession.sequenceHint.split("").join(" ")
               : undefined
           }
           press={press}

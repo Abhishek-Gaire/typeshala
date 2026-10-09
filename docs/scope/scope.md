@@ -34,6 +34,8 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 21  | All drill feel from real use              | Release 13 | planned |
 | 22  | Preeti legacy conjunct gaps               | Release 14 | done    |
 | 23  | Rare conjuncts score as one unit          | Release 15 | done    |
+| 24  | Nepali Romanized classic access           | Release 16 | done    |
+| 25  | Romanized typing in the bonus game        | Release 17 | planned |
 
 ## Foundations
 
@@ -364,6 +366,32 @@ The 13 rare conjuncts plus `रू` type today but score as two or three units e
 - [x] Verify it: `/check verify rare conjuncts score as one unit`
       Spec [0021](../specs/0021-rare-conjuncts-as-one-unit/index.md) · code in `src/domain/preeti.ts`, `src/domain/classicDrills.ts`
 
+## Release 16: romanized classic parity
+
+### 24. Nepali Romanized classic access · done · from spec 0022
+
+Bring the Romanized layout into the classic practice path so it works like English and Traditional: restored session engine on the shared shape, a third toolbar control, and twelve generated drill rows for every screen and level. No store change, spec 0006 stays the record of the map and engine rules.
+**Done when:** you can switch to romanized from the practice toolbar, type any classic drill with roman keys while Devanagari guidance and live scores behave, and save results like the other two layouts.
+
+- [x] Design it (spec): `/architect Nepali Romanized classic access`
+      Spec [0022](../specs/0022-nepali-romanized-classic-access/index.md) · code in `src/features/typing/useRomanizedSession.ts`, `src/domain/classicDrills.ts`, `src/domain/classicLayout.ts`, `src/features/classic/ClassicScreen.tsx`, `src/components/ClassicShell.tsx`
+- [x] Build it: `/develop Nepali Romanized classic access`
+  - [x] Restored engine on the shared session shape with domain tests for flush, pending, error, backspace order (AC-3, AC-4, AC-6)
+  - [x] Thin wiring: third toolbar control, pool plus session branches, next key derivation, interim level 1 rows (AC-1, AC-3)
+  - [x] Twelve generated drill rows with first key bucketing, lint, and snapshot (AC-2)
+  - [x] Guidance plus save parity: buffer aware lit key, roman finger hint, wrong key mark, save with layout romanized (AC-3, AC-4)
+  - [x] Quality gate: bilingual titles, Free and Settings unchanged, store opens untouched, suite green (AC-5, AC-6)
+- [x] Verify it: `/check verify Nepali Romanized classic access`
+
+## Release 17: game roman access
+
+### 25. Romanized typing in the bonus game · planned · from spec 0022
+
+The game still matches raw keys against prompt chars, so the Devanagari prompts in its pool are unreachable in every layout. Spec 0022 parked this as its own slice.
+**Done when:** a Devanagari game prompt is typeable in the active layout, with lesson data unchanged.
+
+- [ ] Decide it (spec): `/architect romanized bonus game`
+
 ## Deferred
 
 Out of scope for the current build pass, kept so the plan stays honest.
@@ -372,6 +400,7 @@ Out of scope for the current build pass, kept so the plan stays honest.
 - **Mobile port**: Android now in scope (row 16); desktop installers already shipped, iOS not started
 - **Online leaderboards**: progress stays on device only
 - **Free run history**: decide whether Free runs should ever save or stay fully ephemeral (spec 0012 follow-up)
+- **Romanized spelling variants**: whether alternate roman spellings count as correct (spec 0006 follow-up)
 
 ## Legend
 

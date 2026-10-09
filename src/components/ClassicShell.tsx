@@ -263,7 +263,8 @@ export function ClassicShell({
             <button
               type="button"
               aria-pressed={layout === "traditional"}
-              title="Nepali"
+              aria-label={text("layout.traditional")}
+              title={text("layout.traditional")}
               onClick={() => {
                 onLayout("traditional");
               }}
@@ -273,8 +274,21 @@ export function ClassicShell({
             </button>
             <button
               type="button"
+              aria-pressed={layout === "romanized"}
+              aria-label={text("layout.romanized")}
+              title={text("layout.romanized")}
+              onClick={() => {
+                onLayout("romanized");
+              }}
+              className={`${layout === "romanized" ? "outline-2 outline-black" : "opacity-50"} px-1 text-base font-bold`}
+            >
+              {"\u0905"}
+            </button>
+            <button
+              type="button"
               aria-pressed={layout === "qwerty"}
-              title="English"
+              aria-label={text("layout.english")}
+              title={text("layout.english")}
               onClick={() => {
                 onLayout("qwerty");
               }}
