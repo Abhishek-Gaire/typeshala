@@ -1,7 +1,7 @@
 # 0022. Nepali Romanized layout access in the classic shell
 
 **Date**: 2026-10-09
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 
