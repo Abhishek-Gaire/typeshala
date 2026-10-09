@@ -233,8 +233,12 @@ export function romanizedMixedTriples(chars: string[]): string[][] {
   return groups;
 }
 
-/** All Level 3 review words: simple map chars with no back to back units. */
-export const ROMANIZED_ALL_L3_WORDS: string[] = ["कमल", "नयन", "पवन", "सरल", "मगन", "नमन"];
+/**
+ * All Level 3 review words: simple map chars with no back to back units.
+ * The order also keeps every word boundary clean, since the lint reads the
+ * whole unit sequence with spaces removed.
+ */
+export const ROMANIZED_ALL_L3_WORDS: string[] = ["नमन", "मगन", "कमल", "नयन", "पवन", "सरल"];
 
 /**
  * Token groups for one romanized screen and level, mirroring the English
