@@ -138,4 +138,12 @@ describe("keyboard geometry", () => {
     expect(codeForNextUnit("आ", "traditional")).toBe("KeyC");
     expect(codeForNextUnit("फ", "traditional")).toBe("KeyK");
   });
+
+  it("lights the first roman key of a romanized unit (spec 0022)", () => {
+    expect(codeForNextUnit("क", "romanized")).toBe("KeyK");
+    expect(codeForNextUnit("आ", "romanized")).toBe("KeyA");
+    expect(codeForNextUnit("ट", "romanized")).toBe("KeyT");
+    expect(codeForNextUnit(" ", "romanized")).toBe("Space");
+    expect(codeForNextUnit("क्ष", "romanized")).toBe("");
+  });
 });

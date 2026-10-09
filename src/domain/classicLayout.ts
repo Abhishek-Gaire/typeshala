@@ -5,6 +5,7 @@
  * tables only, never from reading a screenshot.
  */
 import { PREETI_MAP, sequenceForPreeti } from "./preeti";
+import { sequenceFor } from "./romanize";
 import type { LayoutId, Lesson } from "./datastore";
 
 export type ClassicKind = "char" | "modifier" | "space";
@@ -241,6 +242,12 @@ export function codeForNextUnit(next: string, layout: LayoutId): string {
     // Multi-key units (pre-posed i-matra, vowel composition, upgrades) have
     // no single key of their own: light the first key of their sequence.
     const sequence = sequenceForPreeti(next);
+    return sequence === "" ? "" : codeForChar(sequence.charAt(0), layout);
+  }
+  if (layout === "romanized") {
+    // Romanized units type through roman sequences: light the first roman
+    // letter of the sequence for the upcoming Devanagari char (spec 0022).
+    const sequence = sequenceFor(next);
     return sequence === "" ? "" : codeForChar(sequence.charAt(0), layout);
   }
   const lower = next.toLowerCase();

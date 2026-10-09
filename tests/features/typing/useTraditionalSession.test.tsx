@@ -117,6 +117,19 @@ describe("useTraditionalSession", () => {
     expect(result.current.wrongKey).toBe(null);
   });
 
+  it("never keeps a wrong key in the pending buffer (spec 0022 check)", () => {
+    const { result } = setup("म");
+    act(() => {
+      result.current.typeChar("g");
+    });
+    expect(result.current.errorHits).toBe(1);
+    // The miss dropped the pending keys, so the right key finishes the unit
+    // without a second hit: no backspace needed to shake a wrong key loose.
+    typeKeys(result.current, ["d"]);
+    expect(result.current.typed).toBe("म");
+    expect(result.current.errorHits).toBe(1);
+  });
+
   it("clears the pending buffer first on backspace (covers AC-5)", () => {
     const { result } = setup("थ");
     act(() => {
