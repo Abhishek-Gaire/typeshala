@@ -316,6 +316,7 @@ export function ClassicScreen({
    * correctness marking matches the physical path exactly. */
   function onTapKey(key: ClassicKey) {
     if (key.code === "Backspace") {
+      verifyLog("key_backspace", { code: "Backspace", layout, source: "tap" });
       setPress((p) => ({ code: "Backspace", correct: false, n: (p?.n ?? 0) + 1 }));
       session.backspace();
     } else if (key.kind === "char" || key.kind === "space") {
