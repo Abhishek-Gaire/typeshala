@@ -16,6 +16,7 @@ import {
   CLASSIC_KEYS,
   columnPairs,
   columnTriples,
+  ROMANIZED_ALL_L3_WORDS,
 } from "../../src/domain/drillPattern";
 import { tokensForPrompt } from "../../src/domain/promptPaging";
 import {
@@ -53,9 +54,17 @@ const EXPECTED_META: Array<[string, string, string, number, string, number]> = [
   ["cl-all-2-tr", "traditional", "All L2", 311, "all", 2],
   ["cl-all-3-tr", "traditional", "All L3", 312, "all", 3],
   ["cl-home-1-rn", "romanized", "Home L1", 401, "home", 1],
-  ["cl-top-1-rn", "romanized", "Top L1", 402, "top", 1],
-  ["cl-bottom-1-rn", "romanized", "Bottom L1", 403, "bottom", 1],
-  ["cl-all-1-rn", "romanized", "All L1", 404, "all", 1],
+  ["cl-home-2-rn", "romanized", "Home L2", 402, "home", 2],
+  ["cl-home-3-rn", "romanized", "Home L3", 403, "home", 3],
+  ["cl-top-1-rn", "romanized", "Top L1", 404, "top", 1],
+  ["cl-top-2-rn", "romanized", "Top L2", 405, "top", 2],
+  ["cl-top-3-rn", "romanized", "Top L3", 406, "top", 3],
+  ["cl-bottom-1-rn", "romanized", "Bottom L1", 407, "bottom", 1],
+  ["cl-bottom-2-rn", "romanized", "Bottom L2", 408, "bottom", 2],
+  ["cl-bottom-3-rn", "romanized", "Bottom L3", 409, "bottom", 3],
+  ["cl-all-1-rn", "romanized", "All L1", 410, "all", 1],
+  ["cl-all-2-rn", "romanized", "All L2", 411, "all", 2],
+  ["cl-all-3-rn", "romanized", "All L3", 412, "all", 3],
 ];
 
 const tokenCounts = (prompt: string): Map<string, number> => {
@@ -144,7 +153,7 @@ describe("bundled drill rows", () => {
     ).toEqual(EXPECTED_META);
     expect(CLASSIC_DRILLS).toHaveLength(12);
     expect(CLASSIC_DRILLS_TRADITIONAL).toHaveLength(12);
-    expect(CLASSIC_DRILLS_ROMANIZED).toHaveLength(4);
+    expect(CLASSIC_DRILLS_ROMANIZED).toHaveLength(12);
   });
 
   it("builds Home English L1 from true finger mirror pairs, ten reps each", () => {
@@ -253,7 +262,7 @@ describe("bundled drill rows", () => {
     expect(new Set(tokens).size).toBe(9);
   });
 
-  it("passes lint on all 28 rows", () => {
+  it("passes lint on all 36 rows", () => {
     expect(lintClassicDrills()).toEqual([]);
   });
 
@@ -265,7 +274,7 @@ describe("bundled drill rows", () => {
 describe("romanized rows (spec 0022)", () => {
   it("replays every romanized row to its exact prompt", () => {
     const rows = ALL_CLASSIC_DRILLS.filter((r) => r.layout === "romanized");
-    expect(rows).toHaveLength(4);
+    expect(rows).toHaveLength(12);
     for (const row of rows) {
       expect(typeRomanPrompt(row.prompt), row.id).toEqual(splitUnits(row.prompt));
       expect(typeRomanPrompt(row.prompt).join(""), row.id).toBe(row.prompt);
@@ -473,6 +482,47 @@ describe("all cross row content rules (spec 0019 AC-1 through AC-4)", () => {
         expect(sequenceForPreeti(unit), `${id} unit ${unit}`).not.toBe("");
       }
       expect(splitUnits(row?.prompt ?? ""), id).not.toContain("ि");
+    }
+  });
+});
+
+describe("romanized row lengths", () => {
+  it("holds exact token totals per romanized row (spec 0022 AC-2)", () => {
+    const expected: Array<[string, number]> = [
+      ["cl-home-1-rn", 9 * 2 * 10],
+      ["cl-home-2-rn", 17 * 10],
+      ["cl-home-3-rn", 9 * 10],
+      ["cl-top-1-rn", 7 * 2 * 10],
+      ["cl-top-2-rn", 12 * 10],
+      ["cl-top-3-rn", 7 * 10],
+      ["cl-bottom-1-rn", 4 * 2 * 10],
+      ["cl-bottom-2-rn", 7 * 10],
+      ["cl-bottom-3-rn", 4 * 10],
+      ["cl-all-1-rn", 21 * 2 * 10],
+      ["cl-all-2-rn", 40 * 10],
+      ["cl-all-3-rn", 6],
+    ];
+    for (const [id, total] of expected) {
+      const row = ALL_CLASSIC_DRILLS.find((r) => r.id === id);
+      expect(tokensForPrompt(row?.prompt ?? ""), id).toHaveLength(total);
+    }
+  });
+
+  it("splits the map chars across the three row screens with none empty (spec 0022)", () => {
+    for (const id of ["cl-home-1-rn", "cl-top-1-rn", "cl-bottom-1-rn"]) {
+      const row = ALL_CLASSIC_DRILLS.find((r) => r.id === id);
+      expect(row, id).toBeDefined();
+      expect(tokensForPrompt(row?.prompt ?? "").length, id).toBeGreaterThan(0);
+    }
+  });
+
+  it("emits the All review words once each with no back to back units (spec 0022)", () => {
+    const row = ALL_CLASSIC_DRILLS.find((r) => r.id === "cl-all-3-rn");
+    expect(row?.prompt).toBe(ROMANIZED_ALL_L3_WORDS.join(" "));
+    expect(tokensForPrompt(row?.prompt ?? "")).toHaveLength(6);
+    const units = splitUnits(row?.prompt ?? "").filter((u) => u !== " ");
+    for (let i = 1; i < units.length; i++) {
+      expect(units[i], `at ${String(i)}`).not.toBe(units[i - 1]);
     }
   });
 });
