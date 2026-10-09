@@ -79,6 +79,9 @@ export function useRomanizedSession(prompt: string, fingerGuidance: boolean): Ro
   const stepAt = onPath ? Math.min(buffer.length, sequence.length - 1) : 0;
   const hintKey = sequence === "" ? upcoming : sequence.charAt(stepAt);
   const mapped = hintKey === "" ? null : nextKey(hintKey === " " ? " " : hintKey);
+  // Display name of the due key, kept as a string so effects and renders that
+  // read it do not churn on a fresh object every tick.
+  const hintDisplay = mapped?.key ?? "";
   const sequenceHint = sequence === "" ? "" : sequence.slice(stepAt);
   const finalErrors = useMemo(
     () => deriveFinalUnitErrors(promptUnits, units),
@@ -95,13 +98,13 @@ export function useRomanizedSession(prompt: string, fingerGuidance: boolean): Ro
       units: units.join(""),
       buffer,
       next: upcoming,
-      hint: mapped?.key ?? "",
+      hint: hintDisplay,
       sequenceHint,
       keystrokes,
       errorHits,
       done,
     });
-  }, [units, buffer, upcoming, mapped, sequenceHint, keystrokes, errorHits, done]);
+  }, [units, buffer, upcoming, hintDisplay, sequenceHint, keystrokes, errorHits, done]);
 
   function startClock() {
     if (startRef.current === null) startRef.current = Date.now();
