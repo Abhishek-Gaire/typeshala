@@ -83,6 +83,23 @@ describe("useRomanizedSession", () => {
     expect(result.current.wrongKey).toBe("k");
   });
 
+  it("never keeps a wrong key in the pending buffer (spec 0022 check)", () => {
+    const { result } = setup("क");
+    act(() => {
+      result.current.typeChar("x");
+    });
+    expect(result.current.errorHits).toBe(1);
+    // The miss cleared the buffer, so the next key behaves as a fresh start
+    // instead of compounding the wrong one (`x` plus `a` would be a second
+    // miss): no backspace is needed to shake a wrong key loose.
+    act(() => {
+      result.current.typeChar("a");
+    });
+    expect(result.current.errorHits).toBe(1);
+    expect(result.current.units).toEqual([]);
+    expect(result.current.sequenceHint).toBe("ka");
+  });
+
   it("types a long vowel with the shifted first key", () => {
     const { result } = setup("ट");
     expect(result.current.sequenceHint).toBe("Ta");

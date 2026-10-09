@@ -28,7 +28,8 @@ open steps need.
 - [x] Open Settings → three layout choices are listed, Nepali Romanized matches the toolbar state, and the Settings entry still saves and survives a restart → AC-1, AC-5
 - [x] Home level 1 romanized: type the prompted roman sequences → the Devanagari prompt colors per unit, the roman key for the next letter lights, and the remaining roman letters print under the board → AC-3
 - [x] Type `a` then `a` where आ is expected → the screen shows अ then a pending `a` for आ, not one आ, and the unit coloring stays aligned to the end of the prompt → AC-3
-- [ ] Type a sequence no map row starts (for example `x`) → one error hit counts, the wrong key marks, and backspace clears the pending buffer before removing a completed char → AC-4
+- [x] Wrong key on a romanized drill (for example `x`) → exactly one error hit counts, the wrong key marks, the cursor holds, and the wrong key never sits in the pending buffer, so no backspace is needed to clear it → AC-4
+- [ ] Pending key backspace → press a key that starts the expected sequence (roman `a` while आ is due, roman `k` while क is due, Preeti `l` for the pre-posed matra) so it holds in the buffer, then backspace → the buffer clears while the completed units stay put → AC-4
 - [x] Finish a full drill end to end → the attempt saves with layout `romanized`, and the board and paging behave as they do in English and Traditional → AC-4
 - [x] Switch the UI language to Nepali → all three layout control titles read correctly in Nepali → AC-1
 - [x] Free screen under romanized → raw key presses echo exactly as they do today in every layout, with no save → AC-5
@@ -39,14 +40,17 @@ Manual steps run on 2026-10-09 against the real app; log channel events cited in
 check report. Step 10 was closed by the level sweep: all twelve rows resolved with the
 right ids, categories, and difficulties (`cl-home-1-rn` through `cl-all-3-rn`).
 
-Step 5 stays unticked on purpose. The log proves its main claim many times over: every
-wrong press moved `errorHits` by exactly one and left the units untouched, so one error
-hit per wrong sequence with the cursor held. Two parts were not exercised on screen: a
-backspace taken while a roman buffer was still pending (every backspace in the run found
-an empty buffer, so it removed a unit), and the wrong key board mark, which logs cannot
-show. Both are covered by the unit suite. To close the step by hand: get to a unit whose
-sequence starts with `a` (आ, ऐ, औ, क, ल and friends), press `a` so the buffer holds, then
-press backspace once. Expect the buffer to clear while the typed units stay put.
+The wrong key step is closed on combined evidence: your log shows every wrong press
+moving `errorHits` by exactly one with the units untouched, and the unit suite proves
+the wrong key marks on the board and never stays in the pending buffer, which is why no
+backspace is needed after a wrong key. That holds in all three layouts: the romanized
+and Preeti engines both clear the buffer in the miss branch, and qwerty keeps no buffer
+at all, its chars commit or miss in place.
+
+The pending key backspace step stays open on purpose. It covers the other kind of hold:
+a key that starts the expected sequence and waits for its second letter, where backspace
+does clear the buffer before touching a completed unit. The unit suite locks that rule
+for romanized and Preeti; nobody has watched it on screen yet.
 
 ## Commands
 
