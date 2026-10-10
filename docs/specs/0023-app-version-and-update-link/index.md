@@ -1,7 +1,7 @@
 # 0023. Show the real app version and link out to the download page
 
 **Date**: 2026-10-09
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 
