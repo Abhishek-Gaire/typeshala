@@ -401,7 +401,7 @@ The About dialog claims version 1.0.0 while the shipped app is 1.0.1, because th
 **Done when:** Settings and the About dialog both show the version the shell reports, the stale literal is gone from both bundles, and the button opens the download page through the existing opener plugin with no new dependency, capability, Rust, or CI change.
 
 - [x] Design it (spec): `/architect app version and update link`
-      Spec [0023](../specs/0023-app-version-and-update-link.md) · code in `src/infrastructure/tauriApi.ts`, `src/hooks/useUiSettings.ts`, `src/components/VersionLine.tsx`
+      Spec [0023](../specs/0023-app-version-and-update-link/index.md) · code in `src/infrastructure/tauriApi.ts`, `src/hooks/useUiSettings.ts`, `src/components/VersionLine.tsx`
 - [x] Build it: `/develop app version and update link`
   - [x] Bridge constants plus version read plus open with error shape (AC-5, AC-11, AC-12)
   - [x] Bilingual keys plus stale literal removed from both bundles (AC-3, AC-4)
@@ -409,7 +409,7 @@ The About dialog claims version 1.0.0 while the shipped app is 1.0.1, because th
   - [x] About group in Settings plus version line in the dialog (AC-1, AC-3, AC-9)
   - [x] Wiring plus the opener failure notice (AC-5, AC-8)
   - [x] Tests for bridge, hook, both views, and i18n (AC-2, AC-3, AC-4, AC-6, AC-7, AC-10, AC-11)
-- [ ] Verify it: `/check verify app version and update link`
+- [x] Verify it: `/check verify app version and update link`
 
 ## Deferred
 

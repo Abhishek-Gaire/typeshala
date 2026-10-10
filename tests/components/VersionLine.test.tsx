@@ -26,4 +26,16 @@ describe("VersionLine", () => {
     render(<VersionLine version={null} versionState="ready" text={text} />);
     expect(screen.getByText(/about.versionUnavailable/)).toBeInTheDocument();
   });
+
+  it("lets the caller own the text color (spec 0023, Win95 dialog contrast)", () => {
+    const { rerender } = render(<VersionLine version="1.0.1" versionState="ready" text={text} />);
+    // Default is the project's own muted token, per design.md "tokens only".
+    expect(screen.getByText(/1\.0\.1/).className).toContain("text-(--color-muted)");
+    rerender(
+      <VersionLine version="1.0.1" versionState="ready" text={text} className="text-black" />,
+    );
+    // The About dialog's fixed gray panel needs black, not the themed default.
+    expect(screen.getByText(/1\.0\.1/).className).toContain("text-black");
+    expect(screen.getByText(/1\.0\.1/).className).not.toContain("color-muted");
+  });
 });

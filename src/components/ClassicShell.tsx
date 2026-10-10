@@ -202,7 +202,12 @@ export function ClassicShell({
             }}
           >
             <p className="text-sm font-bold text-black">{text("about.title")}</p>
-            <VersionLine version={version} versionState={versionState} text={text} />
+            <VersionLine
+              version={version}
+              versionState={versionState}
+              text={text}
+              className="text-black"
+            />
             <p className="mt-1 text-sm text-black">{text("about.body")}</p>
             <button
               type="button"
