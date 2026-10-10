@@ -13,6 +13,8 @@ function renderShell(overrides: Partial<Parameters<typeof ClassicShell>[0]> = {}
     layout: "qwerty",
     name: "",
     avgWpm: 0,
+    version: "1.0.2",
+    versionState: "ready",
     text,
     onScreen: vi.fn(),
     onLevel: vi.fn(),
@@ -49,8 +51,16 @@ describe("classic shell menus", () => {
     fireEvent.click(screen.getByRole("button", { name: "menu.help" }));
     fireEvent.click(screen.getByRole("menuitem", { name: "menu.about" }));
     expect(screen.getByRole("dialog", { name: "about.title" })).toBeDefined();
+    expect(screen.getByText(/1\.0\.2/)).toBeDefined();
     fireEvent.click(screen.getByRole("button", { name: "menu.close" }));
     expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("About shows the fallback when the version read failed (spec 0023 AC-6)", () => {
+    renderShell({ version: null, versionState: "failed" });
+    fireEvent.click(screen.getByRole("button", { name: "menu.help" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "menu.about" }));
+    expect(screen.getByText(/about.versionUnavailable/)).toBeDefined();
   });
 
   it("Options still opens settings directly", () => {

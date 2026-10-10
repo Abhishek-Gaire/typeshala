@@ -3,6 +3,8 @@ import { useState, type ReactNode } from "react";
 import type { ClassicScreenId } from "../domain/classicLayout";
 import type { LayoutId } from "../domain/datastore";
 import type { StringKey } from "../i18n/keys";
+import type { VersionState } from "../hooks/useUiSettings";
+import { VersionLine } from "./VersionLine";
 
 const SCREENS: ClassicScreenId[] = ["home", "top", "bottom", "all", "game", "free"];
 const SCREEN_KEYS: StringKey[] = [
@@ -32,6 +34,8 @@ export function ClassicShell({
   layout,
   name,
   avgWpm,
+  version,
+  versionState,
   text,
   onScreen,
   onLevel,
@@ -46,6 +50,8 @@ export function ClassicShell({
   layout: LayoutId;
   name: string;
   avgWpm: number;
+  version: string | null;
+  versionState: VersionState;
   text: (key: StringKey) => string;
   onScreen: (s: ClassicScreenId) => void;
   onLevel: (l: number) => void;
@@ -196,6 +202,7 @@ export function ClassicShell({
             }}
           >
             <p className="text-sm font-bold text-black">{text("about.title")}</p>
+            <VersionLine version={version} versionState={versionState} text={text} />
             <p className="mt-1 text-sm text-black">{text("about.body")}</p>
             <button
               type="button"

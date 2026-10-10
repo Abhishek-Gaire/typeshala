@@ -3,6 +3,8 @@
  * All bridge calls pass through here so views never touch `invoke`.
  */
 import { invoke } from "@tauri-apps/api/core";
+import { getVersion } from "@tauri-apps/api/app";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import { BridgeError } from "../domain/datastore";
 import type {
   Attempt,
@@ -80,4 +82,28 @@ export function getSettings(): Promise<Settings> {
 /** Save a partial patch merged over current settings. */
 export function saveSettings(patch: SettingsPatch): Promise<Settings> {
   return call<Settings>("save_settings", { patch });
+}
+
+/** Where users get new builds. Single source for the update button. */
+export const DOWNLOAD_PAGE_URL = "https://typeshala.abhishekgaire.com.np";
+
+/**
+ * Read the version the Tauri shell was built with (spec 0023).
+ * Not an `invoke`, so it normalizes its own failures to the one error shape.
+ */
+export async function getAppVersion(): Promise<string> {
+  try {
+    return await getVersion();
+  } catch (raw) {
+    throw toBridgeError(raw);
+  }
+}
+
+/** Open the download page in the system browser (spec 0023). */
+export async function openDownloadPage(): Promise<void> {
+  try {
+    await openUrl(DOWNLOAD_PAGE_URL);
+  } catch (raw) {
+    throw toBridgeError(raw);
+  }
 }

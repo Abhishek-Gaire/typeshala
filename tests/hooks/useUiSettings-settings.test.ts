@@ -1,22 +1,27 @@
 /** useUiSettings settings-slice tests (spec 0009: sound, system theme, size, notice keys). */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { getSettings, saveSettings } from "../../src/infrastructure/tauriApi";
+import { getAppVersion, getSettings, saveSettings } from "../../src/infrastructure/tauriApi";
 import { defaultSettings } from "../../src/domain/datastore";
 import { useUiSettings } from "../../src/hooks/useUiSettings";
 
 vi.mock("../../src/infrastructure/tauriApi", () => ({
   getSettings: vi.fn(),
   saveSettings: vi.fn(),
+  getAppVersion: vi.fn(),
+  openDownloadPage: vi.fn(),
 }));
 
 const mockGet = vi.mocked(getSettings);
 const mockSave = vi.mocked(saveSettings);
+const mockVersion = vi.mocked(getAppVersion);
 
 beforeEach(() => {
   mockGet.mockReset();
   mockSave.mockReset();
+  mockVersion.mockReset();
   mockSave.mockResolvedValue(defaultSettings());
+  mockVersion.mockResolvedValue("1.0.2");
 });
 
 describe("useUiSettings settings slice", () => {

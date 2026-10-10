@@ -16,6 +16,9 @@
   "settings.sound": "आवाज",
   "settings.saveFailed": "सेटिङ बचत हुन सकेन। पुनः प्रयास गर्नुहोस्।",
   "settings.restoredDefaults": "सेटिङ पूर्वनिर्धारितमा फर्काइयो।",
+  "settings.about": "परिचय",
+  "settings.getUpdates": "अद्यावधिक लिनुहोस्",
+  "settings.openFailed": "ब्राउजर खोल्न सकिएन। त्यसैगरी डाउनलोड पृष्ठमा जानुहोस्।",
   "theme.light": "उज्यालो",
   "theme.dark": "अँध्यारो",
   "theme.system": "प्रणाली",
@@ -80,7 +83,9 @@
   "menu.about": "Typeshala बारे",
   "menu.close": "बन्द गर्नुहोस्",
   "about.title": "Typeshala बारे",
-  "about.body": "Typeshala 1.0.0। स्तर 1 मा दोहोरिएका एकाइ हुन्छन्; स्तर 2 र 3 मा लगातार दोहोरिन पाइँदैन। खुला प्रयास कहिल्यै बचत हुँदैन।",
+  "about.body": "स्तर 1 मा दोहोरिएका एकाइ हुन्छन्; स्तर 2 र 3 मा लगातार दोहोरिन पाइँदैन। खुला प्रयास कहिल्यै बचत हुँदैन।",
+  "about.version": "संस्करण",
+  "about.versionUnavailable": "अज्ञात",
   "free.hint": "खुला टाइप गर्नुहोस्। केही बचत हुँदैन।",
   "nav.classic": "क्लासिक"
 }
