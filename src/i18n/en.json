@@ -16,6 +16,9 @@
   "settings.sound": "Sound",
   "settings.saveFailed": "Could not save settings. Retry.",
   "settings.restoredDefaults": "Settings reset to defaults.",
+  "settings.about": "About",
+  "settings.getUpdates": "Get updates",
+  "settings.openFailed": "Could not open the browser. Visit the download page instead.",
   "theme.light": "Light",
   "theme.dark": "Dark",
   "theme.system": "System",
@@ -80,7 +83,9 @@
   "menu.about": "About Typeshala",
   "menu.close": "Close",
   "about.title": "About Typeshala",
-  "about.body": "Typeshala 1.0.0. Level 1 allows repeated units; Levels 2 and 3 forbid immediate repeats. Free runs are never saved.",
+  "about.body": "Level 1 allows repeated units; Levels 2 and 3 forbid immediate repeats. Free runs are never saved.",
+  "about.version": "Version",
+  "about.versionUnavailable": "Unknown",
   "free.hint": "Type freely. Nothing is saved.",
   "nav.classic": "Classic"
 }

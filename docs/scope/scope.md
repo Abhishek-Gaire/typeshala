@@ -36,6 +36,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 23  | Rare conjuncts score as one unit          | Release 15 | done    |
 | 24  | Nepali Romanized classic access           | Release 16 | done    |
 | 25  | Romanized typing in the bonus game        | Release 17 | planned |
+| 26  | App version and update link               | Release 18 | done    |
 
 ## Foundations
 
@@ -391,6 +392,24 @@ The game still matches raw keys against prompt chars, so the Devanagari prompts 
 **Done when:** a Devanagari game prompt is typeable in the active layout, with lesson data unchanged.
 
 - [ ] Decide it (spec): `/architect romanized bonus game`
+
+## Release 18: version and updates
+
+### 26. App version and update link · done
+
+The About dialog claims version 1.0.0 while the shipped app is 1.0.1, because the number is written into both translation bundles and drifts at every release. Nothing in the app points a user toward a newer build. Spec 0023 reads the real version from the Tauri shell, shows it in Settings and the About dialog, and adds one button that opens the download page. No automatic updater, no signing key, no feed.
+**Done when:** Settings and the About dialog both show the version the shell reports, the stale literal is gone from both bundles, and the button opens the download page through the existing opener plugin with no new dependency, capability, Rust, or CI change.
+
+- [x] Design it (spec): `/architect app version and update link`
+      Spec [0023](../specs/0023-app-version-and-update-link/index.md) · code in `src/infrastructure/tauriApi.ts`, `src/hooks/useUiSettings.ts`, `src/components/VersionLine.tsx`
+- [x] Build it: `/develop app version and update link`
+  - [x] Bridge constants plus version read plus open with error shape (AC-5, AC-11, AC-12)
+  - [x] Bilingual keys plus stale literal removed from both bundles (AC-3, AC-4)
+  - [x] Version state in the hook with pending, ready, and failed (AC-2, AC-6, AC-7)
+  - [x] About group in Settings plus version line in the dialog (AC-1, AC-3, AC-9)
+  - [x] Wiring plus the opener failure notice (AC-5, AC-8)
+  - [x] Tests for bridge, hook, both views, and i18n (AC-2, AC-3, AC-4, AC-6, AC-7, AC-10, AC-11)
+- [x] Verify it: `/check verify app version and update link`
 
 ## Deferred
 

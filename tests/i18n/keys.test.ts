@@ -16,4 +16,23 @@ describe("i18n bundles", () => {
       expect(t(key, "ne").trim().length).toBeGreaterThan(0);
     }
   });
+
+  it("carries no hardcoded version, so a release cannot make it stale (spec 0023 AC-3)", () => {
+    expect(en["about.body"]).not.toMatch(/\d+\.\d+\.\d+/);
+    expect(ne["about.body"]).not.toMatch(/\d+\.\d+\.\d+/);
+  });
+
+  it("ships every new version and update string in both languages (spec 0023 AC-4)", () => {
+    // The Nepali bundle is Partial by contract (keys.ts), so read it as such.
+    const nepali: Record<string, string | undefined> = ne;
+    for (const key of [
+      "settings.about",
+      "settings.getUpdates",
+      "settings.openFailed",
+      "about.version",
+      "about.versionUnavailable",
+    ]) {
+      expect(nepali[key]?.trim().length ?? 0).toBeGreaterThan(0);
+    }
+  });
 });

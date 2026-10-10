@@ -7,7 +7,12 @@ import {
   type Theme,
   type UiLanguage,
 } from "../domain/datastore";
-import { getSettings, saveSettings } from "../infrastructure/tauriApi";
+import {
+  getSettings,
+  saveSettings,
+  getAppVersion,
+  openDownloadPage,
+} from "../infrastructure/tauriApi";
 import type { StringKey } from "../i18n/keys";
 import { t } from "../i18n/keys";
 import { promptFontSize, type PromptSize } from "../styles/tokens";
@@ -26,6 +31,9 @@ function resolveSystemIsDark(): boolean {
   return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
+/** Lifecycle of the one time version read (spec 0023). */
+export type VersionState = "pending" | "ready" | "failed";
+
 export interface UiSettingsApi {
   theme: Theme;
   locale: UiLanguage;
@@ -35,12 +43,17 @@ export interface UiSettingsApi {
   promptPx: number;
   loaded: boolean;
   notice: string | null;
+  /** Running app version, or null unless the read succeeded. */
+  version: string | null;
+  versionState: VersionState;
   text: (key: StringKey) => string;
   setTheme: (theme: Theme) => void;
   setLocale: (locale: UiLanguage) => void;
   setLayout: (layout: LayoutId) => void;
   setSound: (sound: boolean) => void;
   setPromptSize: (size: PromptSize) => void;
+  /** Open the download page. Surfaces a notice if the browser will not open. */
+  getUpdates: () => void;
   clearNotice: () => void;
 }
 
@@ -49,6 +62,8 @@ export function useUiSettings(): UiSettingsApi {
   const [settings, setSettings] = useState<Settings>(defaultSettings());
   const [loaded, setLoaded] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [version, setVersion] = useState<string | null>(null);
+  const [versionState, setVersionState] = useState<VersionState>("pending");
 
   useEffect(() => {
     getSettings()
@@ -61,6 +76,24 @@ export function useUiSettings(): UiSettingsApi {
       .finally(() => {
         setLoaded(true);
       });
+  }, []);
+
+  // Version is fixed at build time: read once, never re-read (spec 0023).
+  useEffect(() => {
+    let live = true;
+    getAppVersion()
+      .then((v) => {
+        if (!live) return;
+        setVersion(v);
+        setVersionState("ready");
+      })
+      .catch(() => {
+        if (!live) return;
+        setVersionState("failed");
+      });
+    return () => {
+      live = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -97,6 +130,12 @@ export function useUiSettings(): UiSettingsApi {
   const locale = settings.uiLanguage;
   const promptSize = toPromptSize(settings.promptSize);
 
+  const getUpdates = useCallback(() => {
+    openDownloadPage().catch(() => {
+      setNotice("settings.openFailed");
+    });
+  }, []);
+
   return {
     theme: settings.theme,
     locale,
@@ -106,6 +145,8 @@ export function useUiSettings(): UiSettingsApi {
     promptPx: settings.promptSize,
     loaded,
     notice,
+    version,
+    versionState,
     text: (key) => t(key, locale),
     setTheme: (theme) => {
       patch({ theme });
@@ -122,6 +163,7 @@ export function useUiSettings(): UiSettingsApi {
     setPromptSize: (size) => {
       patch({ promptSize: toPx(size) });
     },
+    getUpdates,
     clearNotice: () => {
       setNotice(null);
     },

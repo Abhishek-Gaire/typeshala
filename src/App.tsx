@@ -87,6 +87,8 @@ export default function App() {
             layout={ui.layout}
             sound={ui.sound}
             promptSize={ui.promptSize}
+            version={ui.version}
+            versionState={ui.versionState}
             text={ui.text}
             onTheme={(t) => {
               ui.setTheme(t);
@@ -104,6 +106,9 @@ export default function App() {
             onPromptSize={(s) => {
               ui.setPromptSize(s);
             }}
+            onGetUpdates={() => {
+              ui.getUpdates();
+            }}
           />
         </div>
       ) : (
@@ -113,6 +118,8 @@ export default function App() {
           layout={layout}
           name={classicName}
           avgWpm={classicWpm}
+          version={ui.version}
+          versionState={ui.versionState}
           text={ui.text}
           onScreen={setClassicScreen}
           onLevel={setClassicLevel}
