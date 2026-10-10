@@ -59,6 +59,8 @@ Preeti typing truth lives in `src/domain/preeti.ts`. Chart disagreements, the re
 - Tokens live in `src/styles/tokens.ts`, themes in `src/styles/themes.css`. Use short var classes like `text-(--color-ink)`.
 - Strings live in `src/i18n/en.json` plus `ne.json`, typed keys in `src/i18n/keys.ts`, English fallback always.
 - Shared parts live in `src/components/`, settings hook in `src/hooks/useUiSettings.ts`. Art direction lives in `design.md` plus `docs/design/`.
+- The app version is read from the Tauri shell at runtime, never written into a bundle string. No `1.0.0` style literal belongs in `src/i18n/`.
+- Classic shell chrome paints fixed Win95 colors (`bg-[#d4d0c8]` with `text-black`), so theme tokens do not reach inside it. Shared parts rendered there take the text color from the caller, as `VersionLine` does.
 
 ## Git
 
@@ -74,6 +76,7 @@ Preeti typing truth lives in `src/domain/preeti.ts`. Chart disagreements, the re
 - Workflow `.github/workflows/release.yml` builds macOS arm64 plus x64, Ubuntu, Windows and opens a draft release. Review assets, paste the release body from `docs/release-notes/vX.Y.Z.md`, then publish by hand.
 - Bump `package.json` plus `src-tauri/tauri.conf.json` plus `src-tauri/Cargo.toml` in lockstep per release, else the next push reuses the old draft.
 - Main window launches maximized (`tauri.conf.json`). Swap to `fullscreen` only if chrome free kiosk mode is wanted.
+- No in app updater. Users install by hand from the download page, reached through the About group in Settings. See spec 0023.
 
 ## Agent skills
 

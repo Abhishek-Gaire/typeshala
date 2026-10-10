@@ -1,11 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
+import { getVersion } from "@tauri-apps/api/app";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import {
+  DOWNLOAD_PAGE_URL,
+  getAppVersion,
   getLesson,
   getProgress,
   getSettings,
   isTauri,
   loadLessons,
+  openDownloadPage,
   saveResult,
   saveSettings,
   toBridgeError,
@@ -13,11 +18,43 @@ import {
 import { BridgeError } from "../../src/domain/datastore";
 
 vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }));
+vi.mock("@tauri-apps/api/app", () => ({ getVersion: vi.fn() }));
+vi.mock("@tauri-apps/plugin-opener", () => ({ openUrl: vi.fn() }));
 
 const mockInvoke = vi.mocked(invoke);
+const mockGetVersion = vi.mocked(getVersion);
+const mockOpenUrl = vi.mocked(openUrl);
 
 beforeEach(() => {
   mockInvoke.mockReset();
+  mockGetVersion.mockReset();
+  mockOpenUrl.mockReset();
+});
+
+describe("getAppVersion (spec 0023)", () => {
+  it("returns the version the shell reports", async () => {
+    mockGetVersion.mockResolvedValueOnce("1.0.2");
+    await expect(getAppVersion()).resolves.toBe("1.0.2");
+  });
+
+  it("normalizes a shell read failure to a BridgeError, covers AC-11", async () => {
+    mockGetVersion.mockRejectedValueOnce("no shell");
+    await expect(getAppVersion()).rejects.toBeInstanceOf(BridgeError);
+  });
+});
+
+describe("openDownloadPage (spec 0023)", () => {
+  it("opens the download page constant unchanged, covers AC-5", async () => {
+    mockOpenUrl.mockResolvedValueOnce(undefined);
+    await openDownloadPage();
+    expect(mockOpenUrl).toHaveBeenCalledWith(DOWNLOAD_PAGE_URL);
+    expect(DOWNLOAD_PAGE_URL).toBe("https://typeshala.abhishekgaire.com.np");
+  });
+
+  it("normalizes an opener failure to a BridgeError, covers AC-8", async () => {
+    mockOpenUrl.mockRejectedValueOnce({ code: "opener-failed", message: "no browser" });
+    await expect(openDownloadPage()).rejects.toMatchObject({ code: "opener-failed" });
+  });
 });
 
 describe("loadLessons", () => {

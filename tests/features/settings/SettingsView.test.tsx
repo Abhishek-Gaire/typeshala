@@ -14,12 +14,15 @@ function props(over: Partial<SettingsViewProps> = {}): SettingsViewProps {
     layout: "qwerty",
     sound: true,
     promptSize: "standard",
+    version: "1.0.2",
+    versionState: "ready",
     text,
     onTheme: () => {},
     onLocale: () => {},
     onLayout: () => {},
     onSound: () => {},
     onPromptSize: () => {},
+    onGetUpdates: () => {},
     ...over,
   };
 }
@@ -36,6 +39,37 @@ describe("SettingsView", () => {
     ]) {
       expect(screen.getByRole("group", { name: label })).toBeInTheDocument();
     }
+  });
+
+  it("renders the About group with the running version and the update button (AC-1, AC-2)", () => {
+    render(<SettingsView {...props()} />);
+    expect(screen.getByRole("group", { name: "settings.about" })).toBeInTheDocument();
+    expect(screen.getByText(/1\.0\.2/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "settings.getUpdates" })).toBeInTheDocument();
+  });
+
+  it("fires onGetUpdates when the update button is pressed (AC-5)", async () => {
+    const user = userEvent.setup();
+    const onGetUpdates = vi.fn();
+    render(<SettingsView {...props({ onGetUpdates })} />);
+    await user.click(screen.getByRole("button", { name: "settings.getUpdates" }));
+    expect(onGetUpdates).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders nothing in the version slot while pending (AC-7)", () => {
+    const { unmount } = render(
+      <SettingsView {...props({ version: null, versionState: "pending" })} />,
+    );
+    expect(screen.queryByText(/about.versionUnavailable/)).toBeNull();
+    expect(screen.queryByText(/1\.0\.2/)).toBeNull();
+    unmount();
+  });
+
+  it("shows the fallback text when the read failed (AC-6)", () => {
+    render(<SettingsView {...props({ version: null, versionState: "failed" })} />);
+    expect(screen.getByText(/about.versionUnavailable/)).toBeInTheDocument();
+    // The button still works on the failure path.
+    expect(screen.getByRole("button", { name: "settings.getUpdates" })).toBeInTheDocument();
   });
 
   it("fires each setter when its option is picked (AC-1 AC-2)", async () => {

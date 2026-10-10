@@ -1,8 +1,10 @@
-/** Single settings screen on the existing Settings shape (spec 0009). */
+/** Single settings screen on the existing Settings shape (spec 0009, 0023). */
 import type { LayoutId, Theme, UiLanguage } from "../../domain/datastore";
 import type { PromptSize } from "../../styles/tokens";
 import type { StringKey } from "../../i18n/keys";
+import type { VersionState } from "../../hooks/useUiSettings";
 import { Button } from "../../components/Button";
+import { VersionLine } from "../../components/VersionLine";
 
 export interface SettingsViewProps {
   theme: Theme;
@@ -10,12 +12,16 @@ export interface SettingsViewProps {
   layout: LayoutId;
   sound: boolean;
   promptSize: PromptSize;
+  /** Running app version, or null unless the read succeeded (spec 0023). */
+  version: string | null;
+  versionState: VersionState;
   text: (key: StringKey) => string;
   onTheme: (theme: Theme) => void;
   onLocale: (locale: UiLanguage) => void;
   onLayout: (layout: LayoutId) => void;
   onSound: (sound: boolean) => void;
   onPromptSize: (size: PromptSize) => void;
+  onGetUpdates: () => void;
 }
 
 function Group(props: { label: string; children: React.ReactNode }) {
@@ -137,6 +143,12 @@ export function SettingsView(props: SettingsViewProps) {
           }}
         >
           {text("size.large")}
+        </Button>
+      </Group>
+      <Group label={text("settings.about")}>
+        <VersionLine version={props.version} versionState={props.versionState} text={props.text} />
+        <Button variant="quiet" onClick={props.onGetUpdates}>
+          {text("settings.getUpdates")}
         </Button>
       </Group>
     </div>
